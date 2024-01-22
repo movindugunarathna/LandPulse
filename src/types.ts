@@ -3,21 +3,20 @@ export interface UserData {
     username?: string;
     fullName?: string;
     email?: string;
-    number?: string;
+    contactNumber?: string;
     password?: string;
     passwordRepeat?: string;
 }
 
 export interface AdData {
-    adId?: string;
+    adId?: number;
     title?: string;
-    desc?: string;
+    description?: string;
     locationURL?: string;
-    img?: string[];
+    landImages?: string[];
     price?: number;
     userId?: number;
-    sold?: boolean;
+    isSold?: boolean;
     createdDate?: Date;
     modifiedDate?: Date;
-
 }
