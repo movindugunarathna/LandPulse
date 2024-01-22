@@ -8,7 +8,7 @@ export interface UserData {
     passwordRepeat?: string;
 }
 
-export interface AdData {
+export interface AdvertisementData {
     adId?: number;
     title?: string;
     description?: string;
