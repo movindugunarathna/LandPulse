@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import React from 'react';
-import Links from './links/Links';
 import Image from 'next/image';
 
 const Navbar = () => {
@@ -18,11 +17,6 @@ const Navbar = () => {
           >
             <span className="absolute -inset-0.5" />
             <span className="sr-only">Open main menu</span>
-            {/*
-        Icon when menu is closed.
-  
-        Menu open: "hidden", Menu closed: "block"
-      */}
             <svg
               className="block h-6 w-6"
               fill="none"
@@ -37,11 +31,6 @@ const Navbar = () => {
                 d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
               />
             </svg>
-            {/*
-        Icon when menu is open.
-  
-        Menu open: "block", Menu closed: "hidden"
-      */}
             <svg
               className="hidden h-6 w-6"
               fill="none"
@@ -70,7 +59,6 @@ const Navbar = () => {
           </div>
             <div className="hidden sm:ml-auto sm:block">
             <div className="flex space-x-5">
-              {/* Current: "bg-white-900 text-white", Default: "text-white-300 hover:bg-white-700 hover:text-white" */}
               <a
                 href="/"
                 className="bg-white-900 text-black  rounded-md px-3 py-2 text-sm font-medium"
@@ -139,7 +127,6 @@ const Navbar = () => {
     {/* Mobile menu, show/hide based on menu state. */}
     <div className="sm:hidden" id="mobile-menu">
       <div className="space-y-1 px-2 pb-3 pt-2">
-        {/* Current: "bg-white-900 text-white", Default: "text-white-300 hover:bg-white-700 hover:text-white" */}
         <a
           href="#"
           className="bg-white-900 text-white block rounded-md px-3 py-2 text-base font-medium"
