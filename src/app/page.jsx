@@ -9,8 +9,8 @@ export default function Home() {
           <Image className="absolute object-cover w-full" src="/hero-image.jpg" alt="" layout="fill" />
           <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
           <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">
-            <h1 className="text-6xl font-bold md:text-5xl">Land Awaits Your Imagination</h1>
-            <div className="text-wrap text-xs leading-relaxed">
+            <h1 className="text-6xl font-bold md:text-5xl text-custom-green-200">Land Awaits Your Imagination</h1>
+            <div className="container text-wrap text-xs leading-relaxed">
               <p className="mt-4 text-2xl md:text-lg">
                 Welcome to a realm where your imagination knows no bounds.Our collection of pristine land parcels invites you to paint your dreams upon nature's canvas. Whether you envision a tranquil
                 retreat nestled among trees or aspire to build your legacy in an urban landscape, our diverse listings cater to your unique aspirations. Explore rolling hills, vast plains, or scenic
@@ -42,6 +42,7 @@ export default function Home() {
               resonates with your unique vision.
             </p>
           </div>
+          {/* Must create an array and map the info fetch from DB!!! */}
           <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
             <Advertisement
               image={''}
