@@ -10,7 +10,13 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "bcryptjs": "^2.4.3",
+    "font-awesome": "^4.7.0",
     "mongoose": "^8.1.0",
     "next": "^14.0.4",
     "next-auth": "^4.24.5",
