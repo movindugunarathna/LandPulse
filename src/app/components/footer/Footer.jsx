@@ -22,32 +22,52 @@ const Footer = () => {
       <div className="container mx-auto px-4 mt-5">
         <div className="flex flex-wrap">
           <div className="w-full md:w-1/5 text-center md:text-left">
-            <Image src="/logo.png" alt="logo" width={300} height={300} />
-            <p className="mb-4">Where Visions Find Ground: Pulse Your Property Dreams with Us!</p>
+            <Image src="/logo.png" alt="logo" width={200} height={200} />
+            <p className="mb-4 text-xs">Where Visions Find Ground: Pulse Your Property Dreams with Us!</p>
           </div>
           <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">Jump to</h2>
             <ul className="list-unstyled">
-              <li className="mb-2">Home</li>
-              <li className="mb-2">Post your ad</li>
-              <li className="mb-2">Market Insights</li>
-              <li className="mb-2">Browse Ads</li>
+              <Link href="/">
+                <li className="mb-2">Home</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Post your ad</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Market Insights</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Browse Ads</li>
+              </Link>
             </ul>
           </div>
           <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">About</h2>
             <ul className="list-unstyled">
-              <li className="mb-2">Help</li>
-              <li className="mb-2">About Us</li>
-              <li className="mb-2">Terms & Conditions</li>
+              <Link href="/">
+                <li className="mb-2">Help</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">About Us</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Terms & Conditions</li>
+              </Link>
             </ul>
           </div>
           <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">Services</h2>
             <ul className="list-unstyled">
-              <li className="mb-2">Browse Lands</li>
-              <li className="mb-2">Price Predition</li>
-              <li className="mb-2">Post Ads</li>
+              <Link href="/">
+                <li className="mb-2">Browse Lands</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Price Predition</li>
+              </Link>
+              <Link href="/">
+                <li className="mb-2">Post Ads</li>
+              </Link>
             </ul>
           </div>
           <div className="w-auto md:w-1/5 text-center md:text-left">
