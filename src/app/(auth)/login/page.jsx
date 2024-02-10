@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import LoginForm from "@/app/components/LoginForum/LoginForm";
+import Login from "@/app/components/Login/Login";
+import SignUp from "@/app/components/SignUp/SignUp";
 
 export default function Page() {
     const [isSignIn, setIsSignIn] = useState(true);
@@ -29,7 +30,7 @@ export default function Page() {
                         </a>
                     </div>
 
-                    {!isSignIn && <LoginForm />}
+                    {isSignIn ? <Login /> : <SignUp />}
 
                     <div className="mt-6 text-center ">
                         <a

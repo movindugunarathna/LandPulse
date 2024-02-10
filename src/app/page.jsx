@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Advertisement from "./components/advertisement/Advertisement";
+import Advertisement from "./components/elements/advertisement/Advertisement";
 
 export default function Home() {
     return (
@@ -50,15 +50,15 @@ export default function Home() {
             {/* End of the hero section */}
 
             {/* Starting featured posts */}
-            <section class="flex items-center justify-center">
-                <div class="w-full max-w-6xl">
-                    <div class="mt-10">
-                        <h1 class="text-6xl font-bold md:text-4xl text-center text-custom-green-100">
+            <section className="flex items-center justify-center">
+                <div className="w-full max-w-6xl">
+                    <div className="mt-10">
+                        <h1 className="text-6xl font-bold md:text-4xl text-center text-custom-green-100">
                             Your Dream Awaits,
                             <br />
                             Explore Vast Landscapes for Your Vision.
                         </h1>
-                        <p class="mt-5 text-justify">
+                        <p className="mt-5 text-justify">
                             Embark on a journey to find the canvas for your
                             dreams midst sprawling landscapes that await your
                             vision. Our curated selection of expansive terrains
@@ -74,7 +74,7 @@ export default function Home() {
                         </p>
                     </div>
                     {/* Must create an array and map the info fetch from DB!!! */}
-                    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
                         <Advertisement
                             image={""}
                             landType="Bare"
@@ -126,8 +126,8 @@ export default function Home() {
                             description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
                         />
                     </div>
-                    <div class="flex items-center justify-center h-20 space-x-2">
-                        <button class="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded">
+                    <div className="flex items-center justify-center h-20 space-x-2">
+                        <button className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded">
                             Next
                         </button>
                     </div>
