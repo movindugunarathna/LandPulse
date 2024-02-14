@@ -11,26 +11,23 @@ const ImageComponent = () => {
 
     return (
         <div>
-            {/* Render the first image in a separate div */}
-            <div>
+            <div className="object-cover">
                 <Image
-                    width={400}
-                    height={400}
-                    src={imageSources[0]} // First image source
-                    alt="icon arrow circle left"
-                    className="w-full"
+                    width={200}
+                    height={200}
+                    src={imageSources[0]}
+                    alt="main img"
                 />
             </div>
 
-            {/* Render the rest of the images in another div */}
-            <div className="flex flex-row w-1/4">
+            <div className="flex flex-row flex-nowrap w-1/4">
                 {imageSources.slice(1).map((src, index) => (
                     <Image
-                        key={index + 1} // Ensure unique keys
-                        width={400}
-                        height={400}
+                        key={index + 1}
+                        width={200}
+                        height={200}
                         src={src}
-                        alt="icon arrow circle left"
+                        alt="other imgs"
                     />
                 ))}
             </div>
