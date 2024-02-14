@@ -40,7 +40,7 @@ const Navbar = () => {
                   <a href="/about" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ABOUT
                   </a>
-                  <a href="/advertisement" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  <a href="/ad/create" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ADVERTISEMENT
                   </a>
                   <a href="#" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">

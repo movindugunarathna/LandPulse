@@ -6,8 +6,8 @@ export default function CreateAd() {
       <h2 className="text-3xl font-bold text-gray-800 ml-10">Create Advertisement</h2>
       <div className="grid grid-cols-2 gap-4 p-8 rounded-lg">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-800">Column 1</h1>
-          <p className="text-gray-700">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget dui at mauris porttitor ornare.</p>
+          <p className="text-gray-700">Drop your images here or</p>
+          <p className="text-blue-700">browse</p>
         </div>
         <div className="text-center">
           <form action="/submit_form" method="post">
@@ -37,42 +37,18 @@ export default function CreateAd() {
                 <input type="text" id="price" name="price" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
               </div>
               <div className="mb-4">
-                <label htmlFor="location" className="block text-gray-700 font-bold mb-2 text-left">
-                  Location:
+                <label htmlFor="landType" className="block text-gray-700 font-bold mb-2 text-left">
+                  Land Type:
                 </label>
-                <input
-                  type="text"
-                  id="location"
-                  name="location"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                />
+                <select id="landType" name="landType" className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                  <option value="commercial">Commercial</option>
+                  <option value="residential">Residential</option>
+                </select>
               </div>
             </div>
-
-            <div className="grid grid-cols-3 mb-4">
-              <div className="mr-3">
-                <label htmlFor="predicted_price" className="block text-gray-700 font-bold mb-2 text-left">
-                  Predicted Price:
-                </label>
-                <input
-                  type="text"
-                  id="predicted_price"
-                  name="predicted_price"
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  readOnly
-                />
-              </div>
-              <div>
-                <button id="accept" name="accept" className="bg-slate-700 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-3">
-                  Accept
-                </button>
-              </div>
-              <div>
-                <button id="publish" name="publish" className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                  Publish
-                </button>
-              </div>
-            </div>
+            <button id="publish" name="publish" className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+              Publish
+            </button>
           </form>
         </div>
       </div>
