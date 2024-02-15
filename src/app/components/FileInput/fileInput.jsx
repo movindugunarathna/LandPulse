@@ -4,8 +4,8 @@ const FileInput = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full rounded-lg border-gray-300 p-4">
-      <button className="text-blue-500 hover:text-blue-600 font-semibold py-2 px-4" onClick={handleClick}>
+    <div className="flex items-center justify-center w-full rounded-lg border-gray-300">
+      <button className="text-blue-500 hover:text-blue-600 font-semibold" onClick={handleClick}>
         Browse
       </button>
       <input
