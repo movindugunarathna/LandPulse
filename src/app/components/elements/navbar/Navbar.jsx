@@ -1,10 +1,13 @@
+'use client';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <header class="sticky top-0 z-50 bg-white">
+    <header className="sticky top-0 z-50 bg-white">
       <nav className="bg-white-800">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-start">
@@ -12,9 +15,10 @@ const Navbar = () => {
               {/* Mobile menu button*/}
               <button
                 type="button"
-                className="relative inline-flex items-center justify-center rounded-md p-2 text-white-400 hover:bg-white-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                className="relative inline-flex items-center justify-center rounded-md p-2 text-white-400 hover:bg-white-700 hover:text-lime-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white "
                 aria-controls="mobile-menu"
                 aria-expanded="false"
+                onClick={() => setIsOpen(!isOpen)}
               >
                 <span className="absolute -inset-0.5" />
                 <span className="sr-only">Open main menu</span>
@@ -34,13 +38,13 @@ const Navbar = () => {
               </div>
               <div className="hidden sm:ml-auto sm:block">
                 <div className="flex space-x-5">
-                  <a href="/" className="bg-white-900 text-black  rounded-md px-3 py-2 text-sm font-medium" aria-current="page">
+                  <a href="/" className="bg-white-900 text-black rounded-md px-3 py-2 text-sm font-medium" aria-current="page">
                     HOME
                   </a>
                   <a href="/about" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ABOUT
                   </a>
-                  <a href="/advertisement" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  <a href="/ad/create" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ADVERTISEMENT
                   </a>
                   <a href="#" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
@@ -77,21 +81,24 @@ const Navbar = () => {
           </div>
         </div>
         {/* Mobile menu, show/hide based on menu state. */}
-        <div className="sm:hidden" id="mobile-menu">
+        <div className={`${isOpen ? '' : 'hidden'} sm:hidden`} id="mobile-menu">
           <div className="space-y-1 px-2 pb-3 pt-2">
             <a href="#" className="bg-white-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">
               HOME
             </a>
-            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium">
               ABOUT
             </a>
-            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium">
               ADVERTISEMENT
             </a>
-            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium">
               PRICE PREDICTOR
             </a>
-            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium">
+              DASHBOARD
+            </a>
+            <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium">
               CONTACT US
             </a>
           </div>
