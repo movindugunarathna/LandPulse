@@ -71,7 +71,9 @@ const Navbar = () => {
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <Image className="h-8 w-8 rounded-full" src="/avatar.png" alt="" width={500} height={500} />
+                    <a href="/signup">
+                       <Image className="h-8 w-8 rounded-full" src="/avatar.png" alt="" width={500} height={500} />
+                    </a>
                   </button>
                 </div>
               </div>
