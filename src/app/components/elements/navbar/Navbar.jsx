@@ -38,24 +38,24 @@ const Navbar = () => {
               </div>
               <div className="hidden sm:ml-auto sm:block">
                 <div className="flex space-x-5">
-                  <a href="/" className="bg-white-900 text-black rounded-md px-3 py-2 text-sm font-medium" aria-current="page">
+                  <Link href="/" className="bg-white-900 text-black rounded-md px-3 py-2 text-sm font-medium" aria-current="page">
                     HOME
-                  </a>
-                  <a href="/about" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  </Link>
+                  <Link href="/about" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ABOUT
-                  </a>
-                  <a href="/ad/create" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  </Link>
+                  <Link href="/ad/create" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     ADVERTISEMENT
-                  </a>
-                  <a href="#" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  </Link>
+                  <Link href="#" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     PRICE PREDICTOR
-                  </a>
-                  <a href="#" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  </Link>
+                  <Link href="/dashboard" className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     DASHBOARD
-                  </a>
-                  <a href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
+                  </Link>
+                  <Link href="#" className="text-white-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium">
                     CONTACT US
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
