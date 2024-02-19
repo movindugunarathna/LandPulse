@@ -1,20 +1,14 @@
 'use client';
-import FileInput from '@/app/components/FileInput/fileInput';
+import Dropzone from '@/app/components/Dropzone/dropzone';
 import Image from 'next/image';
 
 export default function CreateAd() {
-  const handleFileSelection = (event) => {
-    const file = event.target.files[0];
-    // Handle file selection here
-  };
-
   return (
     <>
-      <h2 className="text-3xl font-bold text-gray-800 ml-10">Create Advertisement</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-8 rounded-lg">
+      <h2 className="text-3xl font-bold text-gray-800 mt-10 ml-10">Create Advertisement</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-lg">
         <div className="text-center">
-          <p className="text-gray-700">Drop your images here or</p>
-          <FileInput onChange={handleFileSelection} />
+          <Dropzone className="p-5 mt-2 border border-neutral-200" />
         </div>
         <form action="/submit_form" method="post">
           <div className="mb-4">
