@@ -13,7 +13,8 @@ export default function Home() {
                         className="absolute object-cover w-full"
                         src="/hero-image.jpg"
                         alt=""
-                        layout="fill"
+                        width={2560}
+                        height={1440}
                     />
                     <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
                     <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">

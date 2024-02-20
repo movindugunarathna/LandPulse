@@ -27,10 +27,11 @@ const Footer = () => {
                 <div className="flex flex-wrap">
                     <div className="w-full md:w-1/5 text-center md:text-left">
                         <Image
+                            priority={true}
                             src="/logo.png"
                             alt="logo"
                             width={200}
-                            height={200}
+                            height={50}
                         />
                         <p className="mb-4 text-xs">
                             Where Visions Find Ground: Pulse Your Property
