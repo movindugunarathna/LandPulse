@@ -37,8 +37,8 @@ export default function ViewAd() {
                 </div>
             </div>
 
-            <div className="flex gap-x-14 text-base">
-                <div className="flex-1 ">{<ImageComponent />}</div>
+            <div className="flex xl:flex-row max-sm:flex-col text-base">
+                <div className="flex-1">{<ImageComponent />}</div>
                 <div className="flex-1 ">
                     <div className="">
                         <p className="font-bold font-sans text-lg pb-[0.5%]">
