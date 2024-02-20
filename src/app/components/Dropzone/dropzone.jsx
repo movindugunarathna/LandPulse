@@ -71,7 +71,7 @@ const Dropzone = ({ className }) => {
         <input {...getInputProps()} />
         <div className="flex flex-col items-center justify-center gap-4">
           <ArrowUpTrayIcon className="w-5 h-5 fill-current" />
-          {isDragActive ? <p>Drop the files here ...</p> : <p>Drag & drop files here, or click to select files</p>}
+          {isDragActive ? <p>Drop the files here... (Maximum size is 1MB)</p> : <p>Drag & drop your image here, or click to select files (Maximum size is 1MB)</p>}
         </div>
       </div>
 
@@ -88,15 +88,15 @@ const Dropzone = ({ className }) => {
         </div>
 
         {/* Accepted files */}
-        <h3 className="title text-lg font-semibold text-neutral-600 mt-10 border-b pb-3">Accepted Files</h3>
-        <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-10">
+        <h3 className="title text-lg font-semibold text-neutral-600 mt-10 border-b pb-3">Accepted Images</h3>
+        <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
           {files.map((file) => (
             <li key={file.name} className="relative h-32 rounded-md shadow-lg">
               <Image
                 src={file.preview}
                 alt={file.name}
-                width={200}
-                height={200}
+                width={500}
+                height={500}
                 onLoad={() => {
                   URL.revokeObjectURL(file.preview);
                 }}
@@ -115,7 +115,7 @@ const Dropzone = ({ className }) => {
         </ul>
 
         {/* Rejected Files */}
-        <h3 className="title text-lg font-semibold text-neutral-600 mt-24 border-b pb-3">Rejected Files</h3>
+        <h3 className="title text-lg font-semibold text-neutral-600 mt-24 border-b pb-3">Rejected Images</h3>
         <ul className="mt-6 flex flex-col">
           {rejected.map(({ file, errors }) => (
             <li key={file.name} className="flex items-start justify-between">
