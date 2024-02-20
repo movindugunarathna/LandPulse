@@ -6,20 +6,20 @@ export default function Home() {
     <>
       <section>
         <div className="relative w-auto md:h-screen mx-auto" id="hero-banner">
-          <Image className="absolute object-cover w-full" src="/hero-image.jpg" alt="" layout="fill" />
+          <Image className="absolute object-cover w-full" src="/hero-image.jpg" alt="" width={2560} height={1440} />
           <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
           <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">
-            <h1 className="text-2xl md:text-5xl font-bold text-custom-green-200 sm:text-xl">Land Awaits Your Imagination</h1>
-            <div className="container text-wrap text-sm leading-relaxed">
-              <p className="mt-4 text-base md:text-lg sm:text-sm mobile-font-size">
-                Welcome to a realm where your imagination knows no bounds. Our collection of pristine land parcels invites you to paint your dreams upon nature&apos;s canvas. Whether you envision a
+            <h1 className="text-6xl font-bold md:text-5xl text-custom-green-200">Land Awaits Your Imagination</h1>
+            <div className="container text-wrap text-xs leading-relaxed">
+              <p className="mt-4 text-2xl md:text-lg">
+                Welcome to a realm where your imagination knows no bounds.Our collection of pristine land parcels invites you to paint your dreams upon nature&apos;s canvas. Whether you envision a
                 tranquil retreat nestled among trees or aspire to build your legacy in an urban landscape, our diverse listings cater to your unique aspirations. Explore rolling hills, vast plains, or
                 scenic waterfronts each plot holds the promise of your vision. Begin your journey here, where land becomes a space for your creativity to flourish and your dreams to take shape.
               </p>
             </div>
-            <div className="flex flex-wrap justify-center">
-              <button className="mt-4 px-6 py-3 bg-gray-700 text-white font-bold text-base md:text-lg rounded-md mr-3">Explore Land</button>
-              <button className="mt-4 px-6 py-3 bg-gray-400 text-white font-bold text-base md:text-lg rounded-md">Claim your Spot </button>
+            <div className="">
+              <button className="mt-8 px-8 py-4 bg-gray-700 text-white font-bold text-xl rounded-md mr-5">Explore Land</button>
+              <button className="mt-8 px-8 py-4 bg-gray-400 text-white font-bold text-xl rounded-md">Claim your Spot </button>
             </div>
           </div>
         </div>

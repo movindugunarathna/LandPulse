@@ -6,8 +6,8 @@ const Footer = () => {
     <footer className="text-black py-8 mt-10">
       <div className="bg-custom-green-100 py-8 px-4 text-center w-100">
         <div className="text-lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="md:text-left">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
               <h1 className="text-3xl mb-4 text-white">Need more information?</h1>
               <p className="text-md text-white">Write your concerns to us</p>
             </div>
@@ -19,11 +19,11 @@ const Footer = () => {
       </div>
       <div className="container mx-auto px-4 mt-5">
         <div className="flex flex-wrap">
-          <div className="w-full md:w-1/2 lg:w-1/5 text-center md:text-left">
-            <Image src="/logo.png" alt="logo" width={200} height={200} />
+          <div className="w-full md:w-1/5 text-center md:text-left">
+            <Image priority={true} src="/logo.png" alt="logo" width={200} height={50} />
             <p className="mb-4 text-xs">Where Visions Find Ground: Pulse Your Property Dreams with Us!</p>
           </div>
-          <div className="w-full md:w-1/2 lg:w-1/5 text-center md:text-left">
+          <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">Jump to</h2>
             <ul className="list-unstyled">
               <Link href="/">
@@ -40,7 +40,7 @@ const Footer = () => {
               </Link>
             </ul>
           </div>
-          <div className="w-full md:w-1/2 lg:w-1/5 text-center md:text-left">
+          <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">About</h2>
             <ul className="list-unstyled">
               <Link href="/">
@@ -54,7 +54,7 @@ const Footer = () => {
               </Link>
             </ul>
           </div>
-          <div className="w-full md:w-1/2 lg:w-1/5 text-center md:text-left">
+          <div className="w-full md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">Services</h2>
             <ul className="list-unstyled">
               <Link href="/">
@@ -68,7 +68,7 @@ const Footer = () => {
               </Link>
             </ul>
           </div>
-          <div className="w-full md:w-1/2 lg:w-auto text-center md:text-left">
+          <div className="w-auto md:w-1/5 text-center md:text-left">
             <h2 className="text-xl font-bold mb-4">Connect With Us</h2>
             <div className="flex">
               <Link href="https://www.facebook.com">

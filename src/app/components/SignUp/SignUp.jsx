@@ -1,10 +1,44 @@
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { SignUpSchema } from "@/lib/zodSchema/schema";
 
 export default function SignUp() {
+    const MAX_FILE_SIZE = 5000000;
     const [showPswrd, setShowPswrd] = useState(false);
+    const [fileName, setFileName] = useState("Profile Photo");
+    const [errorMsg, setErrorMsg] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: zodResolver(SignUpSchema),
+    });
+
+    useEffect(() => {
+        toast.error(errorMsg);
+    }, [errorMsg]);
+
+    const onSubmit = (data) => {
+        console.log(data);
+
+        console.log("Hello");
+    };
+
+    const onError = (errors, e) => {
+        if (Object.keys(errors).length > 0) {
+            Object.values(errors).forEach((element) => {
+                setErrorMsg(element?.message);
+            });
+        }
+    };
 
     return (
-        <form action="">
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
             <div className="relative flex items-center mt-8">
                 <span className="absolute">
                     <svg
@@ -24,15 +58,19 @@ export default function SignUp() {
                 </span>
 
                 <input
+                    id="username"
                     type="text"
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Username"
+                    {...register("username")}
+                    aria-errormessage={errors?.username?.message}
+                    onFocus={() => errors?.username?.message}
                 />
             </div>
 
             <label
                 htmlFor="dropzone-file"
-                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900"
+                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -49,9 +87,28 @@ export default function SignUp() {
                     />
                 </svg>
 
-                <h2 className="mx-3 text-gray-400">Profile Photo</h2>
+                <h2 className="mx-3 text-gray-400">{fileName}</h2>
 
-                <input id="dropzone-file" type="file" className="hidden" />
+                <input
+                    id="dropzone-file"
+                    type="file"
+                    accept="image/jpeg, image/png, image/jpeg, image/webp"
+                    className="hidden"
+                    {...register("profile", {
+                        validate: (files) => {
+                            console.log(files[0].size, " ", MAX_FILE_SIZE);
+                            return files[0].size <= MAX_FILE_SIZE
+                                ? true
+                                : "Max image size is 5MB.";
+                        },
+                    })}
+                    onChange={(event) => {
+                        const file = event.target.files[0];
+                        setFileName(file?.name);
+                    }}
+                    aria-errormessage={errors?.profile?.message}
+                    onFocus={() => errors?.profile?.message}
+                />
             </label>
 
             <div className="relative flex items-center mt-6">
@@ -76,6 +133,9 @@ export default function SignUp() {
                     type="email"
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Email address"
+                    {...register("email")}
+                    aria-errormessage={errors?.email?.message}
+                    onFocus={() => errors?.email?.message}
                 />
             </div>
 
@@ -101,6 +161,9 @@ export default function SignUp() {
                     type={!showPswrd ? "text" : "password"}
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Password"
+                    {...register("password")}
+                    aria-errormessage={errors?.password?.message}
+                    onFocus={() => errors?.password?.message}
                 />
 
                 <span
@@ -119,16 +182,16 @@ export default function SignUp() {
                             <path
                                 d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             />
                             <path
                                 d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z"
                                 stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                             />
                         </svg>
                     ) : (
@@ -145,9 +208,9 @@ export default function SignUp() {
                                     id="Vector"
                                     d="M3.99989 4L19.9999 20M16.4999 16.7559C15.1473 17.4845 13.6185 17.9999 11.9999 17.9999C8.46924 17.9999 5.36624 15.5478 3.5868 13.7788C3.1171 13.3119 2.88229 13.0784 2.7328 12.6201C2.62619 12.2933 2.62616 11.7066 2.7328 11.3797C2.88233 10.9215 3.11763 10.6875 3.58827 10.2197C4.48515 9.32821 5.71801 8.26359 7.17219 7.42676M19.4999 14.6335C19.8329 14.3405 20.138 14.0523 20.4117 13.7803L20.4146 13.7772C20.8832 13.3114 21.1182 13.0779 21.2674 12.6206C21.374 12.2938 21.3738 11.7068 21.2672 11.38C21.1178 10.9219 20.8827 10.6877 20.4133 10.2211C18.6338 8.45208 15.5305 6 11.9999 6C11.6624 6 11.3288 6.02241 10.9999 6.06448M13.3228 13.5C12.9702 13.8112 12.5071 14 11.9999 14C10.8953 14 9.99989 13.1046 9.99989 12C9.99989 11.4605 10.2135 10.9711 10.5608 10.6113"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                 />
                             </g>
                         </svg>
@@ -155,11 +218,12 @@ export default function SignUp() {
                 </span>
             </div>
 
-            <div className="mt-6">
-                <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                    Sign Up
-                </button>
-            </div>
+            <button
+                className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                type="submit"
+            >
+                Sign Up
+            </button>
         </form>
     );
 }
