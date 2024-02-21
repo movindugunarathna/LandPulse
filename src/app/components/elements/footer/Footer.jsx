@@ -29,13 +29,13 @@ const Footer = () => {
               <Link href="/">
                 <li className="mb-2">Home</li>
               </Link>
-              <Link href="/">
+              <Link href="/ad/create">
                 <li className="mb-2">Post your ad</li>
               </Link>
               <Link href="/">
                 <li className="mb-2">Market Insights</li>
               </Link>
-              <Link href="/">
+              <Link href="/viewAll">
                 <li className="mb-2">Browse Ads</li>
               </Link>
             </ul>
