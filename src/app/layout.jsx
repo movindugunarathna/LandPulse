@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/elements/navbar/Navbar";
 import Footer from "./components/elements/footer/Footer";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
                     <Navbar />
                     {children}
                     <Footer />
+                    <Toaster closeButton loadingIcon position="top-right" />
                 </div>
             </body>
         </html>
