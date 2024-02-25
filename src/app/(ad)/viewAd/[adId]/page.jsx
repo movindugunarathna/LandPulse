@@ -19,8 +19,8 @@ export default function ViewAd() {
         console.log("Test");
     }, [var1]);
     return (
-        <div className="px-[4%] py-[2%]">
-            <div className="flex gap-4 pb-[2%]">
+        <div className="px-6 py-2 md:px-20 md:py-10">
+            <div className="flex">
                 <div>
                     <Image
                         width={40}
@@ -31,29 +31,34 @@ export default function ViewAd() {
                     />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold">
+                    <h1 className="text-2xl font-bold px-4">
                         {advertisement.headline}
                     </h1>
                 </div>
             </div>
 
             <div className="flex xl:flex-row max-sm:flex-col text-base">
-                <div className="flex-1">{<ImageComponent />}</div>
+                <div className="flex-1 py-6 px-5">{<ImageComponent />}</div>
                 <div className="flex-1 ">
-                    <div className="">
-                        <p className="font-bold font-sans text-lg pb-[0.5%]">
-                            Title
-                        </p>
-                        <span className="text-gray-600">
-                            {advertisement.headline}
-                        </span>
-
-                        <p className="font-bold font-sans text-lg pt-[4%] pb-[0.5%]">
-                            Description
-                        </p>
-                        <span className="text-gray-600">
-                            {advertisement.description}
-                        </span>
+                    <div className="py-2 sm:py-10">
+                        <div className="py-2">
+                            <p>
+                                <strong>Title</strong>
+                                <br />
+                                <span className="text-gray-600">
+                                    {advertisement.headline}
+                                </span>
+                            </p>
+                        </div>
+                        <div className="py-2">
+                            <p>
+                                <strong>Description</strong>
+                                <br />
+                                <span className="text-gray-600">
+                                    {advertisement.description}
+                                </span>
+                            </p>
+                        </div>
                         <div className="flex flex-row">
                             <div className="w-1/2 ">
                                 <p className="font-bold font-sans text-lg pb-[0.5%] pt-[10%]">

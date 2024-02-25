@@ -1,86 +1,57 @@
-import { useEffect, useRef, useState } from "react";
-import LightGallery from "lightgallery/react";
-import lgZoom from "lightgallery/plugins/zoom";
-import lgThumbnail from "lightgallery/plugins/thumbnail";
-import "lightgallery/scss/lightgallery.scss";
-import "lightgallery/scss/lg-zoom.scss";
-import "lightgallery/scss/lg-thumbnail.scss";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
-export default function ImageComponent() {
-    const containerRef = useRef(null);
-    const [galleryContainer, setGalleryContainer] = useState(null);
+// Array of image URLs
+const landImages = [
+    "/download.jpeg",
+    "/download1.jpeg",
+    "/download2.jpeg",
+    "/download3.jpeg",
+];
 
-    useEffect(() => {
-        if (containerRef.current) {
-            setGalleryContainer("aaa");
-        }
-    }, []);
+const ImageComponent = () => {
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0); // Initial selected image index
 
-    const onInit = (detail) => {
-        if (detail) {
-            detail.instance.openGallery();
-        }
+    // Function to handle image selection
+    const handleImageSelect = (index) => {
+        setSelectedImageIndex(index);
     };
 
     return (
-        <div>
-            <div
-                style={{
-                    height: "800px",
-                }}
-                ref={containerRef}
-            ></div>
-            <div>
-                <LightGallery
-                    container={containerRef.current}
-                    onInit={onInit}
-                    plugins={[lgZoom, lgThumbnail]}
-                    closable={false}
-                    showMaximizeIcon={true}
-                    slideDelay={400}
-                    thumbWidth={130}
-                    thumbHeight={"100px"}
-                    thumbMargin={6}
-                    appendSubHtmlTo={".lg-item"}
-                    dynamic={true}
-                    dynamicEl={[
-                        {
-                            src: "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
-                            responsive:
-                                "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800",
-                            thumb: "https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
-                            subHtml: `<div class="lightGallery-captions">
-                            <h4>Photo by <a href="https://unsplash.com/@dann">Dan</a></h4>
-                            <p>Published on November 13, 2018</p>
-                        </div>`,
-                        },
-                        {
-                            src: "https://images.unsplash.com/photo-1571292064306-669f0e758231?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1400&q=80",
-                            responsive:
-                                "https://images.unsplash.com/photo-1571292064306-669f0e758231?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1571292064306-669f0e758231?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80 800",
-                            thumb: "https://images.unsplash.com/photo-1571292064306-669f0e758231?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=240&q=80",
-                            subHtml: `<div class="lightGallery-captions">
-                                        <h4>Photo by <a href="https://unsplash.com/@jalanmeier">J. Meier</a></h4>
-                                        <p>Published on October 17, 2019</p>
-                                    </div>`,
-                        },
-                        {
-                            src: "https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1400&q=80",
-                            responsive:
-                                "https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=480&q=80 480, https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80 800",
-                            thumb: "https://images.unsplash.com/photo-1601935111741-ae98b2b230b0?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=240&q=80",
-                            subHtml: `<div class="lightGallery-captions">
-                                        <h4>Photo by <a href="https://unsplash.com/@brookecagle">Brooke Cagle</a></h4>
-                                        <p>Published on October 6, 2020</p>
-                                    </div>`,
-                        },
-                        // Add other dynamicEl objects here
-                        ,
-                    ]}
-                    hash={false}
-                    elementClassNames={"inline-gallery-container"}
-                ></LightGallery>
+        <div className="card-wrapper max-w-full max-h-full">
+            <div className="card grid gap-6 md:flex md:justify-center md:items-center">
+                <div className="product-imgs flex flex-col justify-center m-2">
+                    <div className="img-display overflow-hidden">
+                        <div className="img-showcase flex transition-all duration-500 ease-in-out">
+                            <Image
+                                src={landImages[selectedImageIndex]}
+                                alt="land image"
+                                className="w-full h-60 sm:h-96"
+                                width={200}
+                                height={200}
+                            />
+                        </div>
+                    </div>
+                    <div className="img-select flex p-3 justify-center">
+                        {landImages.map((imageUrl, index) => (
+                            <div className="img-item m-1" key={index}>
+                                <a
+                                    href="#"
+                                    onClick={() => handleImageSelect(index)}
+                                >
+                                    <Image
+                                        src={imageUrl}
+                                        alt="land image"
+                                        className="w-24 h-16 sm:h-24"
+                                        width={200}
+                                        height={200}
+                                    />
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );
-}
+};
