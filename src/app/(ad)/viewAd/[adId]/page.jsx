@@ -19,28 +19,28 @@ export default function ViewAd() {
         console.log("Test");
     }, [var1]);
     return (
-        <div className="px-20 py-10">
+        <div className="px-6 py-2 md:px-20 md:py-10">
             <div className="flex">
                 <div>
                     <Image
                         width={40}
                         height={40}
                         src="/icons/icon _arrow_circle_left_.svg"
-                        alt="Advertisement Image"
+                        alt="icon arrow circle left"
                         className="w-8 h-8"
                     />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-bold">
+                    <h1 className="text-2xl font-bold px-4">
                         {advertisement.headline}
                     </h1>
                 </div>
             </div>
 
             <div className="flex xl:flex-row max-sm:flex-col text-base">
-                <div className="flex-1 py-10">{<ImageComponent />}</div>
+                <div className="flex-1 py-6 px-5">{<ImageComponent />}</div>
                 <div className="flex-1 ">
-                    <div className="py-10">
+                    <div className="py-2 sm:py-10">
                         <div className="py-2">
                             <p>
                                 <strong>Title</strong>
@@ -60,17 +60,17 @@ export default function ViewAd() {
                             </p>
                         </div>
                         <div className="flex flex-row">
-                            <div className="w-1/2 py-2">
-                                <p>
-                                    <strong>Mobile</strong>
+                            <div className="w-1/2 ">
+                                <p className="font-bold font-sans text-lg pb-[0.5%] pt-[10%]">
+                                    Mobile
                                 </p>
                                 <span className="text-gray-600">
                                     {advertisement.mobile}
                                 </span>
                             </div>
-                            <div className="w-1/2 py-2">
-                                <p>
-                                    <strong>Email</strong>
+                            <div className="w-1/2 ">
+                                <p className="font-bold font-sans text-lg pb-[0.5%] pt-[10%]">
+                                    Email
                                 </p>
                                 <span className="text-gray-600">
                                     {advertisement.email}
@@ -78,11 +78,11 @@ export default function ViewAd() {
                             </div>
                         </div>
                         <div className="flex flex-row">
-                            <div className="w-1/2 flex items-start py-2 flex-col">
-                                <p>
-                                    <strong>Price</strong>
+                            <div className="w-1/2 flex items-start flex-col">
+                                <p className="font-bold font-sans text-lg pb-[0.5%] pt-[8%]">
+                                    Price
                                 </p>
-                                <div className="flex flex-row ">
+                                <div className="flex flex-row gap-8">
                                     <span className="text-gray-600">
                                         {advertisement.price}
                                     </span>
@@ -95,9 +95,9 @@ export default function ViewAd() {
                                     />
                                 </div>
                             </div>
-                            <div className="w-1/2 py-2">
-                                <p>
-                                    <strong>Land Type</strong>
+                            <div className="w-1/2 ">
+                                <p className="font-bold font-sans text-lg pb-[0.5%] pt-[8%]">
+                                    Land Type
                                 </p>
                                 <span className="text-gray-600">
                                     {advertisement.landType}
@@ -105,9 +105,9 @@ export default function ViewAd() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center pt-[6%]">
                         <button
-                            className="bg-custom-green-100 text-white font-bold px-4 py-2 rounded-md w-full"
+                            className="bg-custom-green-100 text-white font-bold rounded-md w-full leading-10"
                             onClick={(event) => {
                                 setVar1(!var1);
                                 console.log("loading");

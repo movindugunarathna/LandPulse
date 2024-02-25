@@ -19,7 +19,7 @@
     "@hookform/resolvers": "^3.3.4",
     "bcryptjs": "^2.4.3",
     "font-awesome": "^4.7.0",
-    "heroicons": "^2.1.1",
+    "lightgallery": "^2.7.2",
     "mongoose": "^8.1.0",
     "next": "^14.0.4",
     "next-auth": "^4.24.6",
@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.50.1",
+    "sass": "^1.71.0",
     "sonner": "^1.4.0",
     "zod": "^3.22.4"
   },
