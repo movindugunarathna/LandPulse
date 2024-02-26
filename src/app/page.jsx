@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Advertisement from './components/elements/advertisement/Advertisement';
+import { getAdvertisements } from '@/lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const advertisements = await getAdvertisements();
+
   return (
     <>
       <section>
@@ -44,56 +47,9 @@ export default function Home() {
           </div>
           {/* Must create an array and map the info fetch from DB!!! */}
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-            <Advertisement
-              image={''}
-              landType="Bare"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
-
-            <Advertisement
-              image={''}
-              landType="Agricultural"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
-            <Advertisement
-              image={''}
-              landType="Agricultural"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
-            <Advertisement
-              image={''}
-              landType="Agricultural"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
-            <Advertisement
-              image={''}
-              landType="Agricultural"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
-
-            <Advertisement
-              image={''}
-              landType="Bare"
-              price="$500,000"
-              pricePer="$10,000 per acre"
-              headline="Beautiful Farmland for Sale"
-              description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-            />
+            {advertisements.map((advertisement) => (
+              <Advertisement key={advertisement._id} advertisement={advertisement} />
+            ))}
           </div>
           <div className="flex items-center justify-center h-20 space-x-2">
             <button className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded">Next</button>

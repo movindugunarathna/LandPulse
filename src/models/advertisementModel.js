@@ -32,11 +32,7 @@ const advertisementSchema = new mongoose.Schema({
     modifiedDate: {
         type: Date,
         default: Date.now,
-    },
-    tags: {
-        type: [String],
-        enum: ["work", "lifestyle", "motor", "mobile"],
-    },
+    }
 },
     {
         timestamps: true,
