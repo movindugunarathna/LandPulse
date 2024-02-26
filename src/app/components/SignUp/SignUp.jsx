@@ -24,8 +24,7 @@ export default function SignUp() {
     });
 
     const onSubmit = async (data) => {
-        // console.log(image?.url);
-        console.log({ ...data, ...image });
+        console.log({ ...data, ...image, ...file });
     };
 
     const onError = (errors, e) => {
