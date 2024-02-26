@@ -1,15 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { SignUpSchema } from "@/lib/zodSchema/schema";
+import { readFileAsync } from "@/lib/readFiles";
+import { FaWindowClose } from "react-icons/fa";
 
 export default function SignUp() {
-    const MAX_FILE_SIZE = 5000000;
     const [showPswrd, setShowPswrd] = useState(false);
     const [fileName, setFileName] = useState("Profile Photo");
     const [errorMsg, setErrorMsg] = useState("");
+
+    const [file, setFile] = useState(null);
+    const [image, setImage] = useState(null);
 
     const {
         register,
@@ -19,23 +23,26 @@ export default function SignUp() {
         resolver: zodResolver(SignUpSchema),
     });
 
-    useEffect(() => {
-        toast.error(errorMsg);
-    }, [errorMsg]);
-
-    const onSubmit = (data) => {
-        console.log(data);
-
-        console.log("Hello");
+    const onSubmit = async (data) => {
+        // console.log(image?.url);
+        console.log({ ...data, ...image });
     };
 
     const onError = (errors, e) => {
         if (Object.keys(errors).length > 0) {
             Object.values(errors).forEach((element) => {
-                setErrorMsg(element?.message);
+                if (element?.message.replace(" ", "") !== "")
+                    setErrorMsg(element?.message);
+                toast.error(errorMsg);
             });
         }
     };
+
+    function deleteFile() {
+        setImage(null);
+        setFile(null);
+        setFileName("Profile Photo");
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)}>
@@ -69,8 +76,8 @@ export default function SignUp() {
             </div>
 
             <label
-                htmlFor="dropzone-file"
-                className="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
+                htmlFor="profile"
+                className="relative flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -88,26 +95,32 @@ export default function SignUp() {
                 </svg>
 
                 <h2 className="mx-3 text-gray-400">{fileName}</h2>
+                {image !== null && (
+                    <FaWindowClose
+                        className="w-[5px]] h-[80%] absolute top-2 right-2 opacity-40"
+                        onClick={deleteFile}
+                    />
+                )}
 
                 <input
-                    id="dropzone-file"
+                    id="profile"
                     type="file"
+                    name="profile"
                     accept="image/jpeg, image/png, image/jpeg, image/webp"
                     className="hidden"
-                    {...register("profile", {
-                        validate: (files) => {
-                            console.log(files[0].size, " ", MAX_FILE_SIZE);
-                            return files[0].size <= MAX_FILE_SIZE
-                                ? true
-                                : "Max image size is 5MB.";
-                        },
-                    })}
-                    onChange={(event) => {
-                        const file = event.target.files[0];
-                        setFileName(file?.name);
+                    maxLength={1}
+                    {...register("profile")}
+                    onChange={async (event) => {
+                        if (event.target.files[0]) {
+                            const targetFile = event.target.files[0];
+                            setFileName(targetFile?.name);
+                            setImage(await readFileAsync(targetFile));
+                            setFile(targetFile);
+                        } else deleteFile();
                     }}
                     aria-errormessage={errors?.profile?.message}
                     onFocus={() => errors?.profile?.message}
+                    required
                 />
             </label>
 

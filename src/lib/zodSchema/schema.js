@@ -35,9 +35,7 @@ export const SignUpSchema = z
         }
     );
 
-
-
-    export const LoginUpSchema = z
+export const LoginUpSchema = z
     .object({
         email: z.string().email("Must be a valid email address"),
         username: z.string().min(6, "Username must be at least 6 characters"),
