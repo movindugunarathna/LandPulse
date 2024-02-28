@@ -4,7 +4,7 @@ import {
     hasUpperCase,
     hasLowerCase,
     hasNumber,
-} from "../validation";
+} from "../../utils/validation";
 
 export const SignUpSchema = z
     .object({
@@ -59,21 +59,18 @@ export const SignUpSchema = z
 
 export const LoginUpSchema = z
     .object({
-        email: z
-            .string()
-            .email("Must be a valid email address")
-            .min(1, "Email is required"),
+        email: z.string().email("Must be a valid email address").optional(),
         username: z
             .string()
             .min(6, "Username must be at least 6 characters")
-            .min(1, "Username is required"),
+            .optional(),
         password: z.string().min(1, "Password is required"),
     })
     .refine(
         (entry) => {
-            return entry.email !== undefined && entry.username !== undefined;
+            return entry.email !== undefined || entry.username !== undefined;
         },
         {
-            message: "Email and username must be provided",
+            message: "Either email or username must be provided",
         }
     );

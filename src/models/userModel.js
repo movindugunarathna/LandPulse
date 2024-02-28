@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const profileSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.String,
-        unique: true,
-    },
+    id: String,
     name: String,
     url: String,
     type: String,
@@ -36,12 +34,38 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Must provide a valid address"],
         },
-        profile: profileSchema,
+        profile: { type: profileSchema, default: null },
     },
     {
         timestamps: true,
     }
 );
+
+userSchema.pre("save", function (next) {
+    const user = this;
+
+    if (this.isModified("password" || this.isNew)) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
+                return next(saltError);
+            } else
+                bcrypt.hash(user.password, salt, function (hashError, hash) {
+                    if (hashError) {
+                        return next(hashError);
+                    }
+                    user.password = hash;
+                    next();
+                });
+        });
+    } else return next();
+});
+
+userSchema.methods.comparePassword = function (password, callback) {
+    bcrypt.compare(password, this.password, function (error, isMatch) {
+        if (error) return callback(error);
+        else callback(null, isMatch);
+    });
+};
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
