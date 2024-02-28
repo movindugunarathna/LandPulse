@@ -43,7 +43,7 @@ export default function SignUp() {
         if (res.code === 200) {
             toast.success(res.message);
             console.log(JSON.parse(res.data));
-            // router.push("/dashboard");
+            router.push("/dashboard");
         } else toast.error(res.message);
     };
 

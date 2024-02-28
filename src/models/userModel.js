@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const profileSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.String,
-        unique: true,
-    },
+    id: String,
     name: String,
     url: String,
     type: String,
@@ -37,7 +34,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Must provide a valid address"],
         },
-        profile: profileSchema,
+        profile: { type: profileSchema, default: null },
     },
     {
         timestamps: true,

@@ -3,6 +3,7 @@ import { connectToDataBase } from "../../utils/connect";
 import User from "@/models/userModel";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect";
 
 export const authenticate = async (formData) => {
     try {
@@ -10,17 +11,35 @@ export const authenticate = async (formData) => {
             username: formData.username,
             email: formData.email,
             password: formData.password,
+            redirectTo: "/dashboard",
+            redirect: true,
         });
     } catch (error) {
+        if (isRedirectError(error)) {
+            return {
+                code: 200,
+                message: "Redirect to dashboard",
+            };
+        }
+
         if (error instanceof AuthError) {
             switch (error.type) {
                 case "CredentialsSignin":
-                    return "Invalid credentials.";
+                    return {
+                        code: 401,
+                        message: "Invalid credentials.",
+                    };
                 default:
-                    return "Something went wrong.";
+                    return {
+                        code: 500,
+                        message: "Something went wrong.",
+                    };
             }
         }
-        throw error;
+        return {
+            code: 500,
+            message: error.message,
+        };
     }
 };
 
@@ -46,7 +65,7 @@ export const signUp = async (userData) => {
             password,
             email,
             address,
-            profile: { _id: profile.id, ...profile },
+            profile: profile || null,
         });
 
         const savedUser = await newUser.save();
@@ -57,10 +76,35 @@ export const signUp = async (userData) => {
                 email,
                 password,
                 redirectTo: "/dashboard",
-                redirect: false,
+                redirect: true,
             });
         } catch (error) {
-            console.log(error);
+            if (isRedirectError(error)) {
+                return {
+                    code: 200,
+                    message: "Redirect to dashboard",
+                    data: JSON.stringify(savedUser),
+                };
+            }
+
+            if (error instanceof AuthError) {
+                switch (error.type) {
+                    case "CredentialsSignin":
+                        return {
+                            code: 401,
+                            message: "Invalid credentials.",
+                        };
+                    default:
+                        return {
+                            code: 500,
+                            message: "Something went wrong.",
+                        };
+                }
+            }
+            return {
+                code: 500,
+                message: error.message,
+            };
         }
         console.log("User successfully registered!");
         return {
@@ -69,7 +113,7 @@ export const signUp = async (userData) => {
             data: JSON.stringify(savedUser),
         };
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         return { code: 500, message: error.message };
     }
 };

@@ -28,18 +28,31 @@ export const { auth, signIn, signOut } = NextAuth({
                     const userByEmail = await getUserByEmailOrUsername(email);
                     const userByUsername =
                         await getUserByEmailOrUsername(username);
+                    console.log("A user found");
 
                     if (!userByEmail && !userByUsername) return null;
                     else {
                         const user = userByEmail || userByUsername;
-                        await user.comparePassword(
-                            password,
-                            (matchError, isMatch) => {
-                                if (matchError) return null;
-                                else if (!isMatch) return null;
-                                else return null;
+
+                        const passwordCheck = await new Promise(
+                            (resolve, reject) => {
+                                user.comparePassword(
+                                    password,
+                                    (matchError, isMatch) => {
+                                        console.log("isMatch", isMatch);
+                                        if (matchError) reject(matchError);
+                                        else if (!isMatch)
+                                            reject("Password does not match");
+                                        else resolve(user);
+                                    }
+                                );
                             }
-                        );
+                        ).catch((error) => {
+                            console.error("Error comparing password:", error);
+                            return null;
+                        });
+
+                        return passwordCheck;
                     }
                 }
                 console.log("Invalid credentials");
