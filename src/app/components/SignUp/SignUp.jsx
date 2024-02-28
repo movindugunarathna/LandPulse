@@ -36,7 +36,7 @@ export default function SignUp() {
     });
 
     const onSubmit = async (data) => {
-        toast.info("Form Submitted! waiting for response!!!");
+        toast.info("SignUn details Submitted!!!");
 
         const res = await signUp({ ...data, profile: image, ...file });
 

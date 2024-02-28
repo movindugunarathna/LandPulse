@@ -1,4 +1,4 @@
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 
 let isConnected = false;
 
@@ -8,9 +8,9 @@ export const connectToDataBase = async () => {
         return;
     } else {
         mongoose.Promise = global.Promise;
-        const URL = "mongodb://0.0.0.0:27017/LandPulse";
+
         try {
-            await mongoose.connect(URL);
+            await mongoose.connect(process.env.DB_HOST);
             isConnected = true;
             console.log("DB connected successfully");
         } catch (error) {
