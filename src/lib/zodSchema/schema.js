@@ -8,6 +8,23 @@ import {
 
 export const SignUpSchema = z
     .object({
+        username: z
+            .string()
+            .min(6, "Username must be at least 6 characters")
+            .min(1, "Username is required"),
+        email: z
+            .string()
+            .email("Must be a valid email address")
+            .min(1, "Email is required"),
+        contact: z
+            .string()
+            .min(1, "Contact field is required")
+            .refine(
+                (contact) => contact.length === 10 && /^\d+$/.test(contact),
+                {
+                    message: "Contact must contain exactly 10 numbers",
+                }
+            ),
         password: z
             .string()
             .min(6, "Password must be at least 5 characters")
@@ -23,22 +40,34 @@ export const SignUpSchema = z
             .refine((password) => hasNumber(password), {
                 message: "Password must contain at least one number",
             }),
-        email: z.string().email("Must be a valid email address"),
-        username: z.string().min(6, "Username must be at least 6 characters"),
+        address: z.string().min(1, "Address field is required"),
     })
     .refine(
         (entry) => {
-            return entry.email !== undefined && entry.username !== undefined;
+            return (
+                entry.email !== undefined &&
+                entry.username !== undefined &&
+                entry.password !== undefined &&
+                entry.contact !== undefined &&
+                entry.address !== undefined
+            );
         },
         {
-            message: "Email and username must be provided",
+            message: "All input fields are required!",
         }
     );
 
 export const LoginUpSchema = z
     .object({
-        email: z.string().email("Must be a valid email address"),
-        username: z.string().min(6, "Username must be at least 6 characters"),
+        email: z
+            .string()
+            .email("Must be a valid email address")
+            .min(1, "Email is required"),
+        username: z
+            .string()
+            .min(6, "Username must be at least 6 characters")
+            .min(1, "Username is required"),
+        password: z.string().min(1, "Password is required"),
     })
     .refine(
         (entry) => {

@@ -1,13 +1,25 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { SignUpSchema } from "@/lib/zodSchema/schema";
 import { readFileAsync } from "@/lib/readFiles";
-import { FaWindowClose } from "react-icons/fa";
+import {
+    FaAddressBook,
+    FaMobileAlt,
+    FaUpload,
+    FaUser,
+    FaWindowClose,
+} from "react-icons/fa";
+import { IoMail } from "react-icons/io5";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { signUpHere } from "@/utils/serverActions/signupAction";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+    const router = useRouter();
+
     const [showPswrd, setShowPswrd] = useState(false);
     const [fileName, setFileName] = useState("Profile Photo");
     const [errorMsg, setErrorMsg] = useState("");
@@ -24,17 +36,31 @@ export default function SignUp() {
     });
 
     const onSubmit = async (data) => {
-        console.log({ ...data, ...image, ...file });
+        toast.info("Form Submitted! waiting for response!!!");
+
+        const res = await signUpHere({ ...data, profile: image, ...file });
+
+        if (res.code === 200) {
+            toast.success(res.message);
+            console.log(JSON.parse(res.data));
+            router.push("/dashboard");
+        } else toast.error(res.message);
     };
 
     const onError = (errors, e) => {
+        let errorMsgSet = false;
+        console.log(errors);
         if (Object.keys(errors).length > 0) {
             Object.values(errors).forEach((element) => {
-                if (element?.message.replace(" ", "") !== "")
+                if (element?.message.replace(" ", "") !== "" && !errorMsgSet) {
+                    errorMsgSet = true;
                     setErrorMsg(element?.message);
-                toast.error(errorMsg);
+                }
             });
         }
+        setTimeout(() => {
+            setErrorMsg("");
+        }, 4000);
     };
 
     function deleteFile() {
@@ -45,23 +71,9 @@ export default function SignUp() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit, onError)}>
+            {/* username */}
             <div className="relative flex items-center mt-8">
-                <span className="absolute">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                    </svg>
-                </span>
+                <FaUser className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
 
                 <input
                     id="username"
@@ -74,24 +86,12 @@ export default function SignUp() {
                 />
             </div>
 
+            {/* profile */}
             <label
                 htmlFor="profile"
                 className="relative flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 text-gray-300 dark:text-gray-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                    />
-                </svg>
+                <FaUpload className="w-4 text-gray-300 dark:text-gray-500" />
 
                 <h2 className="mx-3 text-gray-400">{fileName}</h2>
                 {image !== null && (
@@ -108,7 +108,6 @@ export default function SignUp() {
                     accept="image/jpeg, image/png, image/jpeg, image/webp"
                     className="hidden"
                     maxLength={1}
-                    {...register("profile")}
                     onChange={async (event) => {
                         if (event.target.files[0]) {
                             const targetFile = event.target.files[0];
@@ -119,27 +118,13 @@ export default function SignUp() {
                     }}
                     aria-errormessage={errors?.profile?.message}
                     onFocus={() => errors?.profile?.message}
-                    required
                 />
+                <div className=""></div>
             </label>
 
+            {/* email */}
             <div className="relative flex items-center mt-6">
-                <span className="absolute">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                    </svg>
-                </span>
+                <IoMail className="absolute w-6 mx-3 text-gray-300 dark:text-gray-500" />
 
                 <input
                     type="email"
@@ -151,23 +136,24 @@ export default function SignUp() {
                 />
             </div>
 
+            {/* contact number */}
             <div className="relative flex items-center mt-4">
-                <span className="absolute">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                    </svg>
-                </span>
+                <FaMobileAlt className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
+
+                <input
+                    id="contact"
+                    type="number"
+                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    placeholder="Mobile number"
+                    {...register("contact")}
+                    aria-errormessage={errors?.contact?.message}
+                    onFocus={() => errors?.contact?.message}
+                />
+            </div>
+
+            {/* password */}
+            <div className="relative flex items-center mt-4">
+                <RiLockPasswordLine className="absolute w-5 mx-3 text-gray-300 dark:text-gray-500" />
 
                 <input
                     type={!showPswrd ? "text" : "password"}
@@ -228,6 +214,27 @@ export default function SignUp() {
                         </svg>
                     )}
                 </span>
+            </div>
+
+            {/* address */}
+            <div className="relative flex items-center mt-4">
+                <FaAddressBook className="absolute top-4 w-4 mx-3 text-gray-300 dark:text-gray-500" />
+
+                <textarea
+                    id="address"
+                    type="text"
+                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    placeholder="Address"
+                    {...register("address")}
+                    aria-errormessage={errors?.address?.message}
+                    onFocus={() => errors?.address?.message}
+                />
+            </div>
+
+            <div className="relative flex items-center mt-4">
+                <p className="h-2 w-full text-red-500 text-center">
+                    {errorMsg}
+                </p>
             </div>
 
             <button
