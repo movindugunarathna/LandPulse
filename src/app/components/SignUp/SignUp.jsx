@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { SignUpSchema } from "@/lib/zodSchema/schema";
-import { readFileAsync } from "@/lib/readFiles";
+import { readFileAsync } from "@/utils/readFiles";
 import {
     FaAddressBook,
     FaMobileAlt,
@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { signUpHere } from "@/utils/serverActions/signupAction";
+import { signUp } from "@/lib/serverActions/userActions";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {
@@ -38,12 +38,12 @@ export default function SignUp() {
     const onSubmit = async (data) => {
         toast.info("Form Submitted! waiting for response!!!");
 
-        const res = await signUpHere({ ...data, profile: image, ...file });
+        const res = await signUp({ ...data, profile: image, ...file });
 
         if (res.code === 200) {
             toast.success(res.message);
             console.log(JSON.parse(res.data));
-            router.push("/dashboard");
+            // router.push("/dashboard");
         } else toast.error(res.message);
     };
 

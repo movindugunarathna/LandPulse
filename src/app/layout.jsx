@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/elements/navbar/Navbar";
 import Footer from "./components/elements/footer/Footer";
 import { Toaster } from "sonner";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,16 +13,16 @@ export const metadata = {
         "LandPulse helps users estimate current land values in the Colombo district's cities and predicts potential growth in the coming years. The app provides actionable insights for investors, professionals, and urban planners by integrating machine learning models and real estate data.",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, pageProps: { session } }) {
     return (
         <html lang="en" className="light">
             <body className={inter.className}>
-                <div className="">
+                <SessionProvider session={session}>
                     <Navbar />
                     {children}
                     <Footer />
                     <Toaster closeButton loadingIcon position="top-right" />
-                </div>
+                </SessionProvider>
             </body>
         </html>
     );
