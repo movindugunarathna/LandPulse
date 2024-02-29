@@ -1,10 +1,9 @@
 import Advertisement from "@/models/advertisementModel";
-import { connectToDb } from "./utills";
-import { unstable_noStore as noStore } from "next/cache";
+import { connectToDataBase } from "@/utils/connect";
 
 export const getAdvertisements = async () => {
     try {
-        connectToDb();
+        connectToDataBase();
         const advertisements = await Advertisement.find();
         return advertisements;
     } catch (err) {
@@ -15,7 +14,7 @@ export const getAdvertisements = async () => {
 
 export const getAdvertisement = async (slug) => {
     try {
-        connectToDb();
+        connectToDataBase();
         const post = await Advertisement.findOne({ slug });
         return post;
     } catch (err) {
