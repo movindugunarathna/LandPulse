@@ -15,20 +15,14 @@ export const { auth, signIn, signOut } = NextAuth({
                 username: "Annabel",
                 email: "example@example.com",
                 password: "password",
-                username: "Annabel",
-                email: "example@example.com",
-                password: "password",
             },
             async authorize(credentials) {
-                console.log("authorization: " + credentials);
                 let userDetails = null;
 
                 const parsedCredentials = LoginSchema.safeParse(credentials);
                 if (parsedCredentials.success) {
                     const { email, username, password } =
                         parsedCredentials.data;
-                    console.log(parsedCredentials.data);
-                    console.log(parsedCredentials.data);
                     const userByEmail = await getUserByEmailOrUsername(email);
                     const userByUsername =
                         await getUserByEmailOrUsername(username);
@@ -44,7 +38,7 @@ export const { auth, signIn, signOut } = NextAuth({
                             );
 
                             isMatch ? userDetails : null;
-                            return userDetails;
+                            return userDetails?._id;
                         } catch (error) {
                             console.error(error.message);
                             return null;
@@ -52,7 +46,7 @@ export const { auth, signIn, signOut } = NextAuth({
                     }
                 }
                 console.log("Invalid credentials");
-                return userDetails;
+                return userDetails?._id;
             },
         }),
     ],
