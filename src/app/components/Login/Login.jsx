@@ -20,6 +20,7 @@ export default function Login() {
 
     const fieldsChanging = (e) => {
         if (e.target.name === "username") {
+            setInputs({ ...inputs, username: e.target.value });
         }
         if (e.target.name === "email") {
             setInputs({ ...inputs, email: e.target.value });
