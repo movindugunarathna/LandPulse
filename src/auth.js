@@ -8,16 +8,13 @@ import bcrypt from "bcrypt";
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
-    secret: process.env.NEXTAUTH_SECRET,
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60,
-        updateAge: 24 * 60 * 60,
-    },
     providers: [
         CredentialsProvider({
             name: "credentials",
             credentials: {
+                username: "Annabel",
+                email: "example@example.com",
+                password: "password",
                 username: "Annabel",
                 email: "example@example.com",
                 password: "password",
@@ -30,6 +27,7 @@ export const { auth, signIn, signOut } = NextAuth({
                 if (parsedCredentials.success) {
                     const { email, username, password } =
                         parsedCredentials.data;
+                    console.log(parsedCredentials.data);
                     console.log(parsedCredentials.data);
                     const userByEmail = await getUserByEmailOrUsername(email);
                     const userByUsername =
