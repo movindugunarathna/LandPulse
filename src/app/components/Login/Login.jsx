@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { login } from "@/lib/serverActions/userActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { getProviders, signIn } from "next-auth/react";
 
 export default function Login() {
     const [showPswrd, setShowPswrd] = useState(false);
@@ -31,7 +30,6 @@ export default function Login() {
 
     const onSubmit = async (data) => {
         toast.info("Login evaluating!!!");
-
         const res = await login(data);
 
         if (res.code === 200) {
