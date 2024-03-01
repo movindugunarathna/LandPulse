@@ -5,8 +5,10 @@ import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect";
 
-export const authenticate = async (formData) => {
+export const login = async (formData) => {
     try {
+        await connectToDataBase();
+
         await signIn("credentials", {
             username: formData.username,
             email: formData.email,
@@ -14,6 +16,11 @@ export const authenticate = async (formData) => {
             redirectTo: "/dashboard",
             redirect: true,
         });
+
+        return {
+            code: 200,
+            message: "Redirect to dashboard",
+        };
     } catch (error) {
         if (isRedirectError(error)) {
             return {
