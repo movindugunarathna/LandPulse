@@ -60,6 +60,8 @@ export const SignUpSchema = z
 
 export const LoginSchema = z
     .object({
+        username: z.string().optional(true),
+        email: z.string().optional(true),
         password: z.string().min(1, "Password is required"),
     })
     .refine(
@@ -81,5 +83,5 @@ export const LoginSchema = z
             // If neither email nor username is provided, trigger the original error message
             return false;
         },
-        { message: "Either email or username must be provided" }
+        { message: "Either correct email or username must be provided" }
     );

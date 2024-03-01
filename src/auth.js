@@ -18,9 +18,9 @@ export const { auth, signIn, signOut } = NextAuth({
         CredentialsProvider({
             name: "credentials",
             credentials: {
-                username: {},
-                email: {},
-                password: {},
+                username: "Annabel",
+                email: "example@example.com",
+                password: "password",
             },
             async authorize(credentials) {
                 console.log("authorization: " + credentials);
@@ -30,10 +30,10 @@ export const { auth, signIn, signOut } = NextAuth({
                 if (parsedCredentials.success) {
                     const { email, username, password } =
                         parsedCredentials.data;
+                    console.log(parsedCredentials.data);
                     const userByEmail = await getUserByEmailOrUsername(email);
                     const userByUsername =
                         await getUserByEmailOrUsername(username);
-                    console.log("A user found");
 
                     if (!userByEmail && !userByUsername) return null;
                     else {
@@ -48,7 +48,7 @@ export const { auth, signIn, signOut } = NextAuth({
                             isMatch ? userDetails : null;
                             return userDetails;
                         } catch (error) {
-                            console.log(error.message);
+                            console.error(error.message);
                             return null;
                         }
                     }
