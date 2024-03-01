@@ -4,22 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { auth, signOut } from "@/auth";
 import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
+
+export const preload = () => {
+    void auth();
+};
 
 export default function Dashboard() {
-    // const { data: session, status } = useSession();
-    const session2 = useSession();
-
-    // useEffect(() => {
-    //     console.log(status, " ", session);
-    // }, []);
     useEffect(() => {
-        const run = async () => {
-            let session = await auth();
-            console.log(session);
-            console.log(session2);
+        const checkSession = async () => {
+            const session = await auth();
+            if (!session) {
+                signIn();
+                console.log("Session not found");
+            }
+            console.log("Checking session");
         };
-        run();
-    }, [session2]);
+        checkSession();
+    }, []);
 
     return (
         <>
@@ -27,7 +29,7 @@ export default function Dashboard() {
                 {/* profile pane */}
                 <div className="profile-pane w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-10 ml-4">
                     <div className="head flex flex-col items-center pb-10">
-                        <h2 className="mb-1 text-xl text-gray-900 dark:text-white items-center mb-5 font-semibold">
+                        <h2 className="text-xl text-gray-900 dark:text-white items-center mb-5 font-semibold">
                             Seller Profile
                         </h2>
                         <div className="profile-image flex flex-col items-center pb-10">
@@ -198,17 +200,16 @@ export default function Dashboard() {
                                     </td>
                                     <td className="px-6 py-4 text-center">
                                         <svg
-                                            className="hover:text-gray-700"
+                                            className="hover:text-gray-700 w-6 h-6"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
-                                            stroke-width="1.5"
+                                            strokeWidth="1.5"
                                             stroke="currentColor"
-                                            class="w-6 h-6"
                                         >
                                             <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
                                                 d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
                                             />
                                         </svg>

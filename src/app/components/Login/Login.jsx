@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { LoginSchema } from "@/lib/zodSchema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,13 +30,12 @@ export default function Login() {
 
     const onSubmit = async (data) => {
         toast.info("Login evaluating!!!");
-
         const res = await login(data);
 
         if (res.code === 200) {
             toast.success(res.message);
             // console.log(JSON.parse(res.data));
-            // router.push("/dashboard");
+            router.push("/dashboard");
         } else toast.error(res.message);
     };
 

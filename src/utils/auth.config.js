@@ -17,12 +17,33 @@ export const authConfig = {
         },
         async session({ session, token }) {
             session.user = token.user;
+
+            session.user.accessToken = token.accessToken;
+
+            session.user.refreshToken = token.refreshToken;
             return session;
         },
-        async jwt({ token, user }) {
+        async jwt({ token, user, account, profile }) {
             if (user) {
                 token.user = user;
             }
+
+            if (account && profile) {
+                const { access_token, refresh_token, expires_at } = account;
+
+                return {
+                    user: profile,
+                    accessToken: access_token,
+                    refreshToken: refresh_token,
+                    accessTokenExpires: Date.now() + expires_at * 1000,
+                };
+            }
+
+            // Return previous token if the access token has not expired yet
+            if (Date.now() < token.accessTokenExpires) {
+                return token;
+            }
+
             return token;
         },
     },
