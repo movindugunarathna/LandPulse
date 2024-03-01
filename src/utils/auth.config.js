@@ -3,6 +3,12 @@ export const authConfig = {
         signIn: "/login",
         signOut: "/login",
     },
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60,
+        updateAge: 24 * 60 * 60,
+    },
     callbacks: {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
@@ -47,5 +53,4 @@ export const authConfig = {
             return token;
         },
     },
-    providers: [], // Add providers with an empty array for now
 };

@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "./components/elements/navbar/Navbar";
 import Footer from "./components/elements/footer/Footer";
 import { Toaster } from "sonner";
-import SessionProvider from "./components/SessionProvider/SessionProvider";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 

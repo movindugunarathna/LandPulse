@@ -19,3 +19,5 @@ export const connectToDataBase = async () => {
         }
     }
 };
+
+export default mongoose.connection;

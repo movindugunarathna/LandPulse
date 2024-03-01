@@ -21,6 +21,9 @@ export const { auth, signIn, signOut } = NextAuth({
                 username: "Annabel",
                 email: "example@example.com",
                 password: "password",
+                username: "Annabel",
+                email: "example@example.com",
+                password: "password",
             },
             async authorize(credentials) {
                 console.log("authorization: " + credentials);
@@ -30,6 +33,7 @@ export const { auth, signIn, signOut } = NextAuth({
                 if (parsedCredentials.success) {
                     const { email, username, password } =
                         parsedCredentials.data;
+                    console.log(parsedCredentials.data);
                     console.log(parsedCredentials.data);
                     const userByEmail = await getUserByEmailOrUsername(email);
                     const userByUsername =
@@ -48,6 +52,7 @@ export const { auth, signIn, signOut } = NextAuth({
                             isMatch ? userDetails : null;
                             return userDetails;
                         } catch (error) {
+                            console.error(error.message);
                             console.error(error.message);
                             return null;
                         }
