@@ -18,6 +18,7 @@ import { signUp } from "@/lib/serverActions/userActions";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+    const filesize = 1000000;
     const router = useRouter();
 
     const [showPswrd, setShowPswrd] = useState(false);
@@ -111,9 +112,20 @@ export default function SignUp() {
                     onChange={async (event) => {
                         if (event.target.files[0]) {
                             const targetFile = event.target.files[0];
-                            setFileName(targetFile?.name);
-                            setImage(await readFileAsync(targetFile));
-                            setFile(targetFile);
+
+                            if (targetFile.size > filesize) {
+                                toast.error(
+                                    "File size should be less than 1mb"
+                                );
+                            } else {
+                                setFileName(targetFile?.name);
+                                try {
+                                    setImage(await readFileAsync(targetFile));
+                                } catch (error) {
+                                    toast.error(error.message);
+                                }
+                                setFile(targetFile);
+                            }
                         } else deleteFile();
                     }}
                     aria-errormessage={errors?.profile?.message}
