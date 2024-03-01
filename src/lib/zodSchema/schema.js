@@ -57,20 +57,23 @@ export const SignUpSchema = z
         }
     );
 
-export const LoginUpSchema = z
+export const LoginSchema = z
     .object({
         email: z.string().email("Must be a valid email address").optional(),
-        username: z
-            .string()
-            .min(6, "Username must be at least 6 characters")
-            .optional(),
         password: z.string().min(1, "Password is required"),
     })
     .refine(
         (entry) => {
-            return entry.email !== undefined || entry.username !== undefined;
+            // Check if only username is provided
+            if (entry.email === undefined && entry.username !== undefined) {
+                // Skip email validation if username exists
+                return true;
+            } else if (entry.email !== undefined) {
+                // Validate email if present
+                return true;
+            }
+            // If neither email nor username is provided, trigger the original error message
+            return false;
         },
-        {
-            message: "Either email or username must be provided",
-        }
+        { message: "Either email or username must be provided" }
     );

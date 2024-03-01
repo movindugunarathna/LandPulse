@@ -1,48 +1,62 @@
 import React, { useState } from "react";
-import { SignUpSchema } from "@/lib/zodSchema/schema";
+import { LoginSchema } from "@/lib/zodSchema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { login } from "@/lib/serverActions/userActions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [showPswrd, setShowPswrd] = useState(false);
-    const [emailDisabled, setEmailDisabled] = useState(null);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [inputs, setInputs] = useState({ username: "", email: "" });
+    const router = useRouter();
+
     const {
         handleSubmit,
         register,
-        getValues,
-        formState: { errors, isSubmitting, isDirty, isInvalid },
-    } = useForm({ resolver: zodResolver(SignUpSchema) });
+        formState: { errors },
+    } = useForm({ resolver: zodResolver(LoginSchema) });
 
-    const fieldsChanging = (event) => {
-        const email = getValues("email");
-        const username = getValues("username");
-
-        if (event.target.placeholder === "Email address") {
-            setEmailDisabled(false);
+    const fieldsChanging = (e) => {
+        if (e.target.name === "username") {
         }
-        if (event.target.placeholder === "Username") {
-            setEmailDisabled(true);
+        if (e.target.name === "email") {
+            setInputs({ ...inputs, email: e.target.value });
         }
     };
 
-    async function onSubmit(data) {
-        console.log(isSubmitting);
-        console.log(data);
-        // Replace this with a server action or fetch an API endpoint to authenticate
-        await new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, 2000); // 2 seconds in milliseconds
-        });
-        router.push("/tweets");
-    }
+    const onSubmit = async (data) => {
+        toast.info("Login evaluating!!!");
+
+        const res = await login(data);
+
+        if (res.code === 200) {
+            toast.success(res.message);
+            // console.log(JSON.parse(res.data));
+            // router.push("/dashboard");
+        } else toast.error(res.message);
+    };
+
+    const onError = (errors) => {
+        let errorMsgSet = false;
+        console.log(errors);
+        if (Object.keys(errors).length > 0) {
+            Object.values(errors).forEach((element) => {
+                if (element?.message.replace(" ", "") !== "" && !errorMsgSet) {
+                    errorMsgSet = true;
+                    setErrorMsg(element?.message);
+                }
+            });
+        }
+        setTimeout(() => {
+            setErrorMsg("");
+        }, 4000);
+    };
 
     return (
-        <form onSubmit={onSubmit}>
-            <div
-                className={`relative flex items-center mt-8 ${!emailDisabled && "bg-gray-300"}`}
-            >
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+            <div className={`relative flex items-center mt-8 bg-gray-300`}>
                 <span className="absolute">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -62,13 +76,16 @@ export default function Login() {
 
                 <input
                     type="text"
-                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 
+                    dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 
+                    focus:outline-none focus:ring focus:ring-opacity-40 disabled:opacity-80"
                     placeholder="Username"
-                    {...register("username", {
-                        required: emailDisabled,
-                        maxLength: 30,
-                    })}
+                    value={inputs.username}
+                    {...register("username")}
+                    aria-errormessage={errors?.username?.message}
+                    onFocus={() => errors?.username?.message}
                     onChange={fieldsChanging}
+                    disabled={inputs.email.trim() !== ""}
                 />
             </div>
 
@@ -101,13 +118,17 @@ export default function Login() {
 
                 <input
                     type="email"
-                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                    className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 
+                    dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 
+                    dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40
+                    disabled:opacity-80"
                     placeholder="Email address"
-                    {...register("email", {
-                        required: !emailDisabled,
-                        maxLength: 30,
-                    })}
+                    {...register("email")}
+                    value={inputs.email}
+                    aria-errormessage={errors?.email?.message}
+                    onFocus={() => errors?.email?.message}
                     onChange={fieldsChanging}
+                    disabled={inputs.username.trim() !== ""}
                 />
             </div>
 
@@ -133,10 +154,9 @@ export default function Login() {
                     type={!showPswrd ? "text" : "password"}
                     className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     placeholder="Password"
-                    {...register("password", {
-                        required: true,
-                        maxLength: 30,
-                    })}
+                    {...register("password")}
+                    aria-errormessage={errors?.password?.message}
+                    onFocus={() => errors?.password?.message}
                 />
 
                 <span
@@ -191,9 +211,15 @@ export default function Login() {
                 </span>
             </div>
 
+            <div className="relative flex items-center mt-4">
+                <p className="h-2 w-full text-red-500 text-center">
+                    {errorMsg}
+                </p>
+            </div>
+
             <div className="mt-6">
                 <button className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                    Sign Up
+                    Login
                 </button>
             </div>
         </form>

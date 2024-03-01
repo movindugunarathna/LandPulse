@@ -1,10 +1,26 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
+import { useSession } from "next-auth/react";
 
 export default function Dashboard() {
+    // const { data: session, status } = useSession();
+    const session2 = useSession();
+
+    // useEffect(() => {
+    //     console.log(status, " ", session);
+    // }, []);
+    useEffect(() => {
+        const run = async () => {
+            let session = await auth();
+            console.log(session);
+            console.log(session2);
+        };
+        run();
+    }, [session2]);
+
     return (
         <>
             <div className="wrapper flex mx-1 my-4">
