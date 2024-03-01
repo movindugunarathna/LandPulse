@@ -4,6 +4,7 @@ import {
     hasUpperCase,
     hasLowerCase,
     hasNumber,
+    validateEmail,
 } from "../../utils/validation";
 
 export const SignUpSchema = z
@@ -59,18 +60,23 @@ export const SignUpSchema = z
 
 export const LoginSchema = z
     .object({
-        email: z.string().email("Must be a valid email address").optional(),
         password: z.string().min(1, "Password is required"),
     })
     .refine(
         (entry) => {
             // Check if only username is provided
-            if (entry.email === undefined && entry.username !== undefined) {
+            if (
+                (entry.email === undefined || entry.email?.trim() === "") &&
+                (entry.username !== undefined || entry.username?.trim() !== "")
+            ) {
                 // Skip email validation if username exists
                 return true;
-            } else if (entry.email !== undefined) {
+            } else if (
+                (entry.email !== undefined || entry.username?.trim() !== "") &&
+                (entry.username === undefined || entry.username?.trim() === "")
+            ) {
                 // Validate email if present
-                return true;
+                return validateEmail(entry.email);
             }
             // If neither email nor username is provided, trigger the original error message
             return false;

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { LoginSchema } from "@/lib/zodSchema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { login } from "@/lib/serverActions/userActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { getProviders, signIn } from "next-auth/react";
 
 export default function Login() {
     const [showPswrd, setShowPswrd] = useState(false);
@@ -35,7 +37,7 @@ export default function Login() {
         if (res.code === 200) {
             toast.success(res.message);
             // console.log(JSON.parse(res.data));
-            // router.push("/dashboard");
+            router.push("/dashboard");
         } else toast.error(res.message);
     };
 
