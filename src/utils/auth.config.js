@@ -15,6 +15,16 @@ export const authConfig = {
             }
             return true;
         },
+        async session({ session, token }) {
+            session.user = token.user;
+            return session;
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                token.user = user;
+            }
+            return token;
+        },
     },
     providers: [], // Add providers with an empty array for now
 };

@@ -60,11 +60,13 @@ userSchema.pre("save", function (next) {
     } else return next();
 });
 
-userSchema.methods.comparePassword = function (password, callback) {
-    bcrypt.compare(password, this.password, function (error, isMatch) {
-        if (error) return callback(error);
-        else callback(null, isMatch);
-    });
+userSchema.methods.comparePassword = async function (password) {
+    try {
+        const isMatch = await bcrypt.compare(password, this.password);
+        return isMatch;
+    } catch (error) {
+        throw error;
+    }
 };
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

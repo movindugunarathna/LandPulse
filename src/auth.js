@@ -2,8 +2,9 @@
 import NextAuth from "next-auth";
 import { authConfig } from "./utils/auth.config";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { LoginUpSchema } from "./lib/zodSchema/schema";
+import { LoginSchema } from "./lib/zodSchema/schema";
 import { getUserByEmailOrUsername } from "./lib/serverActions/userActions";
+import bcrypt from "bcrypt";
 
 export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
@@ -12,7 +13,6 @@ export const { auth, signIn, signOut } = NextAuth({
     },
     providers: [
         CredentialsProvider({
-            // The name to display on the sign in form (e.g. 'Sign in with...')
             name: "credentials",
             credentials: {
                 username: {},
@@ -21,7 +21,9 @@ export const { auth, signIn, signOut } = NextAuth({
             },
             async authorize(credentials) {
                 console.log("authorization: " + credentials);
-                const parsedCredentials = LoginUpSchema.safeParse(credentials);
+                let userDetails = null;
+
+                const parsedCredentials = LoginSchema.safeParse(credentials);
                 if (parsedCredentials.success) {
                     const { email, username, password } =
                         parsedCredentials.data;
@@ -32,31 +34,24 @@ export const { auth, signIn, signOut } = NextAuth({
 
                     if (!userByEmail && !userByUsername) return null;
                     else {
-                        const user = userByEmail || userByUsername;
+                        try {
+                            userDetails = userByEmail || userByUsername;
 
-                        const passwordCheck = await new Promise(
-                            (resolve, reject) => {
-                                user.comparePassword(
-                                    password,
-                                    (matchError, isMatch) => {
-                                        console.log("isMatch", isMatch);
-                                        if (matchError) reject(matchError);
-                                        else if (!isMatch)
-                                            reject("Password does not match");
-                                        else resolve(user);
-                                    }
-                                );
-                            }
-                        ).catch((error) => {
-                            console.error("Error comparing password:", error);
+                            const isMatch = await bcrypt.compare(
+                                password,
+                                userDetails.password
+                            );
+
+                            isMatch ? userDetails : null;
+                            return userDetails;
+                        } catch (error) {
+                            console.log(error.message);
                             return null;
-                        });
-
-                        return passwordCheck;
+                        }
                     }
                 }
                 console.log("Invalid credentials");
-                return null;
+                return userDetails;
             },
         }),
     ],
