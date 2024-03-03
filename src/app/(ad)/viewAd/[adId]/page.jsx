@@ -19,7 +19,7 @@ export default function ViewAd() {
         console.log("Test");
     }, [var1]);
     return (
-        <div className="px-6 py-2 md:px-20 md:py-10">
+        <div className="px-6 py-2 md:px-20 md:py-4">
             <div className="flex">
                 <div>
                     <Image
