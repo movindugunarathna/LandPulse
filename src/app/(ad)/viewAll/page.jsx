@@ -1,5 +1,5 @@
 import Advertisement from "@/app/components/elements/advertisement/Advertisement";
-import { getAdvertisements } from "@/lib/serverActions/adActions";
+import { getAdvertisements } from "@/actions/adActions";
 import React from "react";
 
 const ViewAll = async () => {

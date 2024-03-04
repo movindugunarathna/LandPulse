@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
-import { getAdvertisements } from "@/lib/serverActions/adActions";
+import { getAdvertisements } from "@/actions/adActions";
 
 export default async function Home() {
     const advertisements = await getAdvertisements();

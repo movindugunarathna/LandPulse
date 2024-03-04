@@ -1,74 +1,95 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import { ObjectId } from "mongodb";
+import clientPromise from "@/utils/connect";
 
-const profileSchema = new mongoose.Schema({
-    id: String,
-    name: String,
-    url: String,
-    type: String,
-    size: Number,
-    lastModifiedDate: Date,
-});
+class UserModel {
+    static collection = null;
 
-const userSchema = new mongoose.Schema(
-    {
-        username: {
-            type: String,
-            required: [true, "Must provide a username"],
-            unique: [true, "Must provide a unique username"],
-        },
-        password: {
-            type: String,
-            required: [true, "Must provide a password"],
-        },
-        email: {
-            type: String,
-            required: [true, "Must provide an email"],
-            unique: [true, "Must provide a unique email"],
-        },
-        contact: {
-            type: String, // Changed to String
-            required: [true, "Must provide a mobile number"],
-        },
-        address: {
-            type: String,
-            required: [true, "Must provide a valid address"],
-        },
-        profile: { type: profileSchema, default: null },
-    },
-    {
-        timestamps: true,
+    static async connect() {
+        try {
+            // Wait for the client to be connected
+            const client = await clientPromise;
+            const db = client.db(process.env.MONGODB_DB_NAME);
+            this.collection = db.collection("users");
+        } catch (error) {
+            console.error("Error connecting to MongoDB:", error.message);
+            throw new Error("Failed to connect to the database.");
+        }
     }
-);
 
-userSchema.pre("save", function (next) {
-    const user = this;
+    static async create(user) {
+        try {
+            await this.connect();
 
-    if (this.isModified("password" || this.isNew)) {
-        bcrypt.genSalt(10, function (saltError, salt) {
-            if (saltError) {
-                return next(saltError);
-            } else
-                bcrypt.hash(user.password, salt, function (hashError, hash) {
-                    if (hashError) {
-                        return next(hashError);
-                    }
-                    user.password = hash;
-                    next();
-                });
-        });
-    } else return next();
-});
-
-userSchema.methods.comparePassword = async function (password) {
-    try {
-        const isMatch = await bcrypt.compare(password, this.password);
-        return isMatch;
-    } catch (error) {
-        throw error;
+            // Insert the user document
+            const result = await this.collection.insertOne(user);
+            return result.insertedId;
+        } catch (error) {
+            console.error("Failed to insert user:", error.message);
+            throw new Error("Failed to insert user.");
+        }
     }
-};
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+    static async find(query = {}) {
+        try {
+            await this.connect();
 
-export default User;
+            // Find documents based on the query and sort by creation date descending
+            const users = await this.collection
+                .find(query)
+                .sort({ creationDate: -1 })
+                .toArray();
+            return users;
+        } catch (error) {
+            console.error("Failed to fetch users:", error.message);
+            throw new Error("Failed to fetch users.");
+        }
+    }
+
+    static async findOne(query = {}) {
+        try {
+            await this.connect();
+
+            // Find a user by username
+            const user = await this.collection.findOne(query);
+            return user;
+        } catch (error) {
+            console.error("Failed to fetch user:", error.message);
+            throw new Error("Failed to fetch user.");
+        }
+    }
+
+    static async update(id, updatedFields) {
+        try {
+            await this.connect();
+
+            // Update the user document
+            const result = await this.collection.updateOne(
+                { _id: ObjectId(id) },
+                { $set: updatedFields }
+            );
+
+            return result.modifiedCount; // Return the number of modified documents
+        } catch (error) {
+            console.error("Failed to update user:", error.message);
+            throw new Error("Failed to update user.");
+        }
+    }
+
+    static async remove(id) {
+        try {
+            await this.connect();
+
+            // Delete the user document
+            const result = await this.collection.deleteOne({
+                _id: ObjectId(id),
+            });
+
+            return result.deletedCount; // Return the number of deleted documents
+        } catch (error) {
+            console.error("Failed to delete user:", error.message);
+            throw new Error("Failed to delete user.");
+        }
+    }
+}
+
+export default UserModel;

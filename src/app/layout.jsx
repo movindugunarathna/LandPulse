@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "./components/elements/navbar/Navbar";
 import Footer from "./components/elements/footer/Footer";
 import { Toaster } from "sonner";
-import { SessionProvider } from "next-auth/react";
+import AuthProvider from "./components/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,14 +16,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en" className="light">
-            <SessionProvider>
+            <AuthProvider>
                 <body className={inter.className}>
                     <Navbar />
                     {children}
                     <Footer />
                     <Toaster closeButton loadingIcon position="top-right" />
                 </body>
-            </SessionProvider>
+            </AuthProvider>
         </html>
     );
 }

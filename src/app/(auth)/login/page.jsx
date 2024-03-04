@@ -1,10 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Login from "@/app/components/Login/Login";
 import SignUp from "@/app/components/SignUp/SignUp";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Page() {
     const [isSignIn, setIsSignIn] = useState(true);
+    const { status, data: session } = useSession();
+
+    useEffect(() => {
+        if (status === "authenticated" && session?.user) {
+            redirect("/dashboard");
+        }
+        console.log(session);
+    }, [session, session?.user, status]);
 
     return (
         <section className="bg-white dark:bg-gray-900">

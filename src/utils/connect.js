@@ -1,23 +1,16 @@
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
-let isConnected = false;
+if (!process.env.MONGODB_URI) {
+    throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+} else console.log("MONGODB_URI: ", process.env.MONGODB_URI);
 
-export const connectToDataBase = async () => {
-    if (isConnected) {
-        console.log("DB connected already");
-        return;
-    } else {
-        mongoose.Promise = global.Promise;
+const uri = process.env.MONGODB_URI;
+const options = {};
 
-        try {
-            await mongoose.connect(process.env.DB_HOST);
-            isConnected = true;
-            console.log("DB connected successfully");
-        } catch (error) {
-            console.error("Error connecting to database:", error);
-            throw new Error("Error connecting to database:", error.message);
-        }
-    }
-};
+let clientPromise;
 
-export default mongoose.connection;
+// In production mode, it's best to not use a global variable.
+const client = new MongoClient(uri, options);
+clientPromise = client.connect();
+
+export default clientPromise;

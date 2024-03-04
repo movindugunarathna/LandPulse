@@ -1,10 +1,9 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState, useReducer } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { auth } from "@/auth";
-import { signOut } from "@/auth";
-import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const navLink = [
     {
@@ -25,32 +24,10 @@ const navLink = [
     },
 ];
 
-const initialState = {
-    session: null,
-};
-
-const reducer = (state, action) => {
-    switch (action.type) {
-        case "SET_SESSION":
-            return { ...state, session: action.payload };
-        default:
-            return state;
-    }
-};
-
+// eslint-disable-next-line @next/next/no-async-client-component
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const { session } = state;
-    const router = useRouter();
-
-    useEffect(() => {
-        const run = async () => {
-            const item = await auth();
-            dispatch({ type: "SET_SESSION", payload: item });
-        };
-        run();
-    }, []);
+    const { status, data: session } = useSession();
 
     return (
         <header className="sticky top-0 z-50 bg-white">
@@ -122,26 +99,26 @@ const Navbar = () => {
                                             {item.name.toUpperCase()}
                                         </Link>
                                     ))}
-                                    {session && (
-                                        <button
+                                    {status === "authenticated" &&
+                                    session?.user ? (
+                                        <Link
                                             href="#"
                                             className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
                                             aria-current="page"
                                             onClick={() => signOut()}
                                         >
-                                            SIGN OUT
-                                        </button>
-                                    )}
-                                    {!session && (
-                                        <button
-                                            onClick={() =>
-                                                router.push("/login")
+                                            LOGOUT
+                                        </Link>
+                                    ) : (
+                                        <Link
+                                            href={
+                                                "/api/auth/signin?callbackUrl=/login"
                                             }
                                             className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
                                             aria-current="page"
                                         >
                                             LOGIN
-                                        </button>
+                                        </Link>
                                     )}
                                 </div>
                             </div>
