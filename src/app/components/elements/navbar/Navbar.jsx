@@ -102,10 +102,15 @@ const Navbar = () => {
                                     {status === "authenticated" &&
                                     session?.user ? (
                                         <Link
-                                            href="#"
+                                            href={
+                                                "/api/auth/signin?callbackUrl=/login"
+                                            }
                                             className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
                                             aria-current="page"
-                                            onClick={() => signOut()}
+                                            onClick={async () => {
+                                                await signOut();
+                                                redirect("/login");
+                                            }}
                                         >
                                             LOGOUT
                                         </Link>
