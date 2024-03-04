@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import ImageComponent from "./components/ImageComponent";
-import { advertisement } from "../../../data/advertisement";
+import { advertisement } from "../../../../data/advertisement";
 import { useEffect, useState } from "react";
 
 // function test(){

@@ -1,7 +1,6 @@
 "use client";
 import Dropzone from "@/app/components/Dropzone/dropzone";
-import PriceSection from "@/app/components/PriceSection/PriceSection";
-import Image from "next/image";
+import PriceSection from "@/app/components/PriceSection/page";
 import { useState } from "react";
 
 export default function CreateAd() {
