@@ -2,26 +2,18 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { auth, signOut } from "@/auth";
-import { useSession } from "next-auth/react";
-import { signIn } from "next-auth/react";
-
-export const preload = () => {
-    void auth();
-};
+import { redirect } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Dashboard() {
+    const { data: session, status } = useSession();
+
     useEffect(() => {
-        const checkSession = async () => {
-            const session = await auth();
-            if (!session) {
-                signIn();
-                console.log("Session not found");
-            }
-            console.log("Checking session");
-        };
-        checkSession();
-    }, []);
+        if (status === "unauthenticated" && !session?.user) {
+            redirect("/api/auth/signin?callbackUrl=/login");
+        }
+        console.log(session);
+    }, [session, session?.user, status]);
 
     return (
         <>
@@ -127,7 +119,12 @@ export default function Dashboard() {
                                     <button
                                         className="px-6 py-2 text-black "
                                         type="button"
-                                        onClick={() => signOut()}
+                                        onClick={() =>
+                                            signOut({
+                                                callbackUrl: "/login",
+                                                redirect: true,
+                                            })
+                                        }
                                     >
                                         SignOut
                                     </button>

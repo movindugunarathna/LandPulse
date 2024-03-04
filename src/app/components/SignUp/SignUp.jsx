@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { signUp } from "@/lib/serverActions/userActions";
+import { signUp } from "@/actions/userActions";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {

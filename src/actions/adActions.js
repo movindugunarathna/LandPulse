@@ -1,9 +1,7 @@
 import Advertisement from "@/models/advertisementModel";
-import { connectToDataBase } from "@/utils/connect";
 
 export const getAdvertisements = async () => {
     try {
-        connectToDataBase();
         const advertisements = await Advertisement.find();
         return advertisements;
     } catch (err) {
@@ -14,7 +12,6 @@ export const getAdvertisements = async () => {
 
 export const getAdvertisement = async (slug) => {
     try {
-        connectToDataBase();
         const post = await Advertisement.findOne({ slug });
         return post;
     } catch (err) {

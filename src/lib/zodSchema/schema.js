@@ -69,19 +69,11 @@ export const LoginSchema = z
             // Check if only username is provided
             if (
                 (entry.email === undefined || entry.email?.trim() === "") &&
-                (entry.username !== undefined || entry.username?.trim() !== "")
-            ) {
-                // Skip email validation if username exists
-                return true;
-            } else if (
-                (entry.email !== undefined || entry.username?.trim() !== "") &&
                 (entry.username === undefined || entry.username?.trim() === "")
             ) {
-                // Validate email if present
-                return validateEmail(entry.email);
-            }
-            // If neither email nor username is provided, trigger the original error message
-            return false;
+                // Skip email validation if username exists
+                return false;
+            } else return true;
         },
         { message: "Either correct email or username must be provided" }
     );

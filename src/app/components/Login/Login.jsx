@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { LoginSchema } from "@/lib/zodSchema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { login } from "@/lib/serverActions/userActions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
+    const errorDisappearTime = 6000;
     const [showPswrd, setShowPswrd] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [inputs, setInputs] = useState({ username: "", email: "" });
-    const router = useRouter();
 
     const {
         handleSubmit,
@@ -28,18 +28,39 @@ export default function Login() {
         }
     };
 
-    const onSubmit = async (data) => {
-        toast.info("Login evaluating!!!");
-        const res = await login(data);
+    const onSubmit = async (data, e) => {
+        e.preventDefault();
 
-        if (res.code === 200) {
-            toast.success(res.message);
-            // console.log(JSON.parse(res.data));
-            router.push("/dashboard");
-        } else toast.error(res.message);
+        try {
+            toast.info("Login evaluating!!!");
+            const response = await signIn("credentials", {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                callbackUrl: "/dashboard",
+                redirect: false,
+            });
+
+            if (response.ok) {
+                toast.success("Successfully logged in");
+            } else {
+                // If the login fails, set the error message
+                const errorMsg = JSON.parse(response.error);
+                toast.error(errorMsg?.error);
+                setErrorMsg(errorMsg?.error);
+
+                setTimeout(() => {
+                    setErrorMsg("");
+                }, errorDisappearTime);
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorMsg(error.message ?? "Login failed");
+        }
     };
 
-    const onError = (errors) => {
+    const onError = (errors, e) => {
+        e.preventDefault();
         let errorMsgSet = false;
         console.log(errors);
         if (Object.keys(errors).length > 0) {
@@ -52,7 +73,7 @@ export default function Login() {
         }
         setTimeout(() => {
             setErrorMsg("");
-        }, 4000);
+        }, errorDisappearTime);
     };
 
     return (
@@ -212,8 +233,8 @@ export default function Login() {
                 </span>
             </div>
 
-            <div className="relative flex items-center mt-4">
-                <p className="h-2 w-full text-red-500 text-center">
+            <div className="relative flex items-center mt-4 ">
+                <p className="h-2 w-full text-red-500 text-center ">
                     {errorMsg}
                 </p>
             </div>
