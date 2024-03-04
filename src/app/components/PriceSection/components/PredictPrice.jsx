@@ -33,13 +33,13 @@ export default function PredictPrice() {
       </div>
       <label
         htmlFor="location"
-        className="block text-gray-700 font-bold mt-5 text-left"
+        className="block text-gray-700 font-bold mt-3 text-left"
       >
         Pick the Location:
       </label>
       <div className="grid grid-cols-2 gap-10">
         <div className="">
-          <GoogleMapComp className="w-full h-96 mt-2" />
+          <GoogleMapComp className="w-full h-96 mt-1" />
         </div>
         <div>
           <div className="">

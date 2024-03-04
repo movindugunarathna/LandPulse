@@ -17,7 +17,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
 
   return (
     <div
-      className="absolute top-0 left-0 m-0 p-0 w-screen h-screen bg-white bg-opacity-60 flex justify-center items-center z-0"
+      className="absolute top-0 left-0 m-0 p-0 w-screen h-screen bg-white bg-opacity-60 flex justify-center items-center "
       onClick={handleClick}
     >
       <div className="w-2/3 h-2/3 bg-white rounded-md border border-black z-10">
@@ -25,11 +25,11 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
           onSubmit={() => onSubmit()}
           className="w-full h-full flex flex-col justify-between gap-8 p-4 px-8"
         >
-          <div className="w-full max-w-md">
-            <div className="flex items-center justify-center mt-2">
+          <div className="justify-center">
+            <div className="flex items-center justify-center">
               <div
                 className={`w-1/3 pb-4 font-medium text-center 
-                            ${isPricePredict ? 'text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white' : 'text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300'} 
+                            ${isPricePredict ? 'text-gray-800 capitalize border-b-2 border-custom-green-100 dark:border-blue-400 dark:text-white' : 'text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300'} 
                             hover:cursor-pointer`}
                 onClick={() => setIsPricePredict(true)}
               >
@@ -38,7 +38,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
 
               <div
                 className={`w-1/3 pb-4 font-medium text-center 
-                            ${!isPricePredict ? 'text-gray-800 capitalize border-b-2 border-blue-500 dark:border-blue-400 dark:text-white' : 'text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300'}
+                            ${!isPricePredict ? 'text-gray-800 capitalize border-b-2 border-custom-green-100 dark:border-blue-400 dark:text-white' : 'text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300'}
                             hover:cursor-pointer`}
                 onClick={() => setIsPricePredict(false)}
               >
