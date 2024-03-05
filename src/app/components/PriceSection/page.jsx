@@ -3,8 +3,7 @@ import InputPrice from './components/InputPrice';
 import PredictPrice from './components/PredictPrice';
 
 export default function PriceSection({ setPriceDetails, priceDetails }) {
-  const [isPricePredict, setIsPricePredict] = useState(true);
-  const [selectedLandTypes, setSelectedLandTypes] = useState([]);
+    const [isPricePredict, setIsPricePredict] = useState(true);
 
   const handleClick = (event) => {
     if (event.target === event.currentTarget) {
