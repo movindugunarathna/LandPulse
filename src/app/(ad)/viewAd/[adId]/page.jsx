@@ -105,7 +105,7 @@ export default function ViewAd() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-center pt-[6%]">
+                    <div className="flex justify-center pt-[2%]">
                         <button
                             className="bg-custom-green-100 text-white font-bold rounded-md w-full leading-10"
                             onClick={(event) => {
