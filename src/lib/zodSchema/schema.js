@@ -77,3 +77,26 @@ export const LoginSchema = z
         },
         { message: "Either correct email or username must be provided" }
     );
+
+export const AdvertisementSchema = z
+    .object({
+        title: z.string().min(1, "Title is required"),
+        description: z.string().min(1, "Description is required"),
+        price: z.number().min(1, "Price is required"),
+        landType: z.number().min(1, "Category is required"),
+        location: z.string().min(1, "Location is required"),
+    })
+    .refine(
+        (entry) => {
+            return (
+                entry.title !== undefined &&
+                entry.description !== undefined &&
+                entry.price !== undefined &&
+                entry.landType !== undefined &&
+                entry.location !== undefined
+            );
+        },
+        {
+            message: "All input fields are required!",
+        }
+    );
