@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function PriceSection({ setPriceDetails, priceDetails }) {
     const [isPricePredict, setIsPricePredict] = useState(true);
+    const ad = useAppSelector((state) => state.ad);
 
     const handleClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -14,6 +16,10 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <div
             className=" mt-10 w-full h-full bg-white flex justify-center items-center"
@@ -21,7 +27,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
         >
             <div className="lg:w-4/5 h-full bg-white rounded-md border border-black z-10 ">
                 <form
-                    onSubmit={() => onSubmit()}
+                    onSubmit={handleSubmit}
                     className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8"
                 >
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">
