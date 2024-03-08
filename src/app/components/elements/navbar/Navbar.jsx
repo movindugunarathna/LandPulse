@@ -1,33 +1,44 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
-const navLink = [
-    {
-        name: "HOME",
-        link: "/",
-    },
-    {
-        name: "ADVERTISEMENT",
-        link: "/ads",
-    },
-    {
-        name: "DASHBOARD",
-        link: "/dashboard",
-    },
-    {
-        name: "CONTACT US",
-        link: "/contact",
-    },
+const navLinks = [
+    { name: "HOME", link: "/" },
+    { name: "CONTACT US", link: "/contact" },
 ];
 
-// eslint-disable-next-line @next/next/no-async-client-component
+const NavLink = ({ item }) => (
+    <Link
+        href={item.link}
+        className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
+        aria-current="page"
+    >
+        {item.name.toUpperCase()}
+    </Link>
+);
+
+const AuthenticatedLink = ({ href, label, onClick }) => (
+    <Link
+        href={href}
+        className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
+        aria-current="page"
+        onClick={onClick}
+    >
+        {label}
+    </Link>
+);
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { status, data: session } = useSession();
+
+    const handleLogout = async () => {
+        await signOut();
+        redirect("/login");
+    };
 
     return (
         <header className="sticky top-0 z-50 bg-white">
@@ -89,69 +100,34 @@ const Navbar = () => {
                             </div>
                             <div className="hidden sm:ml-auto sm:block">
                                 <div className="flex space-x-5">
-                                    {navLink.map((item) => (
-                                        <Link
-                                            key={item.name}
-                                            href={item.link}
-                                            className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
-                                            aria-current="page"
-                                        >
-                                            {item.name.toUpperCase()}
-                                        </Link>
+                                    {navLinks.map((item) => (
+                                        <NavLink key={item.name} item={item} />
                                     ))}
                                     {status === "authenticated" &&
                                     session?.user ? (
-                                        <Link
-                                            href={
-                                                "/api/auth/signin?callbackUrl=/login"
-                                            }
-                                            className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
-                                            aria-current="page"
-                                            onClick={async () => {
-                                                await signOut();
-                                                redirect("/login");
-                                            }}
-                                        >
-                                            LOGOUT
-                                        </Link>
-                                    ) : (
-                                        <Link
-                                            href={
-                                                "/api/auth/signin?callbackUrl=/login"
-                                            }
-                                            className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
-                                            aria-current="page"
-                                        >
-                                            LOGIN
-                                        </Link>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                            <div className="relative ml-3">
-                                <div>
-                                    <button
-                                        type="button"
-                                        className="relative flex rounded-full bg-white-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-white-800"
-                                        id="user-menu-button"
-                                        aria-expanded="false"
-                                        aria-haspopup="true"
-                                    >
-                                        <span className="absolute -inset-1.5" />
-                                        <span className="sr-only">
-                                            Open user menu
-                                        </span>
-                                        <a href="/signup">
-                                            <Image
-                                                className="h-8 w-8 rounded-full"
-                                                src="/avatar.png"
-                                                alt=""
-                                                width={500}
-                                                height={500}
+                                        <>
+                                            <NavLink
+                                                item={{
+                                                    name: "DASHBOARD",
+                                                    link: "/dashboard",
+                                                }}
                                             />
-                                        </a>
-                                    </button>
+                                            <AuthenticatedLink
+                                                href={
+                                                    "/api/auth/signin?callbackUrl=/login"
+                                                }
+                                                label="LOGOUT"
+                                                onClick={handleLogout}
+                                            />
+                                        </>
+                                    ) : (
+                                        <AuthenticatedLink
+                                            href={
+                                                "/api/auth/signin?callbackUrl=/login"
+                                            }
+                                            label="LOGIN"
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -163,43 +139,9 @@ const Navbar = () => {
                     id="mobile-menu"
                 >
                     <div className="space-y-1 px-2 pb-3 pt-2">
-                        <a
-                            href="#"
-                            className="bg-white-900 text-white block rounded-md px-3 py-2 text-base font-medium"
-                            aria-current="page"
-                        >
-                            HOME
-                        </a>
-                        <a
-                            href="#"
-                            className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium"
-                        >
-                            ABOUT
-                        </a>
-                        <a
-                            href="#"
-                            className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium"
-                        >
-                            ADVERTISEMENT
-                        </a>
-                        <a
-                            href="#"
-                            className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium"
-                        >
-                            PRICE PREDICTOR
-                        </a>
-                        <a
-                            href="#"
-                            className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium"
-                        >
-                            DASHBOARD
-                        </a>
-                        <a
-                            href="#"
-                            className="text-white-300 hover:bg-white-700 hover:text-lime-600 block rounded-md px-3 py-2 text-base font-medium"
-                        >
-                            CONTACT US
-                        </a>
+                        {navLinks.map((item) => (
+                            <NavLink key={item.name} item={item} />
+                        ))}
                     </div>
                 </div>
             </nav>
