@@ -1,22 +1,23 @@
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
+import { getAdvertisements } from "@/actions/adActions";
 
-export default function Home() {
+export default async function Home() {
+    const advertisements = await getAdvertisements();
+
     return (
         <>
             <section>
-                <div
-                    className="relative w-auto md:h-screen mx-auto"
-                    id="hero-banner"
-                >
+                <div className="w-auto md:h-screen mx-auto" id="hero-banner">
                     <Image
-                        className="absolute object-cover w-full"
+                        className="absolute object-cover w-full h-screen"
                         src="/hero-image.jpg"
                         alt=""
-                        layout="fill"
+                        width={2560}
+                        height={1440}
                     />
-                    <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
-                    <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white">
+                    <div className="absolute top-0 w-full h-screen bg-black opacity-50"></div>
+                    <div className="relative z-10 flex flex-col justify-center items-center h-screen text-center text-white">
                         <h1 className="text-6xl font-bold md:text-5xl text-custom-green-200">
                             Land Awaits Your Imagination
                         </h1>
@@ -53,12 +54,12 @@ export default function Home() {
             <section className="flex items-center justify-center">
                 <div className="w-full max-w-6xl">
                     <div className="mt-10">
-                        <h1 className="text-6xl font-bold md:text-4xl text-center text-custom-green-100">
+                        <h1 className="text-2xl md:text-4xl font-bold text-center text-custom-green-100">
                             Your Dream Awaits,
                             <br />
                             Explore Vast Landscapes for Your Vision.
                         </h1>
-                        <p className="mt-5 text-justify">
+                        <p className="mt-5 text-justify text-lg mx-4">
                             Embark on a journey to find the canvas for your
                             dreams midst sprawling landscapes that await your
                             vision. Our curated selection of expansive terrains
@@ -73,58 +74,13 @@ export default function Home() {
                             the space that resonates with your unique vision.
                         </p>
                     </div>
-                    {/* Must create an array and map the info fetch from DB!!! */}
                     <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-                        <Advertisement
-                            image={""}
-                            landType="Bare"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
-
-                        <Advertisement
-                            image={""}
-                            landType="Agricultural"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
-                        <Advertisement
-                            image={""}
-                            landType="Agricultural"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
-                        <Advertisement
-                            image={""}
-                            landType="Agricultural"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
-                        <Advertisement
-                            image={""}
-                            landType="Agricultural"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
-
-                        <Advertisement
-                            image={""}
-                            landType="Bare"
-                            price="$500,000"
-                            pricePer="$10,000 per acre"
-                            headline="Beautiful Farmland for Sale"
-                            description="This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities."
-                        />
+                        {advertisements.map((advertisement) => (
+                            <Advertisement
+                                key={advertisement._id}
+                                advertisement={advertisement}
+                            />
+                        ))}
                     </div>
                     <div className="flex items-center justify-center h-20 space-x-2">
                         <button className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded">
