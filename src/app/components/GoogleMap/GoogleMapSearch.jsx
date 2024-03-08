@@ -1,20 +1,20 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     useLoadScript,
     GoogleMap,
     Marker as AdvancedMarkerElement,
 } from "@react-google-maps/api";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { setLocationGeo } from "@/lib/redux/adSlice";
 
-const libraries = ["places"]; // Include places library for search functionality
+const libraries = ["places"];
 
 const GoogleMapComp = ({ className }) => {
+    const dispatch = useAppDispatch();
+    const ad = useAppSelector((state) => state.ad);
     const [map, setMap] = useState(null);
-    const [location, setLocation] = useState({
-        lat: 6.925187004369271,
-        lng: 79.86128293151192,
-    });
     const [placeDetails, setPlaceDetails] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
 
@@ -29,26 +29,13 @@ const GoogleMapComp = ({ className }) => {
     };
 
     const handleClick = (event) => {
-        setLocation({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-        });
+        dispatch(
+            setLocationGeo({
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng(),
+            })
+        );
     };
-
-    const {
-        placesService,
-        placePredictions,
-        getPlacePredictions,
-        isPlacePredictionsLoading,
-    } = usePlacesService({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    });
-
-    useEffect(() => {
-        if (placePredictions.length > 0) {
-            setPlaceDetails(placePredictions);
-        }
-    }, [placePredictions]);
 
     if (loadError) return "Error loading maps";
     if (!isLoaded) return "Loading maps";
@@ -83,9 +70,27 @@ const GoogleMapComp = ({ className }) => {
                                     },
                                     (placeDetails) => {
                                         setSelectedLocation(placeDetails);
-                                        setLocation(
-                                            placeDetails.geometry.location
+                                        const lat = parseFloat(
+                                            placeDetails.geometry.location.lat
                                         );
+                                        const lng = parseFloat(
+                                            placeDetails.geometry.location.lng
+                                        );
+
+                                        if (!isNaN(lat) && !isNaN(lng)) {
+                                            dispatch(
+                                                setLocationGeo({
+                                                    lat: lat,
+                                                    lng: lng,
+                                                })
+                                            );
+                                        } else {
+                                            console.error(
+                                                "Invalid latitude or longitude values:",
+                                                lat,
+                                                lng
+                                            );
+                                        }
                                     }
                                 );
                             }}
@@ -99,11 +104,13 @@ const GoogleMapComp = ({ className }) => {
                 <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%" }}
                     zoom={13}
-                    center={location}
+                    center={ad.geomatry}
                     onLoad={handleMapLoad}
                     onClick={handleClick}
                 >
-                    {location && <AdvancedMarkerElement position={location} />}
+                    {ad.geomatry && (
+                        <AdvancedMarkerElement position={ad.geomatry} />
+                    )}
                 </GoogleMap>
             </div>
         </div>
