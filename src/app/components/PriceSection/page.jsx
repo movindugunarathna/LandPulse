@@ -36,7 +36,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
                             </div>
 
                             <div
-                                className={`w-1/3 py-2 font-medium text-center 
+                                className={`w-1/3 py-2 font-medium text-center
                             ${!isPricePredict ? "text-gray-800 capitalize border-b-2 border-custom-green-100 dark:border-blue-400 dark:text-white" : "text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"}
                             hover:cursor-pointer`}
                                 onClick={() => setIsPricePredict(false)}

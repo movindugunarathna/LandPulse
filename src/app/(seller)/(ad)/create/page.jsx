@@ -3,7 +3,7 @@ import Dropzone from "@/app/components/Dropzone/dropzone";
 import PriceSection from "@/app/components/PriceSection/page";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";\
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setBasic } from "@/lib/redux/adSlice";
 
@@ -125,6 +125,7 @@ export default function CreateAd() {
                     </div>
                 </>
             )}
+
         </>
     );
 }
