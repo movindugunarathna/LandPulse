@@ -20,6 +20,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.1",
+    "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "clsx": "^2.1.0",
     "font-awesome": "^4.7.0",

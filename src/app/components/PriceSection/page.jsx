@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { pricePredictSchema } from "@/lib/zodSchema/schema";
+import { toast } from "sonner";
+import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
+import axios from "axios";
+import { predictReturn } from "@/data/advertisement";
 
 export default function PriceSection({ setPriceDetails, priceDetails }) {
     const [isPricePredict, setIsPricePredict] = useState(true);
     const ad = useAppSelector((state) => state.ad);
+    const dispatch = useAppDispatch();
 
     const handleClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -16,8 +22,82 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        console.log(ad);
+    }, [ad]);
+
+    const handleSubmit = async () => {
+        try {
+            const inputData = {
+                geometry: ad.geometry,
+                landTypes: ad.landTypes,
+            };
+
+            const priceInputPass = pricePredictSchema.safeParse(inputData);
+
+            if (priceInputPass.success) {
+                const { geometry, landTypes } = priceInputPass.data;
+                toast.info("Waiting for price prediction !!!");
+
+                // const response = await axios.post(
+                //     "http://127.0.0.1:5000/predict",
+                //     {
+                //         latitude: geometry.lat,
+                //         longitude: geometry.lng,
+                //         landType: landTypes.join(" ,"),
+                //         radius: 1000,
+                //     }
+                // );
+
+                // const data = response.data;
+
+                // if (response.status === 200) {
+
+                const data = predictReturn;
+                if (true) {
+                    dispatch(setPredict({ value: data }));
+                    setPriceDetails({
+                        ...priceDetails,
+                        selected: false,
+                    });
+
+                    if (isPricePredict) {
+                        const currentYear = new Date().getFullYear();
+
+                        dispatch(
+                            setBasic({
+                                field: "price",
+                                value: data[`year_${currentYear}`]?.price,
+                            })
+                        );
+
+                        dispatch(
+                            setInputPriceBool({
+                                bool: false,
+                            })
+                        );
+                    } else {
+                        dispatch(
+                            setInputPriceBool({
+                                bool: true,
+                            })
+                        );
+                    }
+
+                    toast.success("Price Input Success");
+                } else {
+                    const errorMessage =
+                        response.data.error || response.statusText;
+                    toast.error(errorMessage || "Something went wrong !!!");
+                }
+            } else {
+                console.log(priceInputPass);
+                toast.error(priceInputPass.error?.issues[0]?.message);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        }
     };
 
     return (
@@ -26,10 +106,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
             onClick={handleClick}
         >
             <div className="lg:w-4/5 h-full bg-white rounded-md border border-black z-10 ">
-                <form
-                    onSubmit={handleSubmit}
-                    className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8"
-                >
+                <div className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8">
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">
                         <div className="flex items-center justify-center">
                             <div
@@ -65,12 +142,13 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
                             onClick={handleClick}
                         />
                         <input
-                            type="submit"
+                            type="button"
                             className="inline-flex items-center justify-center px-8 py-2 font-sans font-semibold tracking-wide text-white bg-custom-green-100 hover:bg-lime-900 rounded-lg "
                             value={"Submit"}
+                            onClick={handleSubmit}
                         />
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
