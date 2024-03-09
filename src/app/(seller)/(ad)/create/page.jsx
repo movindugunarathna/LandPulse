@@ -32,11 +32,11 @@ export default function CreateAd() {
 
     useEffect(() => {
         if (ad.prce !== 0.0) {
-            const currentYear = new Date().getFullYear();
+            const currentYear = new Date().getMonth();
             setPriceSection({ ...priceSection, value: ad.price });
             setPriceStatus(
-                ad.predict[`year_${currentYear}`]?.max_next > ad.price &&
-                    ad.predict[`year_${currentYear}`]?.min_next < ad.price
+                ad.predict[`month__${currentYear}`]?.max_next > ad.price &&
+                    ad.predict[`month__${currentYear}`]?.min_next < ad.price
             );
             setSurround(ad.predict);
         }

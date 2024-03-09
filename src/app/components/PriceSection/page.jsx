@@ -62,12 +62,10 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
                     });
 
                     if (isPricePredict) {
-                        const currentYear = new Date().getFullYear();
-
                         dispatch(
                             setBasic({
                                 field: "price",
-                                value: data[`year_${currentYear}`]?.price,
+                                value: data?.price,
                             })
                         );
 
