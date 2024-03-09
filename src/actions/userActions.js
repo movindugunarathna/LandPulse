@@ -51,3 +51,13 @@ export async function getUserByEmailOrUsername(identifier) {
         throw new Error("Failed to fetch user.");
     }
 }
+
+export async function getUserById(_id) {
+    try {
+        const user = await User.findOne({ _id });
+        return user;
+    } catch (error) {
+        console.error("Error while fetching user:", error);
+        throw new Error("Failed to fetch user.");
+    }
+}

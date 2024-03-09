@@ -47,16 +47,17 @@ export default function Dashboard() {
                 <span className="font-semibold text-gray-700">Phone</span>
                 <span>Rs. 0,000,000.00</span>
               </div>
+              <div className="flex flex-raw justify-between mb-1">
+                <span className="font-semibold text-gray-700 mr-4 ">Address</span>
+                <span className="text-right">24\A Rogger St, Wellampitia,Jaela. Colombo</span>
+              </div>
             </div>
           </div>
 
           <div className="account head flex flex-col items-left pb-10">
             <h6 className="text-lg font-bold mb-2">Identity</h6>
             <div className=" mb-2 text-sm">
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700 mr-4 ">Address</span>
-                <span className="text-right">24\A Rogger St, Wellampitia,Jaela. Colombo</span>
-              </div>
+              
               <div className="flex flex-raw justify-between mb-1">
                 <span className="font-semibold text-gray-700">National ID</span>
                 <span>Rs. 0,000,000.00</span>
