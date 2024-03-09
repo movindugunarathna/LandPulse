@@ -6,6 +6,7 @@ import {
     hasNumber,
     validateEmail,
 } from "../../utils/validation";
+import { colomboGeometry } from "@/data/advertisement";
 
 export const SignUpSchema = z
     .object({
@@ -100,3 +101,20 @@ export const AdvertisementSchema = z
             message: "All input fields are required!",
         }
     );
+
+export const pricePredictSchema = z.object({
+    landTypes: z.array(z.string()).nonempty("LandType is required!"),
+    geometry: z
+        .object({
+            lat: z.number(),
+            lng: z.number(),
+        })
+        .refine((entry) => {
+            console.log(colomboGeometry.lat !== entry.lat, entry.lat);
+            console.log(colomboGeometry.lng !== entry.lng, entry.lng);
+            return (
+                colomboGeometry.lat !== entry.lat ||
+                colomboGeometry.lng !== entry.lng
+            );
+        }, "Please select the land location"),
+});

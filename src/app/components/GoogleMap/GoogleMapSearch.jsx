@@ -6,15 +6,15 @@ import {
     Marker as AdvancedMarkerElement,
 } from "@react-google-maps/api";
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
+import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
+import { setLocationGeo } from "@/lib/redux/adSlice";
 
-const libraries = ["places"]; // Include places library for search functionality
+const libraries = ["places"];
 
 const GoogleMapComp = ({ className }) => {
     const [map, setMap] = useState(null);
-    const [location, setLocation] = useState({
-        lat: 6.925187004369271,
-        lng: 79.86128293151192,
-    });
+    const ad = useAppSelector((state) => state.ad);
+    const dispatch = useAppDispatch();
     const [placeDetails, setPlaceDetails] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
 
@@ -29,10 +29,12 @@ const GoogleMapComp = ({ className }) => {
     };
 
     const handleClick = (event) => {
-        setLocation({
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-        });
+        dispatch(
+            setLocationGeo({
+                lat: event.latLng.lat(),
+                lng: event.latLng.lng(),
+            })
+        );
     };
 
     const {
@@ -83,8 +85,11 @@ const GoogleMapComp = ({ className }) => {
                                     },
                                     (placeDetails) => {
                                         setSelectedLocation(placeDetails);
-                                        setLocation(
-                                            placeDetails.geometry.location
+
+                                        dispatch(
+                                            setLocationGeo(
+                                                placeDetails.geometry.location
+                                            )
                                         );
                                     }
                                 );
@@ -99,11 +104,13 @@ const GoogleMapComp = ({ className }) => {
                 <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%" }}
                     zoom={13}
-                    center={location}
+                    center={ad.geometry}
                     onLoad={handleMapLoad}
                     onClick={handleClick}
                 >
-                    {location && <AdvancedMarkerElement position={location} />}
+                    {ad.geometry && (
+                        <AdvancedMarkerElement position={ad.geometry} />
+                    )}
                 </GoogleMap>
             </div>
         </div>
