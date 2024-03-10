@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
@@ -6,12 +6,12 @@ import { pricePredictSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
 import axios from "axios";
-import { predictReturn } from "@/data/advertisement";
 
 export default function PriceSection({ setPriceDetails, priceDetails }) {
     const [isPricePredict, setIsPricePredict] = useState(true);
     const ad = useAppSelector((state) => state.ad);
     const dispatch = useAppDispatch();
+    const priceTabRef = useRef(null);
 
     const handleClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -23,8 +23,10 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
     };
 
     useEffect(() => {
-        console.log(ad);
-    }, [ad]);
+        priceTabRef.current.scrollIntoView({
+            behavior: "smooth",
+        });
+    }, []);
 
     const handleSubmit = async () => {
         try {
@@ -99,6 +101,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
 
     return (
         <div
+            ref={priceTabRef}
             className="w-screen h-screen bg-white flex justify-center items-center"
             onClick={handleClick}
         >
