@@ -10,7 +10,6 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 import ChartApp from "@/app/components/Chart/Chart";
-import { RiAlignBottom } from "react-icons/ri";
 import { FaArrowDown } from "react-icons/fa";
 
 export const dynamic = "force-dynamic";
