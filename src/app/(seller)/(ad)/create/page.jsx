@@ -1,7 +1,7 @@
 "use client";
 import Dropzone from "@/app/components/Dropzone/dropzone";
 import PriceSection from "@/app/components/PriceSection/page";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
@@ -10,6 +10,8 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 import ChartApp from "@/app/components/Chart/Chart";
+import { RiAlignBottom } from "react-icons/ri";
+import { FaArrowDown } from "react-icons/fa";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,7 @@ export default function CreateAd() {
     const [surround, setSurround] = useState(null);
     const [instructionAppear, setInstructionAppear] = useState(true);
     const [showChart, setShowChart] = useState(false);
+    const scrollRef = useRef(null);
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
@@ -57,7 +60,7 @@ export default function CreateAd() {
     };
 
     return (
-        <>
+        <div className="overflow-hidden">
             {priceSection.selected ? (
                 <PriceSection
                     setPriceDetails={setPriceSection}
@@ -65,159 +68,185 @@ export default function CreateAd() {
                 />
             ) : (
                 <div className="w-screen h-full flex justify-center items-center">
-                    <div className="w-fit overflow-hidden h-full mt-10 flex flex-col justify-center items-center">
+                    <div className="w-fit overflow-hidden h-full flex flex-col justify-center items-center">
                         {instructionAppear && (
-                            <div className="relative w-fit h-fit p-4">
-                                <IoMdCloseCircleOutline
-                                    className="absolute top-0 right-0 w-6 h-6 text-red-400 hover:cursor-pointer"
-                                    onClick={() =>
-                                        setInstructionAppear(!instructionAppear)
-                                    }
-                                />
-                                <div className=" bg-gray-100 p-8 rounded-md">
-                                    <h2 className="text-lg font-bold mb-2">
-                                        Advertisement Posting Instructions:
-                                    </h2>
-                                    <ol className="list-decimal pl-4">
-                                        <li>
-                                            Click on the price field to open the
-                                            popup.
-                                        </li>
-                                        <li>
-                                            In the popup, select the land type
-                                            and location from the options
-                                            provided.
-                                        </li>
-                                        <li>
-                                            Choose the &apos;Input&apos; tab to
-                                            manually input the price or the
-                                            &apos;Predict&apos; tab to get a
-                                            predicted price.
-                                        </li>
-                                        <li>
-                                            If inputting manually, submit the
-                                            form to set the price.
-                                        </li>
-                                        <li>
-                                            A green checkmark or a red cross
-                                            icon will appear next to the price
-                                            based on its validity.
-                                        </li>
-                                        <li>
-                                            The chosen or predicted price will
-                                            appear in the main advertisement
-                                            price field.
-                                        </li>
-                                        <li>
-                                            To edit details or price, click on
-                                            the price field and follow the same
-                                            steps.
-                                        </li>
-                                    </ol>
+                            <div className="w-screen h-screen flex flex-col justify-center items-center">
+                                <div className="relative w-fit h-fit p-4">
+                                    <IoMdCloseCircleOutline
+                                        className="absolute top-0 right-0 w-6 h-6 text-red-400 hover:cursor-pointer"
+                                        onClick={() =>
+                                            setInstructionAppear(
+                                                !instructionAppear
+                                            )
+                                        }
+                                    />
+                                    <div className=" bg-gray-100 p-8 rounded-md">
+                                        <h2 className="text-lg font-bold mb-2">
+                                            Advertisement Posting Instructions:
+                                        </h2>
+                                        <ol className="list-decimal pl-4">
+                                            <li>
+                                                Click on the price field to open
+                                                the popup.
+                                            </li>
+                                            <li>
+                                                In the popup, select the land
+                                                type and location from the
+                                                options provided.
+                                            </li>
+                                            <li>
+                                                Choose the &apos;Input&apos; tab
+                                                to manually input the price or
+                                                the &apos;Predict&apos; tab to
+                                                get a predicted price.
+                                            </li>
+                                            <li>
+                                                If inputting manually, submit
+                                                the form to set the price.
+                                            </li>
+                                            <li>
+                                                A green checkmark or a red cross
+                                                icon will appear next to the
+                                                price based on its validity.
+                                            </li>
+                                            <li>
+                                                The chosen or predicted price
+                                                will appear in the main
+                                                advertisement price field.
+                                            </li>
+                                            <li>
+                                                To edit details or price, click
+                                                on the price field and follow
+                                                the same steps.
+                                            </li>
+                                        </ol>
+                                    </div>
                                 </div>
+                                <button
+                                    id="publish"
+                                    name="publish"
+                                    className="w-40 mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded
+                                    flex gap-x-2 justify-center items-center focus:outline-none focus:shadow-outline"
+                                    onClick={() => {
+                                        scrollRef.current.scrollIntoView({
+                                            behavior: "smooth",
+                                        });
+                                    }}
+                                >
+                                    Scroll <FaArrowDown />
+                                </button>
                             </div>
                         )}
-                        <div className="md:w-2/3 w-full flex justify-end">
-                            <button
-                                id="publish"
-                                name="publish"
-                                className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            >
-                                Publish
-                            </button>
-                        </div>
 
-                        <div className="w-fit grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-lg">
-                            <div className="text-center">
-                                <Dropzone className="p-5 mt-2 border border-neutral-200" />
+                        <div
+                            className="w-screen min-h-screen flex justify-center items-center flex-col"
+                            ref={scrollRef}
+                        >
+                            <div className="md:w-4/5 w-full flex justify-end">
+                                <button
+                                    id="publish"
+                                    name="publish"
+                                    className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                >
+                                    Publish
+                                </button>
                             </div>
-                            <div className="relative h-full flex justify-between flex-col">
-                                <div className="mb-4">
-                                    <label
-                                        htmlFor="title"
-                                        className="block text-gray-700 font-bold mb-2 text-left "
-                                    >
-                                        Title:
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="title"
-                                        name="title"
-                                        placeholder="Enter your title here..."
-                                        value={ad.title}
-                                        onChange={handleInputChange}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
-                                    />
+
+                            <div className="w-fit grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-lg">
+                                <div className="text-center">
+                                    <Dropzone className="p-5 mt-2 border border-neutral-200" />
                                 </div>
-                                <div className="mb-4">
-                                    <label
-                                        htmlFor="description"
-                                        className="block text-gray-700 font-bold mb-2 text-left"
-                                    >
-                                        Description:
-                                    </label>
-                                    <textarea
-                                        id="description"
-                                        name="description"
-                                        rows="5"
-                                        cols="50"
-                                        placeholder="Enter your description here..."
-                                        value={ad.description}
-                                        onChange={handleInputChange}
-                                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
-                                    ></textarea>
-                                </div>
-                                <div className=" mb-4 md:mr-5">
-                                    <label
-                                        htmlFor="price"
-                                        className="block text-gray-700 font-bold mb-2 text-left"
-                                    >
-                                        Price:
-                                    </label>
-                                    <div className="w-full h-fit flex justify-between items-center">
-                                        <span
-                                            className="shadow appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
+                                <div className="relative h-full flex justify-between flex-col">
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="title"
+                                            className="block text-gray-700 font-bold mb-2 text-left "
+                                        >
+                                            Title:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="title"
+                                            name="title"
+                                            placeholder="Enter your title here..."
+                                            value={ad.title}
+                                            onChange={handleInputChange}
+                                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="description"
+                                            className="block text-gray-700 font-bold mb-2 text-left"
+                                        >
+                                            Description:
+                                        </label>
+                                        <textarea
+                                            id="description"
+                                            name="description"
+                                            rows="5"
+                                            cols="50"
+                                            placeholder="Enter your description here..."
+                                            value={ad.description}
+                                            onChange={handleInputChange}
+                                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
+                                        ></textarea>
+                                    </div>
+                                    <div className=" mb-4 md:mr-5">
+                                        <label
+                                            htmlFor="price"
+                                            className="block text-gray-700 font-bold mb-2 text-left"
+                                        >
+                                            Price:
+                                        </label>
+                                        <div className="w-full h-fit flex justify-between items-center">
+                                            <span
+                                                className="shadow appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
                                                         focus:outline-none focus:shadow-outline bg-gray-100 cursor-pointer"
-                                            onClick={() => {
-                                                console.log("Selected price");
-                                                setPriceSection({
-                                                    ...priceSection,
-                                                    selected: true,
-                                                });
-                                            }}
-                                        >
-                                            Rs.{" "}
-                                            {Number(priceSection.value).toFixed(
-                                                2
-                                            )}{" "}
-                                            /=
-                                        </span>
-                                        <div
-                                            className="w-6 h-6 cursor-pointer"
-                                            onMouseEnter={() =>
-                                                setShowChart(true)
-                                            }
-                                            onMouseLeave={() =>
-                                                setShowChart(false)
-                                            }
-                                            onClick={() => {
-                                                setShowChart(true);
-                                            }}
-                                        >
-                                            {ad.price !== 0.0 &&
-                                                (priceStatus ? (
-                                                    <FaRegCircleCheck className="w-full h-full text-green-400" />
-                                                ) : (
-                                                    <IoMdCloseCircleOutline className="w-full h-full text-red-400" />
-                                                ))}
-                                            {showChart && (
-                                                <ChartApp
-                                                    className={
-                                                        "w-[500px] h-[300px] bg-white absolute bottom-0 left-0"
-                                                    }
-                                                    dataObj={ad.predict}
-                                                />
-                                            )}
+                                                onClick={() => {
+                                                    console.log(
+                                                        "Selected price"
+                                                    );
+                                                    setPriceSection({
+                                                        ...priceSection,
+                                                        selected: true,
+                                                    });
+                                                }}
+                                            >
+                                                Rs.{" "}
+                                                {Number(
+                                                    priceSection.value
+                                                ).toFixed(2)}{" "}
+                                                /=
+                                            </span>
+                                            <div
+                                                className="w-6 h-6 cursor-pointer"
+                                                onMouseEnter={() =>
+                                                    setShowChart(true)
+                                                }
+                                                onMouseLeave={() =>
+                                                    setShowChart(false)
+                                                }
+                                                onClick={() => {
+                                                    setShowChart(true);
+                                                }}
+                                            >
+                                                {ad.price !== 0.0 &&
+                                                    (priceStatus ? (
+                                                        <FaRegCircleCheck className="w-full h-full text-green-400" />
+                                                    ) : (
+                                                        <IoMdCloseCircleOutline className="w-full h-full text-red-400" />
+                                                    ))}
+                                                {showChart &&
+                                                    ad.price !== 0 && (
+                                                        <ChartApp
+                                                            className={
+                                                                "w-[500px] h-[400px] p-2 bg-white absolute bottom-0 left-0 flex justify-center items-center flex-col"
+                                                            }
+                                                            dataObj={ad.predict}
+                                                        />
+                                                    )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -236,6 +265,6 @@ export default function CreateAd() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }

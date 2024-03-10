@@ -39,22 +39,21 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
                 const { geometry, landTypes } = priceInputPass.data;
                 toast.info("Waiting for price prediction !!!");
 
-                // const response = await axios.post(
-                //     "http://127.0.0.1:5000/predict",
-                //     {
-                //         latitude: geometry.lat,
-                //         longitude: geometry.lng,
-                //         landType: landTypes.join(" ,"),
-                //         radius: 1000,
-                //     }
-                // );
+                const response = await axios.post(
+                    "http://127.0.0.1:5000/predict",
+                    {
+                        latitude: geometry.lat,
+                        longitude: geometry.lng,
+                        landType: landTypes.join(" ,"),
+                        radius: 1000,
+                    }
+                );
 
-                // const data = response.data;
+                const data = response.data;
 
-                // if (response.status === 200) {
-
-                const data = predictReturn;
-                if (true) {
+                if (response.status === 200) {
+                    // const data = predictReturn;
+                    // if (true) {
                     dispatch(setPredict({ value: data }));
                     setPriceDetails({
                         ...priceDetails,
@@ -100,10 +99,10 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
 
     return (
         <div
-            className=" mt-10 w-full h-full bg-white flex justify-center items-center"
+            className="w-screen h-screen bg-white flex justify-center items-center"
             onClick={handleClick}
         >
-            <div className="lg:w-4/5 h-full bg-white rounded-md border border-black z-10 ">
+            <div className="lg:w-3/5 h-fit bg-white rounded-md border border-black z-10 ">
                 <div className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8">
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">
                         <div className="flex items-center justify-center">
