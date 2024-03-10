@@ -9,7 +9,7 @@ import { setBasic } from "@/lib/redux/adSlice";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
 import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
-import { predictReturn } from "@/data/advertisement";
+import ChartApp from "@/app/components/Chart/Chart";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +24,7 @@ export default function CreateAd() {
     const { data: session, status } = useSession();
     const [surround, setSurround] = useState(null);
     const [instructionAppear, setInstructionAppear] = useState(true);
+    const [showChart, setShowChart] = useState(false);
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
@@ -130,7 +131,7 @@ export default function CreateAd() {
                             <div className="text-center">
                                 <Dropzone className="p-5 mt-2 border border-neutral-200" />
                             </div>
-                            <div className="h-full flex justify-between flex-col">
+                            <div className="relative h-full flex justify-between flex-col">
                                 <div className="mb-4">
                                     <label
                                         htmlFor="title"
@@ -166,7 +167,7 @@ export default function CreateAd() {
                                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
                                     ></textarea>
                                 </div>
-                                <div className="mb-4 md:mr-5">
+                                <div className=" mb-4 md:mr-5">
                                     <label
                                         htmlFor="price"
                                         className="block text-gray-700 font-bold mb-2 text-left"
@@ -191,12 +192,33 @@ export default function CreateAd() {
                                             )}{" "}
                                             /=
                                         </span>
-                                        {ad.price !== 0.0 &&
-                                            (priceStatus ? (
-                                                <FaRegCircleCheck className=" w-6 h-6 text-green-400" />
-                                            ) : (
-                                                <IoMdCloseCircleOutline className=" w-6 h-6 text-red-400" />
-                                            ))}
+                                        <div
+                                            className="w-6 h-6 cursor-pointer"
+                                            onMouseEnter={() =>
+                                                setShowChart(true)
+                                            }
+                                            onMouseLeave={() =>
+                                                setShowChart(false)
+                                            }
+                                            onClick={() => {
+                                                setShowChart(true);
+                                            }}
+                                        >
+                                            {ad.price !== 0.0 &&
+                                                (priceStatus ? (
+                                                    <FaRegCircleCheck className="w-full h-full text-green-400" />
+                                                ) : (
+                                                    <IoMdCloseCircleOutline className="w-full h-full text-red-400" />
+                                                ))}
+                                            {showChart && (
+                                                <ChartApp
+                                                    className={
+                                                        "w-[500px] h-[300px] bg-white absolute bottom-0 left-0"
+                                                    }
+                                                    dataObj={ad.predict}
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
