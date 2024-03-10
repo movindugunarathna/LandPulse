@@ -84,23 +84,37 @@ export const AdvertisementSchema = z
         title: z.string().min(1, "Title is required"),
         description: z.string().min(1, "Description is required"),
         price: z.number().min(1, "Price is required"),
-        landType: z.number().min(1, "Category is required"),
-        location: z.string().min(1, "Location is required"),
+        landTypes: z.array(z.string()).nonempty("LandType is required!"),
+        geometry: z
+            .object({
+                lat: z.number(),
+                lng: z.number(),
+            })
+            .refine((entry) => {
+                console.log(colomboGeometry.lat !== entry.lat, entry.lat);
+                console.log(colomboGeometry.lng !== entry.lng, entry.lng);
+                return (
+                    colomboGeometry.lat !== entry.lat ||
+                    colomboGeometry.lng !== entry.lng
+                );
+            }, "Please select the land location"),
+        isInputPrice: z.boolean(),
     })
     .refine(
         (entry) => {
             return (
                 entry.title !== undefined &&
                 entry.description !== undefined &&
-                entry.price !== undefined &&
-                entry.landType !== undefined &&
-                entry.location !== undefined
+                entry.price !== undefined
             );
         },
         {
             message: "All input fields are required!",
         }
-    );
+    )
+    .refine((entry) => entry.landTypes.length > 0, {
+        message: "At least one LandType is required",
+    });
 
 export const pricePredictSchema = z.object({
     landTypes: z.array(z.string()).nonempty("LandType is required!"),
