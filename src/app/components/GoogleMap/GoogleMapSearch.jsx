@@ -84,12 +84,18 @@ const GoogleMapComp = ({ className }) => {
                                         placeId: item.place_id,
                                     },
                                     (placeDetails) => {
-                                        setSelectedLocation(placeDetails);
+                                        const { lat, lng } =
+                                            placeDetails.geometry.location;
+                                        setSelectedLocation({
+                                            lat: lat(),
+                                            lng: lng(),
+                                        });
 
                                         dispatch(
-                                            setLocationGeo(
-                                                placeDetails.geometry.location
-                                            )
+                                            setLocationGeo({
+                                                lat: lat(),
+                                                lng: lng(),
+                                            })
                                         );
                                     }
                                 );

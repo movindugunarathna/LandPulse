@@ -37,6 +37,7 @@ const AdSlice = createSlice({
 
         setLocationGeo: (state, action) => {
             const { lat, lng } = action.payload;
+            console.log(lat, lng);
 
             return { ...state, geometry: { lat, lng } };
         },
