@@ -14,8 +14,28 @@ export const colomboGeometry = {
 };
 
 export const predictReturn = {
+    1: {
+        max_next: 7679298.0,
+        min_next: 4187156.5,
+    },
+    2: {
+        max_next: 7322979.5,
+        min_next: 4430234.5,
+    },
+    3: {
+        max_next: 5098357.5,
+        min_next: 2884260.0,
+    },
+    4: {
+        max_next: 5183354.0,
+        min_next: 3369482.25,
+    },
+    5: {
+        max_next: 5183354.0,
+        min_next: 3369482.25,
+    },
     Obj: {
-        air: 168,
+        air: 125,
         bakery_count: 17.0,
         bakery_mdist: 1088.0,
         bank_count: 8.0,
@@ -61,26 +81,6 @@ export const predictReturn = {
         train_station_mdist: 1575.0,
         university_count: 7.0,
         university_mdist: 2735.0,
-    },
-    month_1: {
-        max_next: 7887416.0,
-        min_next: 4187156.5,
-    },
-    month_2: {
-        max_next: 7531097.5,
-        min_next: 4430234.5,
-    },
-    month_3: {
-        max_next: 5306474.5,
-        min_next: 2884260.0,
-    },
-    month_4: {
-        max_next: 5391471.0,
-        min_next: 3369482.25,
-    },
-    month_5: {
-        max_next: 5391471.0,
-        min_next: 3369482.25,
     },
     price: 5508140.5,
 };
