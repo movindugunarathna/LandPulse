@@ -4,26 +4,24 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { getUserById } from "@/actions/userActions";
+import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
 
-export default function Dashboard() {
+export default function Dashboard({ userData }) {
   const { data: session, status } = useSession();
- const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (status === "unauthenticated" && !session?.user) {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
     const user = async () => {
-        console.log(session?.user.id);
-        const userProfile = await getUserById(session?.user.id);
-        console.log(userProfile);
-        setUser(JSON.parse(userProfile));
-        return userProfile;
-      };
+      const userProfile = await getUserByID(session?.user.email);
+      console.log(userProfile);
+      setUser(JSON.parse(userProfile));
+      return userProfile;
+    };
     user();
-
   }, [session, session?.user, status]);
 
   return (
@@ -46,7 +44,7 @@ export default function Dashboard() {
               </div>
             </div>
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-              {user?.username}
+              {user?.username || "Fetching..."}
             </h5>
             <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
               <Link href="">Edit Profile</Link>{" "}
@@ -57,7 +55,9 @@ export default function Dashboard() {
             <h6 className="text-lg font-bold mb-2">Account</h6>
             <div className=" mb-2 text-sm">
               <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">Joined</span>
+                <span className="font-semibold text-gray-700">
+                  Assert Count
+                </span>
                 <span>Jnne 22, 2024</span>
               </div>
               <div className="flex flex-raw justify-between mb-1">
@@ -72,29 +72,19 @@ export default function Dashboard() {
             <div className=" mb-2 text-sm">
               <div className="flex flex-raw justify-between mb-1">
                 <span className="font-semibold text-gray-700">Email</span>
-                <span>Jnne 22, 2024</span>
+                <span>{user?.email || "Fetching..."}</span>
               </div>
               <div className="flex flex-raw justify-between mb-1">
                 <span className="font-semibold text-gray-700">Phone</span>
-                <span>Rs. 0,000,000.00</span>
+                <span>{user?.contact || "Fetching..."}</span>
               </div>
-            </div>
-          </div>
-
-          <div className="account head flex flex-col items-left pb-10">
-            <h6 className="text-lg font-bold mb-2">Identity</h6>
-            <div className=" mb-2 text-sm">
               <div className="flex flex-raw justify-between mb-1">
                 <span className="font-semibold text-gray-700 mr-4 ">
                   Address
                 </span>
                 <span className="text-right">
-                  24\A Rogger St, Wellampitia,Jaela. Colombo
+                  {user?.address || "Fetching..."}
                 </span>
-              </div>
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">National ID</span>
-                <span>Rs. 0,000,000.00</span>
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 "use server";
+import UserModel from "@/models/userModel";
 import User from "@/models/userModel";
 import { hashPassword } from "@/utils/bcrypt";
 
@@ -45,17 +46,18 @@ export async function getUserByEmailOrUsername(identifier) {
       $or: [{ email: identifier }, { username: identifier }],
     });
 
-    return JSON.stringify(user);
+    return user;
   } catch (error) {
     console.error("Error while fetching user:", error);
     throw new Error("Failed to fetch user.");
   }
 }
 
-export async function getUserById(id) {
+export async function getUserByID(id) {
   try {
-    const user = await User.findOne(id).select("-password");
-    return user;
+    const user = await UserModel.findOne({ email: id });
+
+    return JSON.stringify(user);
   } catch (error) {
     console.error("Error while fetching user:", error);
     throw new Error("Failed to fetch user.");
