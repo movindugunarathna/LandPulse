@@ -60,8 +60,8 @@ function ChartApp({ className, dataObj }) {
     }, []);
 
     return (
-        <div className={className}>
-            <h1>Chart JS Multiple Lines Example</h1>
+        <div className={`${className} border-4 border-black rounded-md`}>
+            <h1>Min max price value variation</h1>
             <div>
                 <canvas className="w-full h-full" ref={chartRef}></canvas>
             </div>
