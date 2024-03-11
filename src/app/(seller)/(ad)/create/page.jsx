@@ -16,6 +16,8 @@ import { FaArrowDown } from "react-icons/fa";
 export const dynamic = "force-dynamic";
 
 export default function CreateAd() {
+    const router = useRouter();
+    const [userId, setUserId] = useState(null);
     const dispatch = useAppDispatch();
     const ad = useAppSelector((state) => state.ad);
     const [priceSection, setPriceSection] = useState({
@@ -33,7 +35,10 @@ export default function CreateAd() {
         if (status === "unauthenticated" && !session?.user) {
             redirect("/api/auth/signin?callbackUrl=/login");
         }
-        console.log(session);
+        if (session?.user) {
+            const { user } = session;
+            setUserId(user.id);
+        }
     }, [session, session?.user, status]);
 
     useEffect(() => {
@@ -57,6 +62,42 @@ export default function CreateAd() {
                 field: name,
             })
         );
+    };
+
+    const submitAdPost = async () => {
+        try {
+            const dataParse = AdvertisementSchema.safeParse(ad);
+            toast.info("submition pending...");
+
+            if (dataParse.success) {
+                const res = await saveAdvertisements({
+                    ...dataParse.data,
+                    userId,
+                });
+                console.log(res);
+                if (res.data.acknowledged) {
+                    toast.success(res.message);
+                    console.log(res.data);
+                    router.push("/dashboard");
+                } else toast.success("Something went wrong!");
+            } else if (dataParse.error) {
+                const issue_1 = dataParse.error?.issues[0];
+                console.log(
+                    issue_1.path +
+                        " Received: " +
+                        issue_1.received +
+                        " , Error: " +
+                        issue_1?.message
+                );
+                setErrMsg(issue_1?.message);
+            } else {
+                setErrMsg("Something went wrong!");
+            }
+            console.log(dataParse);
+        } catch (error) {
+            console.log(error);
+            setErrMsg(error.message);
+        }
     };
 
     return (
@@ -147,6 +188,7 @@ export default function CreateAd() {
                                     id="publish"
                                     name="publish"
                                     className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    onClick={submitAdPost}
                                 >
                                     Publish
                                 </button>

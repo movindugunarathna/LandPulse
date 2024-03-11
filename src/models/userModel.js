@@ -58,6 +58,21 @@ class UserModel {
         }
     }
 
+    static async getContactsById(_id) {
+        try {
+            await this.connect();
+
+            const user = await this.collection.findOne(
+                { _id: new ObjectId(_id) },
+                { projection: { _id: 0, contact: 1, email: 1 } }
+            );
+            return user;
+        } catch (error) {
+            console.error("Failed to fetch user:", error.message);
+            throw new Error("Failed to fetch user.");
+        }
+    }
+
     static async update(id, updatedFields) {
         try {
             await this.connect();
