@@ -9,6 +9,7 @@ const adInitial = {
     isInputPrice: false,
     price: 0.0,
     predict: predictReturn,
+    images: [],
 };
 
 const AdSlice = createSlice({
@@ -47,6 +48,12 @@ const AdSlice = createSlice({
             return { ...state, predict: { ...value } };
         },
 
+        setImages: (state, action) => {
+            const { images } = action.payload;
+            console.log(images);
+            return { ...state, images: [...images] };
+        },
+
         resetPredict: (state, action) => {
             return { ...state, predict: { ...adInitial.predict } };
         },
@@ -60,5 +67,6 @@ export const {
     setPredict,
     setLandTypes,
     setInputPriceBool,
+    setImages,
 } = AdSlice.actions;
 export default AdSlice.reducer;
