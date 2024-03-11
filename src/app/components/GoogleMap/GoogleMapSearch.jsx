@@ -1,13 +1,13 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import {
-  useLoadScript,
-  GoogleMap,
-  Marker as AdvancedMarkerElement,
-} from '@react-google-maps/api';
-import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
-import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
-import { setLocationGeo } from '@/lib/redux/adSlice';
+// import React, { useState, useEffect } from 'react';
+// import {
+//   useLoadScript,
+//   GoogleMap,
+//   Marker as AdvancedMarkerElement,
+// } from '@react-google-maps/api';
+// import usePlacesService from 'react-google-autocomplete/lib/usePlacesAutocompleteService';
+// import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
+// import { setLocationGeo } from '@/lib/redux/adSlice';
 
 const libraries = ['places'];
 
@@ -28,14 +28,14 @@ const GoogleMapComp = ({ className }) => {
     setMap(mapInstance);
   };
 
-  //   const handleClick = (event) => {
-  //     dispatch(
-  //       setLocationGeo({
-  //         lat: event.latLng.lat(),
-  //         lng: event.latLng.lng(),
-  //       })
-  //     );
-  //   };
+  const handleClick = (event) => {
+    dispatch(
+      setLocationGeo({
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      })
+    );
+  };
 
   const {
     placesService,
