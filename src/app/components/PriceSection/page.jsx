@@ -7,7 +7,11 @@ import { toast } from "sonner";
 import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
 import axios from "axios";
 
-export default function PriceSection({ setPriceDetails, priceDetails }) {
+export default function PriceSection({
+    setPriceDetails,
+    priceDetails,
+    className,
+}) {
     const [isPricePredict, setIsPricePredict] = useState(true);
     const ad = useAppSelector((state) => state.ad);
     const dispatch = useAppDispatch();
@@ -90,8 +94,15 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
                     toast.error(errorMessage || "Something went wrong !!!");
                 }
             } else {
-                console.log(priceInputPass);
-                toast.error(priceInputPass.error?.issues[0]?.message);
+                const issue_1 = priceInputPass.error?.issues[0];
+                console.log(
+                    issue_1.path +
+                        " Received: " +
+                        issue_1.received +
+                        " , Error: " +
+                        issue_1?.message
+                );
+                toast.error(issue_1?.message);
             }
         } catch (error) {
             console.log(error.message);
@@ -100,11 +111,7 @@ export default function PriceSection({ setPriceDetails, priceDetails }) {
     };
 
     return (
-        <div
-            ref={priceTabRef}
-            className="w-screen h-screen bg-white flex justify-center items-center"
-            onClick={handleClick}
-        >
+        <div ref={priceTabRef} className={className} onClick={handleClick}>
             <div className="lg:w-3/5 h-fit bg-white rounded-md border border-black z-10 ">
                 <div className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8">
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">

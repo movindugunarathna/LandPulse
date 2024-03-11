@@ -7,6 +7,7 @@ import {
     validateEmail,
 } from "../../utils/validation";
 import { colomboGeometry } from "@/data/advertisement";
+import { landTypes } from "@/data/landTypes";
 
 export const SignUpSchema = z
     .object({
@@ -82,9 +83,11 @@ export const LoginSchema = z
 export const AdvertisementSchema = z
     .object({
         title: z.string().min(1, "Title is required"),
-        description: z.string().min(1, "Description is required"),
+        description: z
+            .string()
+            .min(20, "Description cant be less than 20 characters"),
         price: z.number().min(1, "Price is required"),
-        landTypes: z.array(z.string()).nonempty("LandType is required!"),
+        landTypes: z.string().array().nonempty("LandType is required!"),
         geometry: z
             .object({
                 lat: z.number(),
@@ -99,6 +102,8 @@ export const AdvertisementSchema = z
                 );
             }, "Please select the land location"),
         isInputPrice: z.boolean(),
+        predict: z.any(),
+        images: z.string().array().nonempty("At least one image is required"),
     })
     .refine(
         (entry) => {
@@ -114,7 +119,12 @@ export const AdvertisementSchema = z
     )
     .refine((entry) => entry.landTypes.length > 0, {
         message: "At least one LandType is required",
-    });
+    })
+    .refine((entry) => {
+        console.log(landTypes.map((item) => item.type));
+        const landtypesName = landTypes.map((item) => item.type);
+        return entry.landTypes.map((type) => landtypesName.includes(type));
+    }, "Please select valid LandTypes");
 
 export const pricePredictSchema = z.object({
     landTypes: z.array(z.string()).nonempty("LandType is required!"),

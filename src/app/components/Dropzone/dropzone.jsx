@@ -3,59 +3,70 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { setImages } from "@/lib/redux/adSlice";
+import { readFileAsync } from "@/utils/readFiles";
 
 const Dropzone = ({ className }) => {
     const filesize = 1024 * 1024;
-    const [files, setFiles] = useState([]);
+    const ad = useAppSelector((state) => state.ad);
+    const dispatch = useAppDispatch();
     const [rejected, setRejected] = useState([]);
 
-    const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        if (acceptedFiles?.length) {
-            const newFiles = acceptedFiles.filter(
-                (file) => !files.map((file) => file.name).includes(file.name)
-            );
-            const alreadyExistFiles = acceptedFiles.filter((file) =>
-                files.map((file) => file.name).includes(file.name)
-            );
-            if (newFiles.length > 0) {
-                const acceptedFilesToAdd = newFiles.filter(
-                    (file) => file.size < filesize
+    const onDrop = useCallback(
+        async (acceptedFiles, rejectedFiles) => {
+            const fileNames = ad.images.map((file) => file.name);
+            if (acceptedFiles?.length) {
+                const newFiles = acceptedFiles.filter(
+                    (file) => !fileNames.includes(file.name)
                 );
-                if (acceptedFilesToAdd.length < newFiles.length) {
-                    toast.error("Some files exceed the size limit (1MB)");
-                    const rejectedFilesFilter = newFiles.filter(
-                        (file) => file.size > filesize
+                const alreadyExistFiles = acceptedFiles.filter((file) =>
+                    fileNames.includes(file.name)
+                );
+                if (newFiles.length > 0) {
+                    const acceptedFilesToAdd = newFiles.filter(
+                        (file) => file.size < filesize
                     );
-                    setRejected((previousFiles) => [
-                        ...previousFiles,
-                        ...rejectedFilesFilter.map((file) =>
-                            Object.assign(file, {
-                                preview: URL.createObjectURL(file),
+                    if (acceptedFilesToAdd.length < newFiles.length) {
+                        toast.error("Some files exceed the size limit (1MB)");
+                        const rejectedFilesFilter = newFiles.filter(
+                            (file) => file.size > filesize
+                        );
+                        setRejected((previousFiles) => [
+                            ...previousFiles,
+                            ...rejectedFilesFilter.map((file) =>
+                                Object.assign(file, {
+                                    preview: URL.createObjectURL(file),
+                                })
+                            ),
+                        ]);
+                    } else {
+                        const convertedImages = await Promise.all(
+                            acceptedFilesToAdd.map(
+                                async (file) => await readFileAsync(file)
+                            )
+                        );
+                        dispatch(
+                            setImages({
+                                images: [...ad.images, ...convertedImages],
                             })
-                        ),
-                    ]);
-                } else
-                    setFiles((previousFiles) => [
-                        ...previousFiles,
-                        ...acceptedFilesToAdd.map((file) =>
-                            Object.assign(file, {
-                                preview: URL.createObjectURL(file),
-                            })
-                        ),
-                    ]);
+                        );
+                    }
+                }
+                if (alreadyExistFiles.length > 0) {
+                    toast.error("Some files already exist");
+                }
             }
-            if (alreadyExistFiles.length > 0) {
-                toast.error("Some files already exist");
-            }
-        }
 
-        if (rejectedFiles?.length) {
-            setRejected((previousFiles) => [
-                ...previousFiles,
-                ...rejectedFiles,
-            ]);
-        }
-    }, []);
+            if (rejectedFiles?.length) {
+                setRejected((previousFiles) => [
+                    ...previousFiles,
+                    ...rejectedFiles,
+                ]);
+            }
+        },
+        [ad.images, filesize]
+    );
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
@@ -67,15 +78,24 @@ const Dropzone = ({ className }) => {
 
     useEffect(() => {
         // Revoke the data uris to avoid memory leaks
-        return () => files.forEach((file) => URL.revokeObjectURL(file.preview));
-    }, [files]);
+        return () =>
+            ad.images.forEach((file) => URL.revokeObjectURL(file.preview));
+    }, [ad.images]);
 
     const removeFile = (name) => {
-        setFiles((files) => files.filter((file) => file.name !== name));
+        dispatch(
+            setImages({
+                images: ad.images.filter((file) => file.name !== name),
+            })
+        );
     };
 
     const removeAll = () => {
-        setFiles([]);
+        dispatch(
+            setImages({
+                images: [],
+            })
+        );
         setRejected([]);
     };
 
@@ -102,10 +122,6 @@ const Dropzone = ({ className }) => {
 
         console.log(data);
     };
-
-    useEffect(() => {
-        console.log(files);
-    }, [files]);
 
     return (
         <form
@@ -144,25 +160,22 @@ const Dropzone = ({ className }) => {
                 </div>
 
                 {/* Accepted files */}
-                {files.length > 0 && (
+                {ad.images.length > 0 && (
                     <>
                         <h3 className="title text-lg font-semibold text-neutral-600 mt-10 border-b pb-3">
                             Accepted Images
                         </h3>
                         <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
-                            {files.map((file) => (
+                            {ad.images.map((file) => (
                                 <li
                                     key={file.name}
                                     className="relative h-32 rounded-md shadow-lg"
                                 >
                                     <Image
-                                        src={file.preview}
+                                        src={file.url}
                                         alt={file.name}
                                         width={500}
                                         height={500}
-                                        onLoad={() => {
-                                            URL.revokeObjectURL(file.preview);
-                                        }}
                                         className="h-full w-full object-contain rounded-md"
                                     />
                                     <button

@@ -20,9 +20,8 @@ class AdvertisementModel {
         try {
             await this.connect();
 
-            // Insert the advertisement document
             const result = await this.collection.insertOne(advertisement);
-            return result.insertedId; // Return the inserted document's ID
+            return result.insertedId;
         } catch (error) {
             console.error("Failed to insert advertisement:", error.message);
             throw new Error("Failed to insert advertisement.");
