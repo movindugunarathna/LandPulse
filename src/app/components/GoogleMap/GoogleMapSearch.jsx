@@ -1,4 +1,4 @@
-// "use client";
+'use client';
 import React, { useState, useEffect } from 'react';
 import {
   useLoadScript,
@@ -28,14 +28,14 @@ const GoogleMapComp = ({ className }) => {
     setMap(mapInstance);
   };
 
-  const handleClick = (event) => {
-    dispatch(
-      setLocationGeo({
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng(),
-      })
-    );
-  };
+  //   const handleClick = (event) => {
+  //     dispatch(
+  //       setLocationGeo({
+  //         lat: event.latLng.lat(),
+  //         lng: event.latLng.lng(),
+  //       })
+  //     );
+  //   };
 
   const {
     placesService,
