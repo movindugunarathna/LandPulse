@@ -54,7 +54,7 @@ export default function ViewAd({ params: { adId } }) {
     const handleBackClick = () => router.back();
 
     return (
-        <div className="w-screen h-full overflow-x-hidden flex justify-center items-center">
+        <div className="w-full h-full overflow-x-hidden flex justify-center items-center">
             {advertisement ? (
                 <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4">
                     <div className="flex w-full justify-start items-center">

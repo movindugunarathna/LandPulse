@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
+import Link from "next/link";
 
 export default async function Home() {
-    const advertisements = await getAdvertisements();
+    const { advertisements } = await getAdvertisements({
+        pageNumber: 1,
+        pageSize: 3,
+    });
 
     return (
         <>
@@ -83,9 +87,12 @@ export default async function Home() {
                         ))}
                     </div>
                     <div className="flex items-center justify-center h-20 space-x-2">
-                        <button className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded">
+                        <Link
+                            className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
+                            href={`/viewAll`}
+                        >
                             Next
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </section>
