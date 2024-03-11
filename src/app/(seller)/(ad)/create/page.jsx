@@ -14,11 +14,12 @@ import { FaArrowDown } from "react-icons/fa";
 import { AdvertisementSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { saveAdvertisements } from "@/actions/adActions";
-import { predictReturn } from "@/data/advertisement";
+import { useRouter } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default function CreateAd() {
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const ad = useAppSelector((state) => state.ad);
     const [priceSection, setPriceSection] = useState({
@@ -89,25 +90,17 @@ export default function CreateAd() {
 
     const submitAdPost = async () => {
         try {
-            // const dumbdata = {
-            //     title: "Hfjewof",
-            //     description: "fewijfwofewfuefeiwfewi",
-            //     landTypes: ["Commercial"],
-            //     geometry: { lat: 0, lng: 0 },
-            //     isInputPrice: false,
-            //     price: 1000.0,
-            //     predict: {},
-            // };
-            // const dataParse = AdvertisementSchema.safeParse(dumbdata);
-
             const dataParse = AdvertisementSchema.safeParse(ad);
             toast.info("submition pending...");
 
             if (dataParse.success) {
                 const res = await saveAdvertisements(dataParse.data);
-                if (typeof res === Number) {
-                    toast.success("Post saved successfully");
-                }
+                console.log(res);
+                if (res.data.acknowledged) {
+                    toast.success(res.message);
+                    console.log(res.data);
+                    router.push("/dashboard");
+                } else toast.success("Something went wrong!");
             } else if (dataParse.error) {
                 const issue_1 = dataParse.error?.issues[0];
                 console.log(
@@ -133,7 +126,7 @@ export default function CreateAd() {
             {priceSection.selected && (
                 <PriceSection
                     className={
-                        "absolute top-0 left-0 w-screen h-full bg-white flex justify-center items-center"
+                        "absolute top-0 left-0 w-full h-full bg-white flex justify-center items-center"
                     }
                     setPriceDetails={setPriceSection}
                     priceDetails={priceSection}

@@ -11,12 +11,14 @@ export default function InputPrice() {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        dispatch(
-            setBasic({
-                value: value,
-                field: name,
-            })
-        );
+        if (name === "price") {
+            dispatch(
+                setBasic({
+                    value: parseFloat(value),
+                    field: name,
+                })
+            );
+        }
     };
     return (
         <div className="w-full h-full">

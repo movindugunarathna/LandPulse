@@ -24,7 +24,17 @@ export const getAdvertisement = async (slug) => {
 export const saveAdvertisements = async (slug) => {
     try {
         const post = await Advertisement.insert({ ...slug });
-        return post;
+        const id = Number(post?.insertedId).toString();
+        const acknowledged = post.acknowledged;
+        console.log(id, acknowledged);
+        return {
+            code: 200,
+            message: "Post saved successfully",
+            data: {
+                acknowledged,
+                id,
+            },
+        };
     } catch (error) {
         console.log(error);
         throw new Error(error);
