@@ -4,7 +4,6 @@ import {
     hasUpperCase,
     hasLowerCase,
     hasNumber,
-    validateEmail,
 } from "../../utils/validation";
 import { colomboGeometry } from "@/data/advertisement";
 import { landTypes } from "@/data/landTypes";
@@ -103,7 +102,19 @@ export const AdvertisementSchema = z
             }, "Please select the land location"),
         isInputPrice: z.boolean(),
         predict: z.any(),
-        images: z.string().array().nonempty("At least one image is required"),
+        images: z.array(
+            z.object({
+                id: z.string(),
+                lastModified: z.number(),
+                lastModifiedDate: z.string(),
+                name: z.string(),
+                size: z.number(),
+                type: z.string(),
+                url: z.string(),
+                webkitRelativePath: z.string(),
+            }),
+            "Image is required"
+        ),
     })
     .refine(
         (entry) => {

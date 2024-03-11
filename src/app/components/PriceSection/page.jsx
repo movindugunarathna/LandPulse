@@ -70,7 +70,7 @@ export default function PriceSection({
                         dispatch(
                             setBasic({
                                 field: "price",
-                                value: data?.price,
+                                value: parseFloat(data?.price),
                             })
                         );
 

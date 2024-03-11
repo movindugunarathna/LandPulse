@@ -20,8 +20,9 @@ class AdvertisementModel {
         try {
             await this.connect();
 
+            advertisement.creationDate = new Date();
             const result = await this.collection.insertOne(advertisement);
-            return result.insertedId;
+            return result;
         } catch (error) {
             console.error("Failed to insert advertisement:", error.message);
             throw new Error("Failed to insert advertisement.");
