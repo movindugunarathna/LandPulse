@@ -9,7 +9,7 @@ import ChartApp from "@/app/components/Chart/Chart";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
 
-export default function ViewAd() {
+export default function ViewAd({ params: { adId } }) {
     const router = useRouter();
     const [advertisement, setAdvertisement] = useState(null);
     const [growthClicked, setGrowthClicked] = useState(false);
@@ -19,9 +19,7 @@ export default function ViewAd() {
     useEffect(() => {
         const init = async () => {
             try {
-                const post = await getAdvertisementById(
-                    "65eea09b6c372cf8d3b8032a"
-                );
+                const post = await getAdvertisementById(adId);
                 if (post.code === 200) {
                     toast.success(post.message);
                     post.data.predict = JSON.parse(post.data.predict);
