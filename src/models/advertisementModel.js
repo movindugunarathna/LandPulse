@@ -3,6 +3,7 @@ import clientPromise from "@/utils/connect";
 
 class AdvertisementModel {
     static collection = null;
+    static totalAdvertisements = 0;
 
     static async connect() {
         try {
@@ -10,6 +11,7 @@ class AdvertisementModel {
             const client = await clientPromise;
             const db = client.db(process.env.MONGODB_DB_NAME);
             this.collection = db.collection("advertisements");
+            this.totalAdvertisements = await this.collection.countDocuments();
         } catch (error) {
             console.error("Error connecting to MongoDB:", error.message);
             throw new Error("Failed to connect to the database.");
@@ -29,16 +31,31 @@ class AdvertisementModel {
         }
     }
 
-    static async find(query = {}) {
+    static async find({ query = {}, pageNumber = 1, pageSize = 25 }) {
         try {
             await this.connect();
+
+            // Calculate the page size based on the total number of advertisements
+            const totalPages = Math.ceil(this.totalAdvertisements / pageSize);
+
+            if (pageNumber < 1 || pageNumber > totalPages) {
+                throw new Error("Invalid page number.");
+            }
+
+            // Calculate the number of documents to skip based on the page number and page size
+            const skipCount = (pageNumber - 1) * pageSize;
 
             // Find documents based on the query and sort by creation date descending
             const advertisements = await this.collection
                 .find(query)
                 .sort({ creationDate: -1 })
+                .skip(skipCount)
+                .limit(pageSize)
                 .toArray();
-            return advertisements;
+            return {
+                advertisements,
+                totalPages,
+            };
         } catch (error) {
             console.error("Failed to fetch advertisements:", error.message);
             throw new Error("Failed to fetch advertisements.");
