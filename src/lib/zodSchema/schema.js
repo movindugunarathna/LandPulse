@@ -85,6 +85,7 @@ export const AdvertisementSchema = z
         description: z
             .string()
             .min(20, "Description cant be less than 20 characters"),
+        perch: z.number().min(1, "Perch count is required"),
         price: z.number().min(1, "Price is required"),
         landTypes: z.string().array().nonempty("LandType is required!"),
         geometry: z

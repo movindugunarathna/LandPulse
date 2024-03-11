@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
@@ -14,6 +15,7 @@ export default function PriceSection({
 }) {
     const [isPricePredict, setIsPricePredict] = useState(true);
     const ad = useAppSelector((state) => state.ad);
+    const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
     const priceTabRef = useRef(null);
 
@@ -33,6 +35,7 @@ export default function PriceSection({
     }, []);
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             const inputData = {
                 geometry: ad.geometry,
@@ -108,6 +111,7 @@ export default function PriceSection({
             console.log(error.message);
             toast.error(error.message);
         }
+        setLoading(false);
     };
 
     return (
@@ -136,7 +140,12 @@ export default function PriceSection({
                         </div>
                     </div>
 
-                    <div className="py-10 w-full h-full">
+                    <div className="relative my-10 w-full h-full">
+                        {loading && (
+                            <div className="absolute top-0 left-0 z-10 bg-white w-full h-full flex justify-center items-center">
+                                Loading...
+                            </div>
+                        )}
                         {isPricePredict ? <PredictPrice /> : <InputPrice />}
                     </div>
 

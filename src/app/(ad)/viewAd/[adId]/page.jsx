@@ -168,9 +168,10 @@ export default function ViewAd({ params: { adId } }) {
                                         <div className="flex flex-row gap-8">
                                             <span className="text-gray-600">
                                                 Rs.{" "}
-                                                {advertisement?.price.toFixed(
-                                                    2
-                                                )}{" "}
+                                                {(
+                                                    advertisement?.price *
+                                                    advertisement?.perch
+                                                ).toFixed(2)}{" "}
                                                 /=
                                             </span>
                                         </div>
