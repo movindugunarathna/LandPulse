@@ -8,12 +8,9 @@ const userSlice = createSlice({
     },
     reducers: {
         setUser: (state, action) => {
-            state.data = action.payload;
+            const { user } = action.payload;
+            return { ...state, ...user };
         },
-        // Add other reducers as needed
-        // logOut: (state) => {
-        //   state.data = { name: "", email: "", phoneNumber: "" };
-        // },
     },
 });
 

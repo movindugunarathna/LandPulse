@@ -20,6 +20,7 @@ export const dynamic = "force-dynamic";
 
 export default function CreateAd() {
     const router = useRouter();
+    const [userId, setUserId] = useState(null);
     const dispatch = useAppDispatch();
     const ad = useAppSelector((state) => state.ad);
     const [priceSection, setPriceSection] = useState({
@@ -41,7 +42,10 @@ export default function CreateAd() {
         if (status === "unauthenticated" && !session?.user) {
             redirect("/api/auth/signin?callbackUrl=/login");
         }
-        console.log(session);
+        if (session?.user) {
+            const { user } = session;
+            setUserId(user.id);
+        }
     }, [session, session?.user, status]);
 
     useEffect(() => {
@@ -94,7 +98,10 @@ export default function CreateAd() {
             toast.info("submition pending...");
 
             if (dataParse.success) {
-                const res = await saveAdvertisements(dataParse.data);
+                const res = await saveAdvertisements({
+                    ...dataParse.data,
+                    userId,
+                });
                 console.log(res);
                 if (res.data.acknowledged) {
                     toast.success(res.message);
@@ -201,20 +208,20 @@ export default function CreateAd() {
                         </div>
                     )}
 
-                    <div
-                        className="w-screen min-h-screen flex justify-center items-center flex-col"
-                        ref={scrollRef}
-                    >
-                        <div className="md:w-4/5 w-full flex justify-end">
-                            <button
-                                id="publish"
-                                name="publish"
-                                className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                onClick={submitAdPost}
-                            >
-                                Publish
-                            </button>
-                        </div>
+                        <div
+                            className="w-screen min-h-screen flex justify-center items-center flex-col"
+                            ref={scrollRef}
+                        >
+                            <div className="md:w-4/5 w-full flex justify-end">
+                                <button
+                                    id="publish"
+                                    name="publish"
+                                    className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    onClick={submitAdPost}
+                                >
+                                    Publish
+                                </button>
+                            </div>
 
                         <div className="w-fit grid grid-cols-1 md:grid-cols-2 gap-8 p-8 rounded-lg">
                             <div className="text-center">

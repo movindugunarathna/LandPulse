@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
-// Array of image URLs
-const landImages = [
-    "/download.jpeg",
-    "/download1.jpeg",
-    "/download2.jpeg",
-    "/download3.jpeg",
-];
-
-const ImageComponent = () => {
+const ImageComponent = ({ imageArray }) => {
+    console.log(imageArray);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0); // Initial selected image index
 
     // Function to handle image selection
@@ -18,29 +11,29 @@ const ImageComponent = () => {
     };
 
     return (
-        <div className="card-wrapper max-w-full max-h-full">
-            <div className="card grid gap-6 md:flex md:justify-center md:items-center">
-                <div className="product-imgs flex flex-col justify-center m-2">
-                    <div className="img-display overflow-hidden">
-                        <div className="img-showcase flex transition-all duration-500 ease-in-out">
+        <div className="card-wrapper w-full h-full">
+            <div className="card w-full h-full grid gap-6 md:flex md:justify-center md:items-center">
+                <div className="w-full h-full product-imgs flex flex-col justify-center m-2">
+                    <div className="w-full h-full img-display overflow-hidden">
+                        <div className="w-full h-full img-showcase flex justify-center items-center transition-all duration-500 ease-in-out">
                             <Image
-                                src={landImages[selectedImageIndex]}
+                                src={imageArray[selectedImageIndex].url}
                                 alt="land image"
-                                className="w-full h-60 sm:h-96"
+                                className="w-auto h-auto sm:h-96"
                                 width={200}
                                 height={200}
                             />
                         </div>
                     </div>
                     <div className="img-select flex p-3 justify-center">
-                        {landImages.map((imageUrl, index) => (
+                        {imageArray.map((imageObj, index) => (
                             <div className="img-item m-1" key={index}>
                                 <a
                                     href="#"
                                     onClick={() => handleImageSelect(index)}
                                 >
                                     <Image
-                                        src={imageUrl}
+                                        src={imageObj.url}
                                         alt="land image"
                                         className="w-24 h-16 sm:h-24"
                                         width={200}

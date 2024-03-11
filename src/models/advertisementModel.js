@@ -45,6 +45,21 @@ class AdvertisementModel {
         }
     }
 
+    static async findOneById(id) {
+        try {
+            await this.connect();
+
+            const advertisement = await this.collection.findOne({
+                _id: new ObjectId(id),
+            });
+
+            return advertisement;
+        } catch (error) {
+            console.error("Failed to fetch advertisement:", error.message);
+            throw new Error("Failed to fetch advertisement.");
+        }
+    }
+
     static async update(id, updatedFields) {
         try {
             await this.connect();
