@@ -2,9 +2,9 @@ name: Build NextJs App
 
 on:
   push:
-    branches: ['main']
+    branches: ['movindu']
   pull_request:
-    branches: ['main']
+    branches: ['movindu']
 
 jobs:
   build:
