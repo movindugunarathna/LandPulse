@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function Dashboard({ userData }) {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (status === "unauthenticated" && !session?.user) {
@@ -47,7 +48,7 @@ export default function Dashboard({ userData }) {
               {user?.username || "Fetching..."}
             </h5>
             <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-              <Link href="">Edit Profile</Link>{" "}
+              <button>Edit Profile</button>
             </span>
           </div>
 
@@ -105,18 +106,19 @@ export default function Dashboard({ userData }) {
                       All your products are here.{" "}
                     </p>
                   </div>
-                  <button
-                    className="px-6 py-2 text-black "
-                    type="button"
-                    onClick={() =>
-                      signOut({
-                        callbackUrl: "/login",
-                        redirect: true,
-                      })
-                    }
-                  >
-                    SignOut
-                  </button>
+                  <div className="flex justify-center py-2">
+                    <button
+                      className="px-2 py- bg
+                    -lime-700 text-white rounded-lg bg-lime-700 text-sm hover:bg-lime-800"
+                      type="button"
+                      onClick={() => {
+                        console.log("Redirecting to create page");
+                        router.push("/create");
+                      }}
+                    >
+                      Create Post
+                    </button>
+                  </div>
                 </div>
               </caption>
               <thead className="text-xs text-gray-500  bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
@@ -136,11 +138,8 @@ export default function Dashboard({ userData }) {
                   <th scope="col" className="px-6 py-3">
                     Predicted Price
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    Action
-                  </th>
                   <th scope="col" className="px-6 py-3 rounded-e-lg">
-                    More
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -167,29 +166,18 @@ export default function Dashboard({ userData }) {
                       Accepted
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right text-gray-900 whitespace-nowrap dark:text-white">
-                    <a
-                      href="#"
+                  <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
+                  <button
                       className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800"
                     >
-                      Edit
-                    </a>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <svg
-                      className="hover:text-gray-700 w-6 h-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
+                      View
+                    </button>
+                    <button
+                      className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                      />
-                    </svg>
+                      Delete
+                    </button>
+                    
                   </td>
                 </tr>
               </tbody>
