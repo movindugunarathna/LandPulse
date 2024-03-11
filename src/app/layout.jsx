@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
                     <Navbar />
                     {children}
                     <Footer />
-                    <Toaster closeButton position="top-center" />
+                    <Toaster closeButton position="bottom-center" />
                 </body>
             </AuthProvider>
         </html>
