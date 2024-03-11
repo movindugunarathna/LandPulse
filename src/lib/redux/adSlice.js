@@ -8,6 +8,7 @@ const adInitial = {
     geometry: colomboGeometry,
     isInputPrice: false,
     price: 0.0,
+    perch: 1.0,
     predict: predictReturn,
     images: [],
 };

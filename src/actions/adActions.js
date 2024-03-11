@@ -23,6 +23,7 @@ export const getAdvertisementById = async (id) => {
                 _id: post._id.toString(),
                 title: post.title,
                 description: post.description,
+                perch: post.perch,
                 price: post.price,
                 landTypes: post.landTypes,
                 geometry: post.geometry,

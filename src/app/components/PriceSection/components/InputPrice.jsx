@@ -26,7 +26,7 @@ export default function InputPrice() {
                 htmlFor="price"
                 className="block text-gray-700 font-bold mb-2 text-left"
             >
-                Selling Price (Rs.):
+                Selling Price Per Perch (Rs.):
             </label>
             <input
                 type="number"
