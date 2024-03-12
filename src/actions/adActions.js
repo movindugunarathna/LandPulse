@@ -2,12 +2,16 @@
 import Advertisement from "@/models/advertisementModel";
 import { getUserContactsById } from "./userActions";
 
-export const getAdvertisements = async ({ query, pageNumber, pageSize }) => {
+export const getAdvertisements = async ({
+    filterValue,
+    pageNumber,
+    pageSize,
+}) => {
     try {
         const { advertisements, totalPages } = await Advertisement.find({
-            query,
             pageNumber,
             pageSize,
+            value: filterValue,
         });
         return {
             totalPages,
@@ -20,6 +24,7 @@ export const getAdvertisements = async ({ query, pageNumber, pageSize }) => {
                 images: advertisement.images,
                 userId: advertisement.userId,
                 creationDate: advertisement.creationDate,
+                isInputPrice: advertisement.isInputPrice,
             })),
         };
     } catch (err) {
