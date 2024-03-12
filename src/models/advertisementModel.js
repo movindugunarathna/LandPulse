@@ -97,6 +97,22 @@ class AdvertisementModel {
         }
     }
 
+    static async find({ query = {} }) {
+        try {
+            await this.connect();
+
+            const advertisements = await this.collection
+                .find(query)
+                .sort({ creationDate: -1 })
+                .toArray();
+
+            return advertisements;
+        } catch (error) {
+            console.error("Failed to fetch advertisements:", error.message);
+            throw new Error("Failed to fetch advertisements.");
+        }
+    }
+
     static async findOneById(id) {
         try {
             await this.connect();
