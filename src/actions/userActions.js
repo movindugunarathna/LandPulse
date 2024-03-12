@@ -2,6 +2,7 @@
 import UserModel from "@/models/userModel";
 import User from "@/models/userModel";
 import { hashPassword } from "@/utils/bcrypt";
+import { getAdvertisementByUserId } from "./adActions";
 
 export const signUp = async (userData) => {
     try {
@@ -57,6 +58,7 @@ export async function getUserByEmailOrUsername(identifier) {
 export async function getUserByID(id) {
     try {
         const user = await UserModel.findOne({ email: id });
+        user.posts = await getAdvertisementByUserId(id);
 
         return JSON.stringify(user);
     } catch (error) {

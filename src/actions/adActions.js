@@ -84,3 +84,13 @@ export const saveAdvertisements = async (slug) => {
         throw new Error(error);
     }
 };
+
+export const getAdvertisementByUserId = async (userId) => {
+    try {
+        const post = await Advertisement.find({ userId });
+        return post;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+};
