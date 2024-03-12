@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
 
@@ -44,7 +44,7 @@ export default function Dashboard({ userData }) {
                   <Image
                     width={100}
                     height={100}
-                    src="/avatar.png"
+                    src={user?.profile || "/avatar.png"}
                     alt="profile image"
                   />
                 </div>
@@ -147,37 +147,48 @@ export default function Dashboard({ userData }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                {user?.posts.map((post) => (
+                  <tr
+                    key={post._id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                   >
-                    <div>Sample Ad-Title</div>
-                    <span className=" text-xs text-gray-400 py-2">Date</span>
-                  </th>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <div>$0,000,000.00</div>
-                    <span className=" text-xs text-gray-400 py-2">Pending</span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 dark:text-white">
-                    <div>Sample Ad-Location</div>
-                    <span className=" text-xs text-gray-400 py-2">Address</span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                    <div>$0,000,000.00</div>
-                    <span className=" text-xs text-gray-400 py-2">
-                      Accepted
-                    </span>
-                  </td>
-                  <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
-                    <button className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800">
-                      View
-                    </button>
-                    <button className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 text-center dark:text-white"
+                    >
+                      <div>{post.title}</div>
+                      <span className=" text-xs text-gray-400 py-2">
+                        {post.creationDate.split("T")[0]}
+                      </span>
+                    </th>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      <div>Rs.{post.price}</div>
+                      <span className=" text-xs text-gray-400 py-2">
+                        Perch:{post.perch}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      <div>Lat :{post.geometry.lat}</div>
+                      <span className=" text-xs text-gray-400 py-2">
+                        Lon : {post.geometry.lng}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                      <div>Max: {post.predict[1].max_next}</div>
+                      <span className=" text-xs text-gray-400 py-2">
+                        {post.predict[1].min_next}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
+                      <button className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800">
+                        View
+                      </button>
+                      <button className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
