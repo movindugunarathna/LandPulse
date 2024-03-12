@@ -3,12 +3,12 @@ import Advertisement from "@/models/advertisementModel";
 import { getUserContactsById } from "./userActions";
 
 export const getAdvertisements = async ({
-    filterValue,
+    filterValue = 1,
     pageNumber,
     pageSize,
 }) => {
     try {
-        const { advertisements, totalPages } = await Advertisement.find({
+        const { advertisements, totalPages } = await Advertisement.findSort({
             pageNumber,
             pageSize,
             value: filterValue,

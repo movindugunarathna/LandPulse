@@ -12,7 +12,10 @@ export default async function Home() {
     return (
         <>
             <section>
-                <div className="w-auto md:h-screen mx-auto" id="hero-banner">
+                <div
+                    className="relative w-auto md:h-screen mx-auto"
+                    id="hero-banner"
+                >
                     <Image
                         className="absolute object-cover w-full h-screen"
                         src="/hero-image.jpg"
@@ -20,34 +23,37 @@ export default async function Home() {
                         width={2560}
                         height={1440}
                     />
-                    <div className="absolute top-0 w-full h-screen bg-black opacity-50"></div>
-                    <div className="relative z-10 flex flex-col justify-center items-center h-screen text-center text-white">
+                    <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
+                    <div className="relative z-10 flex flex-col justify-center items-center h-screen text-center text-white gap-10">
                         <h1 className="text-6xl font-bold md:text-5xl text-custom-green-200">
                             Land Awaits Your Imagination
                         </h1>
-                        <div className="container text-wrap text-xs leading-relaxed">
-                            <p className="mt-4 text-2xl md:text-lg">
-                                Welcome to a realm where your imagination knows
-                                no bounds.Our collection of pristine land
-                                parcels invites you to paint your dreams upon
-                                nature&apos;s canvas. Whether you envision a
-                                tranquil retreat nestled among trees or aspire
-                                to build your legacy in an urban landscape, our
-                                diverse listings cater to your unique
-                                aspirations. Explore rolling hills, vast plains,
-                                or scenic waterfronts each plot holds the
-                                promise of your vision. Begin your journey here,
-                                where land becomes a space for your creativity
-                                to flourish and your dreams to take shape.
-                            </p>
-                        </div>
+                        <p className="w-1/3 mt-4 text-2xl md:text-lg text-wrap text-justify leading-relaxed">
+                            Welcome to a realm where your imagination knows no
+                            bounds.Our collection of pristine land parcels
+                            invites you to paint your dreams upon nature&apos;s
+                            canvas. Whether you envision a tranquil retreat
+                            nestled among trees or aspire to build your legacy
+                            in an urban landscape, our diverse listings cater to
+                            your unique aspirations. Explore rolling hills, vast
+                            plains, or scenic waterfronts each plot holds the
+                            promise of your vision. Begin your journey here,
+                            where land becomes a space for your creativity to
+                            flourish and your dreams to take shape.
+                        </p>
                         <div className="">
-                            <button className="mt-8 px-8 py-4 bg-gray-700 text-white font-bold text-xl rounded-md mr-5">
+                            <Link
+                                className="mt-8 px-8 py-4 bg-gray-700 text-white font-bold text-xl rounded-md mr-5"
+                                href={"/viewAll"}
+                            >
                                 Explore Land
-                            </button>
-                            <button className="mt-8 px-8 py-4 bg-gray-400 text-white font-bold text-xl rounded-md">
+                            </Link>
+                            <Link
+                                className="mt-8 px-8 py-4 bg-custom-green-100 text-white font-bold text-xl rounded-md"
+                                href={"/login"}
+                            >
                                 Claim your Spot{" "}
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

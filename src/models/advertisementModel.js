@@ -31,9 +31,15 @@ class AdvertisementModel {
         }
     }
 
-    static async find({ query = {}, pageNumber = 1, pageSize = 25, value }) {
+    static async findSort({
+        query = {},
+        pageNumber = 1,
+        pageSize = 25,
+        value,
+    }) {
         try {
             await this.connect();
+            console.log("DB Model");
 
             // Calculate the page size based on the total number of advertisements
             const totalPages = Math.ceil(this.totalAdvertisements / pageSize);

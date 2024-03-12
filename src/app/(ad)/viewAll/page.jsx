@@ -68,7 +68,7 @@ const ViewAll = () => {
                     ref={dropdownRef}
                 >
                     <div
-                        className="hover:bg-slate-200 hover:border-black/40 px-2 py-1 bg-white rounded-md border border-black/20 relative flex justify-center items-center"
+                        className="hover:bg-slate-200 hover:border-black/40 px-2 py-2 bg-white rounded-md border border-black/20 relative flex justify-center items-center"
                         onClick={() => {
                             setDropdownOpen(!dropdownOpen);
                         }}
