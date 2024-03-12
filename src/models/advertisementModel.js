@@ -31,7 +31,7 @@ class AdvertisementModel {
         }
     }
 
-    static async find({ query = {}, pageNumber = 1, pageSize = 25 }) {
+    static async find({ query = {}, pageNumber = 1, pageSize = 25, value }) {
         try {
             await this.connect();
 
@@ -45,13 +45,48 @@ class AdvertisementModel {
             // Calculate the number of documents to skip based on the page number and page size
             const skipCount = (pageNumber - 1) * pageSize;
 
-            // Find documents based on the query and sort by creation date descending
+            let sortCriteria = {};
+
+            // Determine sorting criteria based on the value
+            switch (value) {
+                case 1:
+                    // Sort by creation date descending (default)
+                    sortCriteria = { creationDate: -1 };
+                    break;
+                case 2:
+                    // Sort by price low to high
+                    sortCriteria = { price: 1 };
+                    break;
+                case 3:
+                    // Sort by price high to low
+                    sortCriteria = { price: -1 };
+                    break;
+                case 4:
+                    // Sort by perch low to high
+                    sortCriteria = { perch: 1 };
+                    break;
+                case 5:
+                    // Sort by perch high to low
+                    sortCriteria = { perch: -1 };
+                    break;
+                case 6:
+                    // Sort by isInputPrice (boolean)
+                    sortCriteria = { isInputPrice: 1, creationDate: -1 };
+                    break;
+                // Add more cases for other sorting options if needed
+                default:
+                    // Sort by creation date descending (default)
+                    sortCriteria = { creationDate: -1 };
+            }
+
+            // Find documents based on the query and sort criteria
             const advertisements = await this.collection
                 .find(query)
-                .sort({ creationDate: -1 })
+                .sort(sortCriteria)
                 .skip(skipCount)
                 .limit(pageSize)
                 .toArray();
+
             return {
                 advertisements,
                 totalPages,

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import ChartApp from "@/app/components/Chart/Chart";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 
 export default function ViewAd({ params: { adId } }) {
     const router = useRouter();
@@ -189,6 +190,14 @@ export default function ViewAd({ params: { adId } }) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="w-screen h-full">
+                        <DistanceCard
+                            dataObj={advertisement?.predict}
+                            className={
+                                "flex gap-4 overflow-x-scroll no-scrollbar p-8"
+                            }
+                        />
                     </div>
                 </div>
             ) : (
