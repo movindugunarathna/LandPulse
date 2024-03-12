@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import ChartApp from "@/app/components/Chart/Chart";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 
 export default function ViewAd({ params: { adId } }) {
     const router = useRouter();
@@ -54,7 +55,7 @@ export default function ViewAd({ params: { adId } }) {
     const handleBackClick = () => router.back();
 
     return (
-        <div className="w-screen h-full overflow-x-hidden flex justify-center items-center">
+        <div className="w-full h-full overflow-x-hidden flex justify-center items-center">
             {advertisement ? (
                 <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4">
                     <div className="flex w-full justify-start items-center">
@@ -189,6 +190,14 @@ export default function ViewAd({ params: { adId } }) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div className="w-screen h-full">
+                        <DistanceCard
+                            dataObj={advertisement?.predict}
+                            className={
+                                "flex gap-4 overflow-x-scroll no-scrollbar p-8"
+                            }
+                        />
                     </div>
                 </div>
             ) : (

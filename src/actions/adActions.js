@@ -2,10 +2,31 @@
 import Advertisement from "@/models/advertisementModel";
 import { getUserContactsById } from "./userActions";
 
-export const getAdvertisements = async () => {
+export const getAdvertisements = async ({
+    filterValue = 1,
+    pageNumber,
+    pageSize,
+}) => {
     try {
-        const advertisements = await Advertisement.find();
-        return advertisements;
+        const { advertisements, totalPages } = await Advertisement.findSort({
+            pageNumber,
+            pageSize,
+            value: filterValue,
+        });
+        return {
+            totalPages,
+            advertisements: advertisements.map((advertisement) => ({
+                _id: advertisement._id.toString(),
+                title: advertisement.title,
+                perch: advertisement.perch,
+                price: advertisement.price,
+                landTypes: advertisement.landTypes,
+                images: advertisement.images,
+                userId: advertisement.userId,
+                creationDate: advertisement.creationDate,
+                isInputPrice: advertisement.isInputPrice,
+            })),
+        };
     } catch (err) {
         console.log(err);
         throw new Error("Failed to fetch posts!");
@@ -16,6 +37,8 @@ export const getAdvertisementById = async (id) => {
     try {
         const post = await Advertisement.findOneById(id);
         const userContacts = await getUserContactsById(post.userId);
+
+        console.log("Advertisement fetched successfully");
         return {
             code: 200,
             message: "Successfully downloaded",
@@ -56,6 +79,16 @@ export const saveAdvertisements = async (slug) => {
                 id,
             },
         };
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+};
+
+export const getAdvertisementByUserId = async (userId) => {
+    try {
+        const post = await Advertisement.find({ userId });
+        return post;
     } catch (error) {
         console.log(error);
         throw new Error(error);

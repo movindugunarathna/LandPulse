@@ -382,7 +382,7 @@ export default function CreateAd() {
                             </div>
                         </div>
                         {surround && (
-                            <div className="w-full overflow-x-scroll ">
+                            <div className="w-full overflow-x-scroll no-scrollbar">
                                 <DistanceCard
                                     className={
                                         "distanceCard h-full p-8 flex gap-x-10"

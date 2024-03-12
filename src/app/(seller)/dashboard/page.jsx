@@ -16,85 +16,88 @@ export default function Dashboard({ userData }) {
     if (status === "unauthenticated" && !session?.user) {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
-    const user = async () => {
-      const userProfile = await getUserByID(session?.user.email);
-      console.log(userProfile);
-      setUser(JSON.parse(userProfile));
-      return userProfile;
-    };
-    user();
+
+    if (session?.user) {
+      const user = async () => {
+        const userDetails = await getUserByID(session?.user.email);
+        const userObj = JSON.parse(userDetails);
+        console.log(userObj);
+        setUser(userObj);
+        return userObj;
+      };
+      user();
+    }
   }, [session, session?.user, status]);
 
   return (
     <>
-      <div className="wrapper flex mx-1 my-4">
-        {/* profile pane */}
-        <div className="profile-pane w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-10 ml-4">
-          <div className="head flex flex-col items-center pb-10">
-            <h2 className="text-xl text-gray-900 dark:text-white items-center mb-5 font-semibold">
-              Seller Profile
-            </h2>
-            <div className="profile-image flex flex-col items-center pb-10">
-              <div className="img">
-                <Image
-                  width={100}
-                  height={100}
-                  src="/avatar.png"
-                  alt="profile image"
-                />
+      {user ? (
+        <div className="wrapper flex mx-1 my-4">
+          {/* profile pane */}
+          <div className="profile-pane w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-10 ml-4">
+            <div className="head flex flex-col items-center pb-10">
+              <h2 className="text-xl text-gray-900 dark:text-white items-center mb-5 font-semibold">
+                Seller Profile
+              </h2>
+              <div className="profile-image flex flex-col items-center pb-10">
+                <div className="img">
+                  <Image
+                    width={100}
+                    height={100}
+                    src="/avatar.png"
+                    alt="profile image"
+                  />
+                </div>
+              </div>
+              <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                {user?.username || "Fetching..."}
+              </h5>
+              <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
+                <Link href="">Edit Profile</Link>{" "}
+              </span>
+            </div>
+
+            <div className="account head flex flex-col items-left pb-10">
+              <h6 className="text-lg font-bold mb-2">Account</h6>
+              <div className=" mb-2 text-sm">
+                <div className="flex flex-raw justify-between mb-1">
+                  <span className="font-semibold text-gray-700">
+                    Assert Count
+                  </span>
+                  <span>Jnne 22, 2024</span>
+                </div>
+                <div className="flex flex-raw justify-between mb-1">
+                  <span className="font-semibold text-gray-700">
+                    Asset Total
+                  </span>
+                  <span>Rs. 0,000,000.00</span>
+                </div>
               </div>
             </div>
-            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-              {user?.username || "Fetching..."}
-            </h5>
-            <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-              <button>Edit Profile</button>
-            </span>
-          </div>
 
-          <div className="account head flex flex-col items-left pb-10">
-            <h6 className="text-lg font-bold mb-2">Account</h6>
-            <div className=" mb-2 text-sm">
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">
-                  Assert Count
-                </span>
-                <span>Jnne 22, 2024</span>
-              </div>
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">Asset Total</span>
-                <span>Rs. 0,000,000.00</span>
+            <div className="account head flex flex-col items-left pb-10">
+              <h6 className="text-lg font-bold mb-2">Contact</h6>
+              <div className=" mb-2 text-sm">
+                <div className="flex flex-raw justify-between mb-1">
+                  <span className="font-semibold text-gray-700">Email</span>
+                  <span>{user?.email || "Fetching..."}</span>
+                </div>
+                <div className="flex flex-raw justify-between mb-1">
+                  <span className="font-semibold text-gray-700">Phone</span>
+                  <span>{user?.contact || "Fetching..."}</span>
+                </div>
+                <div className="flex flex-raw justify-between mb-1">
+                  <span className="font-semibold text-gray-700 mr-4 ">
+                    Address
+                  </span>
+                  <span className="text-right">
+                    {user?.address || "Fetching..."}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-
-          <div className="account head flex flex-col items-left pb-10">
-            <h6 className="text-lg font-bold mb-2">Contact</h6>
-            <div className=" mb-2 text-sm">
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">Email</span>
-                <span>{user?.email || "Fetching..."}</span>
-              </div>
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700">Phone</span>
-                <span>{user?.contact || "Fetching..."}</span>
-              </div>
-              <div className="flex flex-raw justify-between mb-1">
-                <span className="font-semibold text-gray-700 mr-4 ">
-                  Address
-                </span>
-                <span className="text-right">
-                  {user?.address || "Fetching..."}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* profile panne ends here */}
-
-        {/* adverticement pane */}
-        <div className="adverticement mx-4 grow">
-          <h1 className=" text-right text-4xl font-bold">Advertisement</h1>
+          {/* profile panne ends here */}
 
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 p-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -167,24 +170,23 @@ export default function Dashboard({ userData }) {
                     </span>
                   </td>
                   <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
-                  <button
-                      className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800"
-                    >
+                    <button className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800">
                       View
                     </button>
-                    <button
-                      className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700"
-                    >
+                    <button className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700">
                       Delete
                     </button>
-                    
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="w-screen h-screen flex justify-center items-center">
+          Loading...
+        </div>
+      )}
     </>
   );
 }
