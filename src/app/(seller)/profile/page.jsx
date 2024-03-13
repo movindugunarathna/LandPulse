@@ -11,24 +11,20 @@ import {
   FaAddressBook,
   FaMobileAlt,
   FaUpload,
-  FaUser,
   FaWindowClose,
 } from "react-icons/fa";
-import { IoMail } from "react-icons/io5";
-import { RiLockPasswordLine } from "react-icons/ri";
+import Image from "next/image";
 
 export default function Page() {
   const { status, data: session } = useSession();
   const filesize = 1000000;
   const router = useRouter();
-
-  const [showPswrd, setShowPswrd] = useState(false);
   const [fileName, setFileName] = useState("Profile Photo");
   const [errorMsg, setErrorMsg] = useState("");
+  const user = JSON.parse(session?.user.userDetails || "{}");
 
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
-
   const {
     register,
     handleSubmit,
@@ -68,29 +64,32 @@ export default function Page() {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
     console.log(session);
+
+
   }, [session, session?.user, status]);
 
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
+        
+      <div className="container flex mt-4 justify-center min-h-screen px-6 mx-auto">
+      
         <div className="w-full max-w-md">
+        <h1 className="text-4xl font-semibold text-gray-700  text-center dark:text-white"> Edit Profile</h1>
           <div className="flex items-center justify-center mt-6">
+           
             <form onSubmit={handleSubmit(onSubmit, onError)}>
-              {/* username */}
-              <div className="relative flex items-center mt-8">
-                <FaUser className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
-
-                <input
-                  id="username"
-                  type="text"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Username"
-                  {...register("username")}
-                  aria-errormessage={errors?.username?.message}
-                  onFocus={() => errors?.username?.message}
-                />
+            
+            {/* image */}
+            <div className="profile-image flex flex-col items-center pb-10">
+                <div className="img">
+                  <Image
+                    width={200}
+                    height={200}
+                    src={user?.profile || "/avatar.png"}
+                    alt="profile image"
+                  />
+                </div>
               </div>
-
               {/* profile */}
               <label
                 htmlFor="profile"
@@ -144,7 +143,8 @@ export default function Page() {
                   id="contact"
                   type="number"
                   className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Mobile number"
+                  placeholder={"contact number"}
+                  value={user?.contact}
                   {...register("contact")}
                   aria-errormessage={errors?.contact?.message}
                   onFocus={() => errors?.contact?.message}
@@ -160,6 +160,7 @@ export default function Page() {
                   type="text"
                   className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Address"
+                  value={user?.address}
                   {...register("address")}
                   aria-errormessage={errors?.address?.message}
                   onFocus={() => errors?.address?.message}
@@ -173,10 +174,10 @@ export default function Page() {
               </div>
 
               <button
-                className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-lime-700 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring focus:ring-lime-300 focus:ring-opacity-50"
                 type="submit"
               >
-                SignUp
+                Save Changes
               </button>
             </form>
           </div>

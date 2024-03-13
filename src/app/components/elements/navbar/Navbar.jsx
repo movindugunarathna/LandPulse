@@ -7,9 +7,10 @@ import { redirect, usePathname } from "next/navigation";
 import { FiAlignJustify, FiX } from "react-icons/fi";
 
 const navLinks = [
-    { name: "HOME", link: "/" },
-    { name: "CONTACT US", link: "/contact" },
+  { name: "HOME", link: "/" },
+  { name: "CONTACT US", link: "/contact" },
 ];
+
 
 const NavLink = ({ item, setIsOpen }) => (
     <Link
@@ -57,7 +58,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white">
+        <header className="sticky top-0 z-50 bg-white shadow-sm">
             <nav className="bg-white-800">
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-start">
@@ -171,11 +172,12 @@ const Navbar = () => {
                                 onClick={handleLogin}
                             />
                         )}
-                    </div>
-                </div>
-            </nav>
-        </header>
-    );
+  
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 };
 
 export default Navbar;
