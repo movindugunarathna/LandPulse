@@ -27,8 +27,8 @@ const Page = () => {
         </div>
         <div id="contact-info" className="w-full p-4 bg-gray-200 shadow-md">
           <h2 className="text-xl font-bold">Questions? Get in touch!</h2>
-          <p>9am - 6pm on weekdays</p>
-          <p>8am - 5pm on weekends and mercantile holidays</p>
+          <p>9am - 7pm on weekdays</p>
+          <p>8am - 4pm on weekends and mercantile holidays</p>
           <h3 className="font-bold mt-4">Call us</h3>
           <p>011 1234567</p>
           <h3 className="font-bold mt-4">Email us</h3>
