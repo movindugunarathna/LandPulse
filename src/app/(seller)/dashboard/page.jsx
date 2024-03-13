@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { redirect,useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
 
@@ -44,7 +44,7 @@ export default function Dashboard({ userData }) {
                   <Image
                     width={100}
                     height={100}
-                    src={user?.profile || "/avatar.png"}
+                    src="/avatar.png"
                     alt="profile image"
                   />
                 </div>
@@ -53,7 +53,14 @@ export default function Dashboard({ userData }) {
                 {user?.username || "Fetching..."}
               </h5>
               <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-                <Link href="">Edit Profile</Link>{" "}
+                <button
+                  onClick={() => {
+                    console.log("Redirecting to edit page");
+                    router.push("/profile");
+                  }}
+                >
+                  Edit Profile
+                </button>
               </span>
             </div>
 
@@ -64,13 +71,7 @@ export default function Dashboard({ userData }) {
                   <span className="font-semibold text-gray-700">
                     Assert Count
                   </span>
-                  <span>Jnne 22, 2024</span>
-                </div>
-                <div className="flex flex-raw justify-between mb-1">
-                  <span className="font-semibold text-gray-700">
-                    Asset Total
-                  </span>
-                  <span>Rs. 0,000,000.00</span>
+                  <span>{user?.posts.length}</span>
                 </div>
               </div>
             </div>
@@ -174,9 +175,9 @@ export default function Dashboard({ userData }) {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      <div>Max: {post.predict[1].max_next}</div>
+                      <div>Max: {post.predict[1]?.max_next}</div>
                       <span className=" text-xs text-gray-400 py-2">
-                        {post.predict[1].min_next}
+                        Min: {post.predict[1]?.min_next}
                       </span>
                     </td>
                     <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">

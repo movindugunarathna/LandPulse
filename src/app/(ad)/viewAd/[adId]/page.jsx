@@ -82,20 +82,23 @@ export default function ViewAd({ params: { adId } }) {
                         <div className="xl:w-1/2 w-full h-full py-6 px-5 flex flex-col justify-between">
                             {growthClicked ? (
                                 <div className="flex flex-col gap-6">
-                                    (
                                     <ChartApp
-                                        className={"w-full h-full"}
+                                        className={"w-full h-full mt-20"}
                                         dataObj={advertisement.predict}
                                     />
                                     <div className="flex flex-col gap-2">
-                                        <div className="flex justify-between text-green-400">
-                                            <p>Price too high: </p>
-                                            <FaRegCircleCheck className="w-6 h-6 " />
-                                        </div>
-                                        <div className="flex justify-between text-red-400">
-                                            <p>Price too Low: </p>
-                                            <IoMdCloseCircleOutline className="w-6 h-6 " />
-                                        </div>
+                                        {advertisement.isInputPrice && (
+                                            <>
+                                                <div className="flex justify-between text-green-400">
+                                                    <p>Price too high: </p>
+                                                    <FaRegCircleCheck className="w-6 h-6 " />
+                                                </div>
+                                                <div className="flex justify-between text-red-400">
+                                                    <p>Price too Low: </p>
+                                                    <IoMdCloseCircleOutline className="w-6 h-6 " />
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             ) : (
@@ -160,6 +163,7 @@ export default function ViewAd({ params: { adId } }) {
                                             </p>
 
                                             {growthClicked &&
+                                                advertisement.isInputPrice &&
                                                 (priceStatus ? (
                                                     <FaRegCircleCheck className="w-6 h-6 text-green-400" />
                                                 ) : (
