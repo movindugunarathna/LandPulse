@@ -11,7 +11,7 @@ const Page = () => {
           <h2 className="text-xl font-bold">About LandPulse</h2>
           <p>LandPulse is a platform on which you can buy and sell different types of lands and properties! Select your desired location and start browsing</p>
         </div>
-        <div id="buynsell" className="w-full md:w-2/3 flex">
+        <div id="buynsell" className="w-full md:w-2/3 flex justify-evenly">
           <div id="sell" className="w-full p-4">
             <h2 className="text-xl font-bold">Have lands or properties to sell?</h2>
             <p>Sign up for a free account to start selling your items!</p>
