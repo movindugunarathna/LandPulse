@@ -52,6 +52,10 @@ export default function ViewAd({ params: { adId } }) {
         }
     }, [advertisement]);
 
+    useEffect(() => {
+        console.log(advertisement?.isInputPrice);
+    }, [advertisement?.isInputPrice]);
+
     const handleBackClick = () => router.back();
 
     return (
@@ -78,23 +82,29 @@ export default function ViewAd({ params: { adId } }) {
                         </div>
                     </div>
 
-                    <div className="sm:w-5/6 w-11/12 flex xl:flex-row max-xl:flex-col text-base justify-between items-start gap-8">
+                    <div className="sm:w-5/6 w-11/12 h-full flex xl:flex-row max-xl:flex-col text-base justify-between items-start gap-8">
                         <div className="xl:w-1/2 w-full h-full py-6 px-5 flex flex-col justify-between">
                             {growthClicked ? (
-                                <div className="flex flex-col gap-6">
+                                <div className=" w-full h-full flex flex-col gap-6">
                                     <ChartApp
-                                        className={"w-full h-full mt-20"}
+                                        className={
+                                            "w-full h-full rounded-md shadow-lg p-2"
+                                        }
                                         dataObj={advertisement.predict}
                                     />
                                     <div className="flex flex-col gap-2">
-                                        <div className="flex justify-between text-green-400">
-                                            <p>Price too high: </p>
-                                            <FaRegCircleCheck className="w-6 h-6 " />
-                                        </div>
-                                        <div className="flex justify-between text-red-400">
-                                            <p>Price too Low: </p>
-                                            <IoMdCloseCircleOutline className="w-6 h-6 " />
-                                        </div>
+                                        {advertisement?.isInputPrice && (
+                                            <>
+                                                <div className="flex justify-between text-green-400">
+                                                    <p>Price too high: </p>
+                                                    <FaRegCircleCheck className="w-5 h-5 " />
+                                                </div>
+                                                <div className="flex justify-between text-red-400">
+                                                    <p>Price too Low: </p>
+                                                    <IoMdCloseCircleOutline className="w-6 h-6 " />
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             ) : (
@@ -159,8 +169,9 @@ export default function ViewAd({ params: { adId } }) {
                                             </p>
 
                                             {growthClicked &&
+                                                advertisement?.isInputPrice &&
                                                 (priceStatus ? (
-                                                    <FaRegCircleCheck className="w-6 h-6 text-green-400" />
+                                                    <FaRegCircleCheck className="w-5 h-5 text-green-400" />
                                                 ) : (
                                                     <IoMdCloseCircleOutline className="w-6 h-6 text-red-400" />
                                                 ))}

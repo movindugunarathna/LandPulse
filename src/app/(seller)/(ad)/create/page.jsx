@@ -114,7 +114,7 @@ export default function CreateAd() {
             setLoading(true);
             const dataParse = AdvertisementSchema.safeParse(ad);
 
-            if (dataParse.success && ad?.images.length > 0) {
+            if (dataParse.success) {
                 toast.info("submition pending...");
                 const res = await saveAdvertisements({
                     ...dataParse.data,
@@ -136,8 +136,6 @@ export default function CreateAd() {
                         issue_1?.message
                 );
                 setErrMsg(issue_1.path + " " + issue_1?.message);
-            } else if (!(ad?.images.length > 0)) {
-                setErrMsg("At least one image must be selected");
             } else {
                 setErrMsg("Something went wrong!");
             }
@@ -178,7 +176,7 @@ export default function CreateAd() {
                                             )
                                         }
                                     />
-                                    <div className=" bg-gray-100 p-8 rounded-md  shadow-xl hover:shadow-2xl">
+                                    <div className=" bg-gray-100 p-8 rounded-md">
                                         <h2 className="text-lg font-bold mb-2">
                                             Advertisement Posting Instructions:
                                         </h2>
@@ -310,8 +308,8 @@ export default function CreateAd() {
                                             </label>
                                             <div className="w-full h-fit flex gap-2 justify-start items-center">
                                                 <span
-                                                    className="appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
-                                                        focus:outline-none focus:shadow-outline bg-gray-100 shadow-md cursor-pointer"
+                                                    className="shadow appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
+                                                        focus:outline-none focus:shadow-outline bg-gray-100 cursor-pointer"
                                                     onClick={() => {
                                                         console.log(
                                                             "Selected price"
@@ -341,7 +339,6 @@ export default function CreateAd() {
                                                     }}
                                                 >
                                                     {ad.price !== 0.0 &&
-                                                        ad.isInputPrice &&
                                                         (priceStatus ? (
                                                             <FaRegCircleCheck className="w-full h-full text-green-400" />
                                                         ) : (
@@ -351,7 +348,7 @@ export default function CreateAd() {
                                                         ad.price !== 0 && (
                                                             <ChartApp
                                                                 className={
-                                                                    "w-[500px] h-[400px] p-1 bg-white absolute bottom-0 left-0 flex justify-center items-center  shadow-xl hover:shadow-2xl rounded-md flex-col"
+                                                                    "w-[500px] h-[400px] p-2 bg-white absolute bottom-0 left-0 flex justify-center items-center flex-col"
                                                                 }
                                                                 dataObj={
                                                                     ad.predict
@@ -384,7 +381,7 @@ export default function CreateAd() {
                                 </div>
                             </div>
                         </div>
-                        {surround && ad.predict?.Obj && (
+                        {surround && (
                             <div className="w-full overflow-x-scroll no-scrollbar">
                                 <DistanceCard
                                     className={

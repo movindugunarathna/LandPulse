@@ -41,14 +41,3 @@ export async function convertDataUrlToFile(dataUrl) {
     const blob = new Blob([byteArray]);
     return blob;
 }
-
-export function convertBackToNumbers(obj) {
-    for (let key in obj) {
-        if (typeof obj[key] === "object") {
-            convertBackToNumbers(obj[key]);
-        } else if (!isNaN(Number(obj[key]))) {
-            obj[key] = Number(obj[key]);
-        }
-    }
-    return obj;
-}

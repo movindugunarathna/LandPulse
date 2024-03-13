@@ -3,7 +3,7 @@ import Chart from "chart.js/auto";
 
 function ChartApp({ className, dataObj }) {
     const chartRef = useRef(null);
-    const months = useMemo(() => {
+    const years = useMemo(() => {
         const result = Object.entries(dataObj)
             .filter(([key, value]) => !isNaN(parseInt(key)))
             .sort((a, b) => {
@@ -13,31 +13,31 @@ function ChartApp({ className, dataObj }) {
                 }
                 return a[1].year - b[1].year;
             });
-        const months = result.map((item) => item[0]);
+        const years = result.map((item) => item[0]);
         const min_next = result.map((item) => item[1].min_next);
         const max_next = result.map((item) => item[1].max_next);
 
-        return [months, min_next, max_next];
+        return [years, min_next, max_next];
     }, [dataObj]);
 
-    console.log(months);
+    console.log(years);
 
     useEffect(() => {
         if (chartRef.current) {
             const lineChart = new Chart(chartRef.current, {
                 type: "line",
                 data: {
-                    labels: months[0],
+                    labels: years[0],
                     datasets: [
                         {
-                            data: months[1],
-                            label: "Minimum Value",
+                            data: years[1],
+                            label: "Minimum Price",
                             borderColor: "#3cba9f",
                             fill: false,
                         },
                         {
-                            data: months[2],
-                            label: "Maximum Value",
+                            data: years[2],
+                            label: "Maximum Price",
                             borderColor: "#e43202",
                             fill: false,
                         },
@@ -47,7 +47,7 @@ function ChartApp({ className, dataObj }) {
                     plugins: {
                         title: {
                             display: true,
-                            text: "Chart JS Multiple Lines Example",
+                            text: "Min max price value per year variation",
                         },
                     },
                 },
@@ -61,10 +61,7 @@ function ChartApp({ className, dataObj }) {
 
     return (
         <div className={`${className}`}>
-            <h1>Min max price value variation</h1>
-            <div>
-                <canvas className="w-full h-full" ref={chartRef}></canvas>
-            </div>
+            <canvas className="w-full h-full" ref={chartRef}></canvas>
         </div>
     );
 }

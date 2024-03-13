@@ -21,8 +21,8 @@ export default function PredictPrice() {
                     <input
                         key={item.value}
                         type="button"
-                        className={`inline-flex items-center justify-center px-4 py-1 font-sans font-semibold tracking-wide hover:shadow-xl
-                                    border ${ad.landTypes.includes(item.type) ? "bg-gray-200 shadow-sm" : "shadow-lg"} rounded-lg`}
+                        className={`inline-flex items-center justify-center px-4 py-1 font-sans font-semibold tracking-wide 
+                                    border ${ad.landTypes.includes(item.type) ? "bg-gray-400" : "border-black"} rounded-lg`}
                         value={item.type}
                         onClick={() => {
                             if (ad.landTypes.includes(item.type)) {
