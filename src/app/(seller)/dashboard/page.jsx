@@ -44,7 +44,7 @@ export default function Dashboard({ userData }) {
                   <Image
                     width={100}
                     height={100}
-                    src="/avatar.png"
+                    src={user?.profile || "/avatar.png"}
                     alt="profile image"
                   />
                 </div>
