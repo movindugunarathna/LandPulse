@@ -22,24 +22,22 @@ const Advertisement = ({ advertisement }) => {
                     {advertisement.creationDate.toLocaleDateString("en-US")}
                 </p>
 
-                <h2 className="w-full text-justify font-bold mb-2">
+                <h2 className=" w-full text-justify font-bold mb-2">
                     {advertisement.title}
                 </h2>
                 <div className=" w-full text-gray-500 flex flex-col text-sm">
                     <p className="w-full flex justify-between items-center text-gray-800 text-sm">
-                        <span className="max-sm:hidden">
-                            Price (per perch){" "}
-                        </span>
+                        <span className="max-md:hidden">Price (per perch)</span>{" "}
                         <span>
                             LKR {Number(advertisement.price).toFixed(2)} /=
                         </span>
                     </p>
                     <p className="w-full flex justify-between items-center text-gray-800 text-sm">
-                        <span className="max-sm:hidden">Perches </span>
+                        <span className="max-md:hidden">Perches</span>{" "}
                         <span>{advertisement.landTypes.join(", ")}</span>
                     </p>
                     <p className="w-full flex justify-between items-center text-gray-800 text-sm">
-                        <span className="max-sm:hidden">Land Types</span>{" "}
+                        <span className="max-md:hidden">Land Types </span>
                         <span>{advertisement.perch}</span>
                     </p>
                 </div>
