@@ -82,9 +82,8 @@ export default function ViewAd({ params: { adId } }) {
                         <div className="xl:w-1/2 w-full h-full py-6 px-5 flex flex-col justify-between">
                             {growthClicked ? (
                                 <div className="flex flex-col gap-6">
-                                    (
                                     <ChartApp
-                                        className={"w-full h-full"}
+                                        className={"w-full h-full mt-20"}
                                         dataObj={advertisement.predict}
                                     />
                                     <div className="flex flex-col gap-2">
