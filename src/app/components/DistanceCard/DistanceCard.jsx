@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import dataTypes from "@/utils/types.json";
 
 function DistanceCard({ dataObj, className }) {

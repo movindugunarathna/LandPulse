@@ -7,7 +7,6 @@ import { pricePredictSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
 import axios from "axios";
-import { convertBackToNumbers } from "@/utils/readFiles";
 
 export default function PriceSection({
     setPriceDetails,
@@ -58,10 +57,8 @@ export default function PriceSection({
                         radius: 1000,
                     }
                 );
-                console.log(response);
 
-                const data = convertBackToNumbers(response.data);
-                console.log(data);
+                const data = response.data;
 
                 if (response.status === 200) {
                     // const data = predictReturn;
@@ -119,7 +116,7 @@ export default function PriceSection({
 
     return (
         <div ref={priceTabRef} className={className} onClick={handleClick}>
-            <div className="lg:w-3/5 h-fit bg-white rounded-md shadow-xl hover:shadow-2xl z-10 ">
+            <div className="lg:w-3/5 h-fit bg-white rounded-md border border-black z-10 ">
                 <div className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8">
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">
                         <div className="flex items-center justify-center">
