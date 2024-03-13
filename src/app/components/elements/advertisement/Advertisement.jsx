@@ -4,7 +4,7 @@ import Link from "next/link";
 const Advertisement = ({ advertisement }) => {
     return (
         <Link
-            className="max-h-96 h-fit bg-white shadow-xl backdrop-blur-md p-6 rounded-lg  text-left overflow-hidden cursor-pointer hover:bg-slate-100"
+            className="max-w-[400px] h-fit bg-white shadow-xl backdrop-blur-md p-6 rounded-lg  text-left overflow-hidden cursor-pointer hover:bg-slate-100"
             href={`viewAd/${advertisement._id}`}
         >
             <div
