@@ -87,14 +87,18 @@ export default function ViewAd({ params: { adId } }) {
                                         dataObj={advertisement.predict}
                                     />
                                     <div className="flex flex-col gap-2">
-                                        <div className="flex justify-between text-green-400">
-                                            <p>Price too high: </p>
-                                            <FaRegCircleCheck className="w-6 h-6 " />
-                                        </div>
-                                        <div className="flex justify-between text-red-400">
-                                            <p>Price too Low: </p>
-                                            <IoMdCloseCircleOutline className="w-6 h-6 " />
-                                        </div>
+                                        {advertisement.isInputPrice && (
+                                            <>
+                                                <div className="flex justify-between text-green-400">
+                                                    <p>Price too high: </p>
+                                                    <FaRegCircleCheck className="w-6 h-6 " />
+                                                </div>
+                                                <div className="flex justify-between text-red-400">
+                                                    <p>Price too Low: </p>
+                                                    <IoMdCloseCircleOutline className="w-6 h-6 " />
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             ) : (
@@ -159,6 +163,7 @@ export default function ViewAd({ params: { adId } }) {
                                             </p>
 
                                             {growthClicked &&
+                                                advertisement.isInputPrice &&
                                                 (priceStatus ? (
                                                     <FaRegCircleCheck className="w-6 h-6 text-green-400" />
                                                 ) : (
