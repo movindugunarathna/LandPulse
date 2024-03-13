@@ -3,7 +3,7 @@ import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
 import Link from "next/link";
 
-export default async function Page() {
+export default async function Home() {
     const { advertisements } = await getAdvertisements({
         pageNumber: 1,
         pageSize: 3,
@@ -13,25 +13,22 @@ export default async function Page() {
         <>
             <section>
                 <div
-                    className="relative w-auto h-screen mx-auto flex justify-center items-center"
+                    className="relative w-auto md:h-screen mx-auto"
                     id="hero-banner"
                 >
                     <Image
-                        className="absolute object-cover w-full h-full"
+                        className="absolute object-cover w-full h-screen"
                         src="/hero-image.jpg"
                         alt=""
                         width={2560}
                         height={1440}
                     />
                     <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
-                    <div
-                        className="relative md:h-5/6 lg:w-2/3 h-fit py-8 px-6 md:px-20 rounded-md bg-white/40 z-10 flex flex-col 
-                    justify-center items-center text-center text-white md:gap-10 gap-4"
-                    >
-                        <h1 className=" text-2xl sm:text-3xl font-bold md:text-5xl text-white capitalize">
-                            LAND AWAITS YOUR IMAGINATION
+                    <div className="relative z-10 flex flex-col justify-center items-center h-screen text-center text-white gap-10">
+                        <h1 className="text-6xl font-bold md:text-5xl text-custom-green-200">
+                            Land Awaits Your Imagination
                         </h1>
-                        <p className="w-full mt-4 text-sm md:text-lg text-wrap text-justify leading-relaxed">
+                        <p className="w-1/3 mt-4 text-2xl md:text-lg text-wrap text-justify leading-relaxed">
                             Welcome to a realm where your imagination knows no
                             bounds.Our collection of pristine land parcels
                             invites you to paint your dreams upon nature&apos;s
@@ -44,18 +41,18 @@ export default async function Page() {
                             where land becomes a space for your creativity to
                             flourish and your dreams to take shape.
                         </p>
-                        <div className="w-full flex max-md:flex-col justify-center items-center md:gap-6 gap-2">
+                        <div className="">
                             <Link
-                                className="md:mt-8 md:px-8 px-4 md:py-4 py-2 max-md:w-full bg-custom-green-100 text-white font-bold text-xl rounded-md"
-                                href={"/login"}
-                            >
-                                Claim your Spot{" "}
-                            </Link>
-                            <Link
-                                className="md:mt-8 md:px-8 px-4 md:py-4 py-2 max-md:w-full bg-white text-custom-green-100 font-bold text-xl rounded-md"
+                                className="mt-8 px-8 py-4 bg-gray-700 text-white font-bold text-xl rounded-md mr-5"
                                 href={"/viewAll"}
                             >
                                 Explore Land
+                            </Link>
+                            <Link
+                                className="mt-8 px-8 py-4 bg-custom-green-100 text-white font-bold text-xl rounded-md"
+                                href={"/login"}
+                            >
+                                Claim your Spot{" "}
                             </Link>
                         </div>
                     </div>
@@ -72,7 +69,7 @@ export default async function Page() {
                             <br />
                             Explore Vast Landscapes for Your Vision.
                         </h1>
-                        <p className="mt-5 text-justify text-sm md:text-lg mx-4">
+                        <p className="mt-5 text-justify text-lg mx-4">
                             Embark on a journey to find the canvas for your
                             dreams midst sprawling landscapes that await your
                             vision. Our curated selection of expansive terrains
@@ -87,7 +84,7 @@ export default async function Page() {
                             the space that resonates with your unique vision.
                         </p>
                     </div>
-                    <div className="flex flex-wrap gap-10 justify-center items-stretch">
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
                         {advertisements.map((advertisement) => (
                             <Advertisement
                                 key={advertisement._id}
