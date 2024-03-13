@@ -1,18 +1,17 @@
 import React from 'react';
 
-
 const Page = () => {
   return (
     <div>
-      <header className="bg-gray-900 text-white p-4 flex justify-between items-center">
+      <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
         <h1>LandPulse - Buy and Sell</h1>
-      </header>
-      <div className="main flex flex-col md:flex-row md:flex-wrap justify-between items-center p-4">
-        <div id="about" className="w-full md:w-1/3 p-4 mx-auto">
+      </div>
+      <div className="main flex flex-col flex-wrap justify-between p-4">
+        <div id="about" className="w-full md:w-1/3 p-4">
           <h2 className="text-xl font-bold">About LandPulse</h2>
           <p>LandPulse is a platform on which you can buy and sell different types of lands and properties! Select your desired location and start browsing</p>
         </div>
-        <div id="buynsell" className="w-full md:w-2/3 flex justify-between">
+        <div id="buynsell" className="w-full md:w-2/3 flex">
           <div id="sell" className="w-full p-4">
             <h2 className="text-xl font-bold">Have lands or properties to sell?</h2>
             <p>Sign up for a free account to start selling your items!</p>
@@ -26,14 +25,14 @@ const Page = () => {
             <p>Our search and filters make it super easy to find exactly what you're looking for!</p>
           </div>
         </div>
-        <div id="contact-info" className="w-full p-4 bg-gray-200 shadow-md mx-auto">
+        <div id="contact-info" className="w-full p-4 bg-gray-200 shadow-md">
           <h2 className="text-xl font-bold">Questions? Get in touch!</h2>
-          <p>9am - 6pm on weekdays</p>
-          <p>8am - 5pm on weekends and mercantile holidays</p>
+          <p>9am - 7pm on weekdays</p>
+          <p>8am - 4pm on weekends and mercantile holidays</p>
           <h3 className="font-bold mt-4">Call us</h3>
-          <p>011 2 350 350</p>
+          <p>011 1234567</p>
           <h3 className="font-bold mt-4">Email us</h3>
-          <p><a href="mailto:support@ikman.lk" className="text-blue-500">support@ikman.lk</a></p>
+          <p><a href="mailto:support@landpulse.lk" className="text-blue-500">support@landpulse.lk</a></p>
         </div>
       </div>
       <footer className="p-4"></footer>
