@@ -30,7 +30,7 @@ const Page = () => {
           <p>9am - 7pm on weekdays</p>
           <p>8am - 4pm on weekends and mercantile holidays</p>
           <h3 className="font-bold mt-4">Call us</h3>
-          <p>011 1234567</p>
+ 
           <h3 className="font-bold mt-4">Email us</h3>
           <p><a href="mailto:support@landpulse.lk" className="text-blue-500">support@landpulse.lk</a></p>
         </div>
