@@ -33,7 +33,7 @@ const Page = () => {
           <h3 className="font-bold mt-4">Call us</h3>
           <p>011 2 350 350</p>
           <h3 className="font-bold mt-4">Email us</h3>
-          <p><a href="mailto:support@ikman.lk" className="text-blue-500">support@ikman.lk</a></p>
+          <p><a href="mailto:support@Landpulse.lk" className="text-blue-500">support@LandPulse.lk</a></p>
         </div>
       </div>
       <footer className="p-4"></footer>
