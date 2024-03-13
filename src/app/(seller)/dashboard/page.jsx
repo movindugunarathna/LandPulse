@@ -52,9 +52,12 @@ export default function Dashboard({ userData }) {
               <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
                 {user?.username || "Fetching..."}
               </h5>
-              <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-                <Link href="">Edit Profile</Link>{" "}
-              </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
+                <button onClick={() => {
+                    console.log("Redirecting to edit page");
+                    router.push("/profile");
+                }}>Edit Profile</button>
+            </span>
             </div>
 
             <div className="account head flex flex-col items-left pb-10">
