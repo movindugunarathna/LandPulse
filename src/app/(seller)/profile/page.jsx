@@ -136,20 +136,6 @@ export default function Page() {
                 <div className=""></div>
               </label>
 
-              {/* email */}
-              <div className="relative flex items-center mt-6">
-                <IoMail className="absolute w-6 mx-3 text-gray-300 dark:text-gray-500" />
-
-                <input
-                  type="email"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Email address"
-                  {...register("email")}
-                  aria-errormessage={errors?.email?.message}
-                  onFocus={() => errors?.email?.message}
-                />
-              </div>
-
               {/* contact number */}
               <div className="relative flex items-center mt-4">
                 <FaMobileAlt className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
