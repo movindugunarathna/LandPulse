@@ -64,14 +64,9 @@ export default function Dashboard({ userData }) {
                   <span className="font-semibold text-gray-700">
                     Assert Count
                   </span>
-                  <span>Jnne 22, 2024</span>
+                  <span>{user?.posts.length}</span>
                 </div>
-                <div className="flex flex-raw justify-between mb-1">
-                  <span className="font-semibold text-gray-700">
-                    Asset Total
-                  </span>
-                  <span>Rs. 0,000,000.00</span>
-                </div>
+            
               </div>
             </div>
 
@@ -174,9 +169,9 @@ export default function Dashboard({ userData }) {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                      <div>Max: {post.predict[1].max_next}</div>
+                      <div>Max: {post.predict[1]?.max_next}</div>
                       <span className=" text-xs text-gray-400 py-2">
-                        {post.predict[1].min_next}
+                        Min: {post.predict[1]?.min_next}
                       </span>
                     </td>
                     <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
