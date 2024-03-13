@@ -62,14 +62,13 @@ const ViewAll = () => {
         </div>
     ) : (
         <div className="min-h-screen min-w-full flex flex-col justify-center items-center gap-10 overflow-x-hidden">
-            <div className="w-4/5 h-10 text-sm z-10">
+            <div className="w-4/5 h-10 text-sm">
                 <div
-                    className="relative w-fit rounded-md shadow-sm flex flex-col"
+                    className="relative w-fit rounded-md flex flex-col"
                     ref={dropdownRef}
                 >
                     <div
-                        className="hover:bg-slate-100 px-2 py-2 bg-white rounded-md shadow-xl relative flex justify-center 
-                        items-center z-10"
+                        className="hover:bg-slate-200 hover:border-black/40 px-2 py-2 bg-white rounded-md border border-black/20 relative flex justify-center items-center"
                         onClick={() => {
                             setDropdownOpen(!dropdownOpen);
                         }}
@@ -83,8 +82,7 @@ const ViewAll = () => {
                     </div>
 
                     <div
-                        className={`${dropdownOpen ? "sticky" : "hidden"} shadow-md bg-white rounded-md w-full h-32 top-0 left-0 flex 
-                        flex-col text-center gap-2 overflow-y-scroll no-scrollbar`}
+                        className={`${dropdownOpen ? "sticky" : "hidden"} bg-slate-50 rounded-md w-full h-16 top-0 left-0 flex flex-col text-center gap-2 overflow-y-scroll no-scrollbar`}
                     >
                         <div className="mt-1"></div>
                         {Object.entries(filterOptions).map(([key, value]) => (
@@ -103,7 +101,7 @@ const ViewAll = () => {
                 </div>
             </div>
 
-            <div className=" w-full flex flex-wrap gap-10 justify-center items-stretch mt-5 mx-52">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5 mx-52">
                 {advertisements.map((advertisement) => (
                     <Advertisement
                         key={advertisement._id}
@@ -113,7 +111,7 @@ const ViewAll = () => {
             </div>
             <div className="w-full h-full flex justify-center items-center gap-4">
                 <button
-                    className={`${pageNumber === totalPages ? "bg-gray-400 text-black" : "bg-custom-green-100 hover:bg-lime-900 text-white"}  font-bold py-2 px-4 rounded`}
+                    className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
                     type="button"
                     onClick={() => {
                         if (pageNumber !== 1) {
@@ -127,7 +125,7 @@ const ViewAll = () => {
                     {pageNumber}
                 </div>
                 <button
-                    className={`${pageNumber === totalPages ? "bg-gray-400 text-black" : "bg-custom-green-100 hover:bg-lime-900 text-white"}  font-bold py-2 px-4 rounded`}
+                    className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
                     type="button"
                     onClick={() => {
                         if (pageNumber !== totalPages) {

@@ -3,34 +3,29 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
-import { redirect, usePathname } from "next/navigation";
-import { FiAlignJustify, FiX } from "react-icons/fi";
+import { redirect } from "next/navigation";
 
 const navLinks = [
     { name: "HOME", link: "/" },
     { name: "CONTACT US", link: "/contact" },
 ];
 
-const NavLink = ({ item, setIsOpen }) => (
+const NavLink = ({ item }) => (
     <Link
         href={item.link}
         className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
         aria-current="page"
-        onClick={() => setIsOpen(false)}
     >
         {item.name.toUpperCase()}
     </Link>
 );
 
-const AuthenticatedLink = ({ href, label, onClick, setIsOpen }) => (
+const AuthenticatedLink = ({ href, label, onClick }) => (
     <Link
         href={href}
         className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
         aria-current="page"
-        onClick={(e) => {
-            onClick(e);
-            setIsOpen(false);
-        }}
+        onClick={onClick}
     >
         {label}
     </Link>
@@ -39,21 +34,10 @@ const AuthenticatedLink = ({ href, label, onClick, setIsOpen }) => (
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { status, data: session } = useSession();
-    const pathname = usePathname();
 
     const handleLogout = async () => {
         await signOut();
-        if (pathname !== "/login") {
-            redirect("/login");
-        }
-        console.log(pathname);
-    };
-
-    const handleLogin = async () => {
-        if (pathname !== "/login") {
-            redirect("/login");
-        }
-        console.log(pathname);
+        redirect("/login");
     };
 
     return (
@@ -61,7 +45,7 @@ const Navbar = () => {
             <nav className="bg-white-800">
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-start">
-                        <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+                        <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                             {/* Mobile menu button*/}
                             <button
                                 type="button"
@@ -72,14 +56,37 @@ const Navbar = () => {
                             >
                                 <span className="absolute -inset-0.5" />
                                 <span className="sr-only">Open main menu</span>
-                                {!isOpen ? (
-                                    <FiAlignJustify className="block h-6 w-6 text-black" />
-                                ) : (
-                                    <FiX className="block h-6 w-6 text-black" />
-                                )}
+                                <svg
+                                    className="block h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                                    />
+                                </svg>
+                                <svg
+                                    className="hidden h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
                             </button>
                         </div>
-                        <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
+                        <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                             <div className="flex flex-shrink-0 items-center">
                                 <a href="/">
                                     <Image
@@ -91,14 +98,10 @@ const Navbar = () => {
                                     />
                                 </a>
                             </div>
-                            <div className="hidden md:ml-auto md:block">
+                            <div className="hidden sm:ml-auto sm:block">
                                 <div className="flex space-x-5">
                                     {navLinks.map((item) => (
-                                        <NavLink
-                                            key={item.name}
-                                            item={item}
-                                            setIsOpen={setIsOpen}
-                                        />
+                                        <NavLink key={item.name} item={item} />
                                     ))}
                                     {status === "authenticated" &&
                                     session?.user ? (
@@ -108,7 +111,6 @@ const Navbar = () => {
                                                     name: "DASHBOARD",
                                                     link: "/dashboard",
                                                 }}
-                                                setIsOpen={setIsOpen}
                                             />
                                             <AuthenticatedLink
                                                 href={
@@ -116,7 +118,6 @@ const Navbar = () => {
                                                 }
                                                 label="LOGOUT"
                                                 onClick={handleLogout}
-                                                setIsOpen={setIsOpen}
                                             />
                                         </>
                                     ) : (
@@ -125,8 +126,6 @@ const Navbar = () => {
                                                 "/api/auth/signin?callbackUrl=/login"
                                             }
                                             label="LOGIN"
-                                            setIsOpen={setIsOpen}
-                                            onClick={handleLogin}
                                         />
                                     )}
                                 </div>
@@ -136,41 +135,13 @@ const Navbar = () => {
                 </div>
                 {/* Mobile menu, show/hide based on menu state. */}
                 <div
-                    className={`${isOpen ? "" : "hidden"} md:hidden`}
+                    className={`${isOpen ? "" : "hidden"} sm:hidden`}
                     id="mobile-menu"
                 >
-                    <div className="absolute w-screen h-screen flex flex-col justify-center items-center bg-white">
+                    <div className="space-y-1 px-2 pb-3 pt-2">
                         {navLinks.map((item) => (
-                            <NavLink
-                                key={item.name}
-                                item={item}
-                                setIsOpen={setIsOpen}
-                            />
+                            <NavLink key={item.name} item={item} />
                         ))}
-                        {status === "authenticated" && session?.user ? (
-                            <>
-                                <NavLink
-                                    item={{
-                                        name: "DASHBOARD",
-                                        link: "/dashboard",
-                                    }}
-                                    setIsOpen={setIsOpen}
-                                />
-                                <AuthenticatedLink
-                                    href={"/api/auth/signin?callbackUrl=/login"}
-                                    label="LOGOUT"
-                                    onClick={handleLogout}
-                                    setIsOpen={setIsOpen}
-                                />
-                            </>
-                        ) : (
-                            <AuthenticatedLink
-                                href={"/api/auth/signin?callbackUrl=/login"}
-                                label="LOGIN"
-                                setIsOpen={setIsOpen}
-                                onClick={handleLogin}
-                            />
-                        )}
                     </div>
                 </div>
             </nav>
