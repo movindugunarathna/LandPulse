@@ -21,7 +21,7 @@ export default function Page() {
   const router = useRouter();
   const [fileName, setFileName] = useState("Profile Photo");
   const [errorMsg, setErrorMsg] = useState("");
-  const user = JSON.parse(session?.user.userDetails || "{}");
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   const [file, setFile] = useState(null);
@@ -47,6 +47,7 @@ export default function Page() {
 
   const onSubmit = async (data) => {
     console.log(data);
+    router.push("/dashboard");
   };
 
   const onError = (errors, e) => {
@@ -81,7 +82,18 @@ export default function Page() {
     if (status === "unauthenticated" && !session?.user) {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
-    console.log(session);
+    if (session?.user) {
+        const user = async () => {
+          const userDetails = await getUserByID(session?.user.email);
+          const userObj = JSON.parse(userDetails);
+          console.log(userObj);
+          setUser(userObj);
+          return userObj;
+        };
+    
+        user();
+    }
+
     const defaultImagePath = "/avatar.png";
     setSelectedImage(defaultImagePath);
     setContact(user?.contact || "");
@@ -93,6 +105,7 @@ export default function Page() {
     user?.profile,
     user?.contact,
     user?.address,
+    
   ]);
 
   return (
