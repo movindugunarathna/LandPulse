@@ -33,11 +33,11 @@ const Advertisement = ({ advertisement }) => {
                         </span>
                     </p>
                     <p className="w-full flex justify-between items-center text-gray-800 text-sm">
-                        <span className="max-md:hidden">Perches</span>{" "}
+                        <span className="max-md:hidden">Land Types</span>{" "}
                         <span>{advertisement.landTypes.join(", ")}</span>
                     </p>
                     <p className="w-full flex justify-between items-center text-gray-800 text-sm">
-                        <span className="max-md:hidden">Land Types </span>
+                        <span className="max-md:hidden">Perches </span>
                         <span>{advertisement.perch}</span>
                     </p>
                 </div>
