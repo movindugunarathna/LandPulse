@@ -25,7 +25,7 @@ export default async function Page() {
                     />
                     <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
                     <div
-                        className="relative md:h-5/6 lg:w-2/3 h-fit py-8 px-6 md:px-20 rounded-md bg-white/40 z-10 flex flex-col 
+                        className="relative md:h-5/6 lg:w-2/3 h-fit py-8 px-6 md:px-20 rounded-3xl bg-white/30 z-10 flex flex-col 
                     justify-center items-center text-center text-white md:gap-10 gap-4"
                     >
                         <h1 className=" text-2xl sm:text-3xl font-bold md:text-5xl text-white capitalize">
