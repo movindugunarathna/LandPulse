@@ -59,7 +59,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white">
+        <header className="sticky top-0 z-50 bg-white shadow-sm">
             <nav className="bg-white-800">
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-start">
@@ -181,11 +181,12 @@ const Navbar = () => {
                                 pathname={pathname}
                             />
                         )}
-                    </div>
-                </div>
-            </nav>
-        </header>
-    );
+  
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 };
 
 export default Navbar;
