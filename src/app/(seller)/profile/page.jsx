@@ -5,8 +5,13 @@ import { redirect, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { SignUpSchema } from "@/lib/zodSchema/schema";
+import { SignUpSchema, updateSchema } from "@/lib/zodSchema/schema";
 import { readFileAsync } from "@/utils/readFiles";
+import {
+  getUserByID,
+  updateUserByEmail,
+  updateUserById,
+} from "@/actions/userActions";
 import {
   FaAddressBook,
   FaMobileAlt,
@@ -22,32 +27,50 @@ export default function Page() {
   const [fileName, setFileName] = useState("Profile Photo");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const [selectedImage, setSelectedImage] = useState(null);
-
+  const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(SignUpSchema),
-  });
-
-  const [contact, setContact] = useState(user?.contact || "");
-  const [address, setAddress] = useState(user?.address || "");
+  } = useForm({});
 
   const contactChange = (e) => {
-    setContact(e.target.value);
+    setUser({ ...user, contact: e.target.value });
   };
 
   const addressChange = (e) => {
-    setAddress(e.target.value);
+    setUser({ ...user, address: e.target.value });
   };
 
   const onSubmit = async (data) => {
     console.log(data);
-    router.push("/dashboard");
+    const userOb = {
+      contact: user.contact,
+      address: user.address,
+      profile: user.profile,
+    };
+    try {
+      const validation = await updateSchema.safeParse(userOb);
+      if (validation.success) {
+        const updateUser = await updateUserByEmail(session?.user.email, userOb);
+        toast.success("Profile updated successfully");
+        console.log(updateUser);
+        // router.push("/dashboard");
+      } else if (validation.error) {
+        const issue_1 = validation.error?.issues[0];
+
+        toast.error(
+          issue_1.path +
+            " Received: " +
+            issue_1.received +
+            " , Error: " +
+            issue_1?.message
+        );
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const onError = (errors, e) => {
@@ -72,9 +95,10 @@ export default function Page() {
     setFileName("Profile Photo");
   }
 
-  const imageChange = (e) => {
+  const imageChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
+      const profileImage = await readFileAsync(e.target.files[0]);
+      setUser({ ...user, profile: profileImage });
     }
   };
 
@@ -83,34 +107,23 @@ export default function Page() {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
     if (session?.user) {
-        const user = async () => {
-          const userDetails = await getUserByID(session?.user.email);
-          const userObj = JSON.parse(userDetails);
-          console.log(userObj);
-          setUser(userObj);
-          return userObj;
-        };
-    
-        user();
+      const user = async () => {
+        const userDetails = await getUserByID(session?.user.email);
+        const userObj = JSON.parse(userDetails);
+        console.log(userObj);
+        setUser(userObj);
+        return userObj;
+      };
+
+      user();
     }
 
-    const defaultImagePath = "/avatar.png";
-    setSelectedImage(defaultImagePath);
-    setContact(user?.contact || "");
-    setAddress(user?.address || "");
-  }, [
-    session,
-    session?.user,
-    status,
-    user?.profile,
-    user?.contact,
-    user?.address,
-    
-  ]);
+    console.log(user);
+  }, [session?.user]);
 
   return (
     <>
-      {session ? (
+      {user ? (
         <section className="bg-white dark:bg-gray-900">
           <div className="container flex mt-4 justify-center min-h-screen px-6 mx-auto">
             <div className="w-full max-w-md">
@@ -121,23 +134,19 @@ export default function Page() {
               <div className="flex items-center justify-center mt-6">
                 <form onSubmit={handleSubmit(onSubmit, onError)}>
                   {/* image */}
-                  {selectedImage && (
-                    <div className="profile-image flex flex-col items-center pb-10">
-                      <div className="rounded-full w-60 h-60 object-cover overflow-hidden">
-                        <Image
-                          className="rounded-full w-60 h-60 object-cover overflow-hidden"
-                          width={240}
-                          height={240}
-                          src={
-                            typeof selectedImage === "string"
-                              ? selectedImage
-                              : URL.createObjectURL(selectedImage)
-                          }
-                          alt="profile image"
-                        />
-                      </div>
+
+                  <div className="profile-image flex flex-col items-center pb-10">
+                    <div className="rounded-full w-60 h-60 object-cover overflow-hidden">
+                      <Image
+                        className="rounded-full w-60 h-60 object-cover overflow-hidden"
+                        width={240}
+                        height={240}
+                        src={user?.profile.url || "/avatar.png"}
+                        alt="profile image"
+                      />
                     </div>
-                  )}
+                  </div>
+
                   {/* profile */}
                   <label
                     htmlFor="profile"
@@ -193,9 +202,8 @@ export default function Page() {
                       type="number"
                       className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder={"Contact Number"}
-                      value={contact}
+                      value={user?.contact || ""}
                       onChange={contactChange}
-                      //   {...register("contact")}
                       aria-errormessage={errors?.contact?.message}
                       onFocus={() => errors?.contact?.message}
                     />
@@ -210,9 +218,8 @@ export default function Page() {
                       type="text"
                       className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                       placeholder="Address"
-                      value={address}
+                      value={user?.address || ""}
                       onChange={addressChange}
-                      //   {...register("address")}
                       aria-errormessage={errors?.address?.message}
                       onFocus={() => errors?.address?.message}
                     />

@@ -42,6 +42,17 @@ export const signUp = async (userData) => {
     }
 };
 
+export async function updateUserByEmail(email, updatedFields) {
+    try {
+        const result = await UserModel.update(email, updatedFields);
+        console.log("Number of modified documents:", result);
+        return result;
+    } catch (error) {
+        console.error("Error:", error.message);
+        throw new Error("Failed to update user.");
+    }
+}
+
 export async function getUserByEmailOrUsername(identifier) {
     try {
         const user = await User.findOne({

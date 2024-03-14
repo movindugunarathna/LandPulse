@@ -41,11 +41,12 @@ export default function Dashboard({ userData }) {
                 Seller Profile
               </h2>
               <div className="profile-image flex flex-col items-center pb-10">
-                <div className="img">
+                <div className="img rounded-full w-36 h-36 object-cover overflow-hidden">
                   <Image
+                    className=" w-full h-full "
                     width={100}
                     height={100}
-                    src={user?.profile || "/avatar.png"}
+                    src={user?.profile.url || "/avatar.png"}
                     alt="profile image"
                   />
                 </div>
