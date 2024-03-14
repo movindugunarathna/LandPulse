@@ -59,6 +59,34 @@ export const SignUpSchema = z
         }
     );
 
+    export const updateSchema = z
+    .object({
+       
+     
+        contact: z
+            .string()
+            .min(1, "Contact field is required")
+            .refine(
+                (contact) => contact.length === 10 && /^\d+$/.test(contact),
+                {
+                    message: "Contact must contain exactly 10 numbers",
+                }
+            ),
+      
+        address: z.string().min(1, "Address field is required"),
+    })
+    .refine(
+        (entry) => {
+            return (
+                entry.contact !== undefined &&
+                entry.address !== undefined
+            );
+        },
+        {
+            message: "All input fields are required!",
+        }
+    );
+    
 export const LoginSchema = z
     .object({
         username: z.string().optional(true),
