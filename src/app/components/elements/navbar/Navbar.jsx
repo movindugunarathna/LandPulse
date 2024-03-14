@@ -8,13 +8,14 @@ import { FiAlignJustify, FiX } from "react-icons/fi";
 
 const navLinks = [
     { name: "HOME", link: "/" },
-    { name: "CONTACT US", link: "/contact" },
+    { name: "ABOUT US", link: "/aboutUs" },
 ];
 
-const NavLink = ({ item, setIsOpen }) => (
+const NavLink = ({ item, setIsOpen, pathname }) => (
     <Link
         href={item.link}
-        className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
+        className={`${pathname === item.link ? "text-custom-green-100/80" : "text-black"} hover:bg-white-700 
+        hover:text-black/50 rounded-md px-3 py-2 text-sm font-medium`}
         aria-current="page"
         onClick={() => setIsOpen(false)}
     >
@@ -22,10 +23,11 @@ const NavLink = ({ item, setIsOpen }) => (
     </Link>
 );
 
-const AuthenticatedLink = ({ href, label, onClick, setIsOpen }) => (
+const AuthenticatedLink = ({ href, label, onClick, setIsOpen, pathname }) => (
     <Link
         href={href}
-        className="text-black-300 hover:bg-white-700 hover:text-lime-600 rounded-md px-3 py-2 text-sm font-medium"
+        className={`${pathname === href ? "text-custom-green-100/80" : "text-black"} hover:bg-white-700 
+        hover:text-black/50 rounded-md px-3 py-2 text-sm font-medium`}
         aria-current="page"
         onClick={(e) => {
             onClick(e);
@@ -57,7 +59,7 @@ const Navbar = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white">
+        <header className="sticky top-0 z-50 bg-white shadow-sm">
             <nav className="bg-white-800">
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 items-center justify-start">
@@ -98,6 +100,7 @@ const Navbar = () => {
                                             key={item.name}
                                             item={item}
                                             setIsOpen={setIsOpen}
+                                            pathname={pathname}
                                         />
                                     ))}
                                     {status === "authenticated" &&
@@ -109,6 +112,7 @@ const Navbar = () => {
                                                     link: "/dashboard",
                                                 }}
                                                 setIsOpen={setIsOpen}
+                                                pathname={pathname}
                                             />
                                             <AuthenticatedLink
                                                 href={
@@ -117,6 +121,7 @@ const Navbar = () => {
                                                 label="LOGOUT"
                                                 onClick={handleLogout}
                                                 setIsOpen={setIsOpen}
+                                                pathname={pathname}
                                             />
                                         </>
                                     ) : (
@@ -127,6 +132,7 @@ const Navbar = () => {
                                             label="LOGIN"
                                             setIsOpen={setIsOpen}
                                             onClick={handleLogin}
+                                            pathname={pathname}
                                         />
                                     )}
                                 </div>
@@ -145,6 +151,7 @@ const Navbar = () => {
                                 key={item.name}
                                 item={item}
                                 setIsOpen={setIsOpen}
+                                pathname={pathname}
                             />
                         ))}
                         {status === "authenticated" && session?.user ? (
@@ -154,6 +161,7 @@ const Navbar = () => {
                                         name: "DASHBOARD",
                                         link: "/dashboard",
                                     }}
+                                    pathname={pathname}
                                     setIsOpen={setIsOpen}
                                 />
                                 <AuthenticatedLink
@@ -161,6 +169,7 @@ const Navbar = () => {
                                     label="LOGOUT"
                                     onClick={handleLogout}
                                     setIsOpen={setIsOpen}
+                                    pathname={pathname}
                                 />
                             </>
                         ) : (
@@ -169,13 +178,15 @@ const Navbar = () => {
                                 label="LOGIN"
                                 setIsOpen={setIsOpen}
                                 onClick={handleLogin}
+                                pathname={pathname}
                             />
                         )}
-                    </div>
-                </div>
-            </nav>
-        </header>
-    );
+  
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
 };
 
 export default Navbar;

@@ -2,10 +2,11 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect,useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
+import path from "path";
 
 export default function Dashboard({ userData }) {
   const { data: session, status } = useSession();
@@ -44,7 +45,7 @@ export default function Dashboard({ userData }) {
                   <Image
                     width={100}
                     height={100}
-                    src="/avatar.png"
+                    src={user?.profile || "/avatar.png"}
                     alt="profile image"
                   />
                 </div>
@@ -53,14 +54,11 @@ export default function Dashboard({ userData }) {
                 {user?.username || "Fetching..."}
               </h5>
               <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-                <button
-                  onClick={() => {
-                    console.log("Redirecting to edit page");
-                    router.push("/profile");
-                  }}
+                <Link
+                  href={ "/profile"}
                 >
                   Edit Profile
-                </button>
+                </Link>
               </span>
             </div>
 

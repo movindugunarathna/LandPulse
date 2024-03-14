@@ -53,7 +53,7 @@ const Card = ({ type, value: details }) => {
     return (
         <>
             {count !== 0 && (
-                <div className="bg-gray-100 rounded-md px-8 py-4 flex flex-col justify-evenly text-gray-800">
+                <div className="bg-gray-100 rounded-md px-8 py-4 flex flex-col justify-evenly text-gray-800  shadow-lg hover:scale-105">
                     <h3 className="font-bold text text-gray-400">
                         {type.replace("_", " ").charAt(0).toUpperCase() +
                             type.replace("_", " ").slice(1)}
