@@ -22,6 +22,7 @@ export default function Page() {
   const [fileName, setFileName] = useState("Profile Photo");
   const [errorMsg, setErrorMsg] = useState("");
   const user = JSON.parse(session?.user.userDetails || "{}");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const [file, setFile] = useState(null);
   const [image, setImage] = useState(null);
@@ -32,6 +33,17 @@ export default function Page() {
   } = useForm({
     resolver: zodResolver(SignUpSchema),
   });
+
+  const [contact, setContact] = useState(user?.contact || "");
+  const [address, setAddress] = useState(user?.address || "");
+
+  const contactChange = (e) => {
+    setContact(e.target.value);
+  };
+
+  const addressChange = (e) => {
+    setAddress(e.target.value);
+  };
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -59,130 +71,162 @@ export default function Page() {
     setFileName("Profile Photo");
   }
 
+  const imageChange = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }
+  };
+
   useEffect(() => {
     if (status === "unauthenticated" && !session?.user) {
       redirect("/api/auth/signin?callbackUrl=/login");
     }
     console.log(session);
-
-
-  }, [session, session?.user, status]);
+    const defaultImagePath = "/avatar.png";
+    setSelectedImage(defaultImagePath);
+    setContact(user?.contact || "");
+    setAddress(user?.address || "");
+  }, [
+    session,
+    session?.user,
+    status,
+    user?.profile,
+    user?.contact,
+    user?.address,
+  ]);
 
   return (
-    <section className="bg-white dark:bg-gray-900">
-        
-      <div className="container flex mt-4 justify-center min-h-screen px-6 mx-auto">
-      
-        <div className="w-full max-w-md">
-        <h1 className="text-4xl font-semibold text-gray-700  text-center dark:text-white"> Edit Profile</h1>
-          <div className="flex items-center justify-center mt-6">
-           
-            <form onSubmit={handleSubmit(onSubmit, onError)}>
-            
-            {/* image */}
-            <div className="profile-image flex flex-col items-center pb-10">
-                <div className="img">
-                  <Image
-                    width={200}
-                    height={200}
-                    src={user?.profile || "/avatar.png"}
-                    alt="profile image"
-                  />
-                </div>
+    <>
+      {session ? (
+        <section className="bg-white dark:bg-gray-900">
+          <div className="container flex mt-4 justify-center min-h-screen px-6 mx-auto">
+            <div className="w-full max-w-md">
+              <h1 className="text-4xl font-semibold text-gray-700  text-center dark:text-white">
+                {" "}
+                Edit Profile
+              </h1>
+              <div className="flex items-center justify-center mt-6">
+                <form onSubmit={handleSubmit(onSubmit, onError)}>
+                  {/* image */}
+                  {selectedImage && (
+                    <div className="profile-image flex flex-col items-center pb-10">
+                      <div className="rounded-full w-60 h-60 object-cover overflow-hidden">
+                        <Image
+                          className="rounded-full w-60 h-60 object-cover overflow-hidden"
+                          width={240}
+                          height={240}
+                          src={
+                            typeof selectedImage === "string"
+                              ? selectedImage
+                              : URL.createObjectURL(selectedImage)
+                          }
+                          alt="profile image"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  {/* profile */}
+                  <label
+                    htmlFor="profile"
+                    className="relative flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
+                  >
+                    <FaUpload className="w-4 text-gray-300 dark:text-gray-500" />
+
+                    <h2 className="mx-3 text-gray-400">{fileName}</h2>
+                    {image !== null && (
+                      <FaWindowClose
+                        className="w-[5px]] h-[80%] absolute top-2 right-2 opacity-40"
+                        onClick={deleteFile}
+                      />
+                    )}
+
+                    <input
+                      id="profile"
+                      type="file"
+                      name="profile"
+                      accept="image/jpeg, image/png, image/jpeg, image/webp"
+                      className="hidden"
+                      maxLength={1}
+                      onChange={async (event) => {
+                        if (event.target.files[0]) {
+                          const targetFile = event.target.files[0];
+
+                          if (targetFile.size > filesize) {
+                            toast.error("File size should be less than 1mb");
+                          } else {
+                            setFileName(targetFile?.name);
+                            try {
+                              setImage(await readFileAsync(targetFile));
+                            } catch (error) {
+                              toast.error(error.message);
+                            }
+                            setFile(targetFile);
+                            imageChange(event);
+                          }
+                        } else deleteFile();
+                      }}
+                      aria-errormessage={errors?.profile?.message}
+                      onFocus={() => errors?.profile?.message}
+                    />
+                    <div className=""></div>
+                  </label>
+
+                  {/* contact number */}
+                  <div className="relative flex items-center mt-4">
+                    <FaMobileAlt className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
+
+                    <input
+                      id="contact"
+                      type="number"
+                      className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                      placeholder={"Contact Number"}
+                      value={contact}
+                      onChange={contactChange}
+                      //   {...register("contact")}
+                      aria-errormessage={errors?.contact?.message}
+                      onFocus={() => errors?.contact?.message}
+                    />
+                  </div>
+
+                  {/* address */}
+                  <div className="relative flex items-center mt-4">
+                    <FaAddressBook className="absolute top-4 w-4 mx-3 text-gray-300 dark:text-gray-500" />
+
+                    <textarea
+                      id="address"
+                      type="text"
+                      className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                      placeholder="Address"
+                      value={address}
+                      onChange={addressChange}
+                      //   {...register("address")}
+                      aria-errormessage={errors?.address?.message}
+                      onFocus={() => errors?.address?.message}
+                    />
+                  </div>
+
+                  <div className="relative flex items-center mt-4">
+                    <p className="h-2 w-full text-red-500 text-center">
+                      {errorMsg}
+                    </p>
+                  </div>
+
+                  <button
+                    className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-lime-700 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring focus:ring-lime-300 focus:ring-opacity-50"
+                    type="submit"
+                  >
+                    Save Changes
+                  </button>
+                </form>
               </div>
-              {/* profile */}
-              <label
-                htmlFor="profile"
-                className="relative flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900 overflow-hidden"
-              >
-                <FaUpload className="w-4 text-gray-300 dark:text-gray-500" />
-
-                <h2 className="mx-3 text-gray-400">{fileName}</h2>
-                {image !== null && (
-                  <FaWindowClose
-                    className="w-[5px]] h-[80%] absolute top-2 right-2 opacity-40"
-                    onClick={deleteFile}
-                  />
-                )}
-
-                <input
-                  id="profile"
-                  type="file"
-                  name="profile"
-                  accept="image/jpeg, image/png, image/jpeg, image/webp"
-                  className="hidden"
-                  maxLength={1}
-                  onChange={async (event) => {
-                    if (event.target.files[0]) {
-                      const targetFile = event.target.files[0];
-
-                      if (targetFile.size > filesize) {
-                        toast.error("File size should be less than 1mb");
-                      } else {
-                        setFileName(targetFile?.name);
-                        try {
-                          setImage(await readFileAsync(targetFile));
-                        } catch (error) {
-                          toast.error(error.message);
-                        }
-                        setFile(targetFile);
-                      }
-                    } else deleteFile();
-                  }}
-                  aria-errormessage={errors?.profile?.message}
-                  onFocus={() => errors?.profile?.message}
-                />
-                <div className=""></div>
-              </label>
-
-              {/* contact number */}
-              <div className="relative flex items-center mt-4">
-                <FaMobileAlt className="absolute w-4 mx-3 text-gray-300 dark:text-gray-500" />
-
-                <input
-                  id="contact"
-                  type="number"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder={"contact number"}
-                  value={user?.contact}
-                  {...register("contact")}
-                  aria-errormessage={errors?.contact?.message}
-                  onFocus={() => errors?.contact?.message}
-                />
-              </div>
-
-              {/* address */}
-              <div className="relative flex items-center mt-4">
-                <FaAddressBook className="absolute top-4 w-4 mx-3 text-gray-300 dark:text-gray-500" />
-
-                <textarea
-                  id="address"
-                  type="text"
-                  className="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                  placeholder="Address"
-                  value={user?.address}
-                  {...register("address")}
-                  aria-errormessage={errors?.address?.message}
-                  onFocus={() => errors?.address?.message}
-                />
-              </div>
-
-              <div className="relative flex items-center mt-4">
-                <p className="h-2 w-full text-red-500 text-center">
-                  {errorMsg}
-                </p>
-              </div>
-
-              <button
-                className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-lime-700 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring focus:ring-lime-300 focus:ring-opacity-50"
-                type="submit"
-              >
-                Save Changes
-              </button>
-            </form>
+            </div>
           </div>
+        </section>
+      ) : (
+        <div className="w-screen h-screen flex justify-center items-center">
+          Loading...
         </div>
-      </div>
-    </section>
+      )}
+    </>
   );
 }
