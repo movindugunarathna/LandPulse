@@ -31,13 +31,13 @@ function ChartApp({ className, dataObj }) {
                     datasets: [
                         {
                             data: months[1],
-                            label: "Minimum Value",
+                            label: "Min Price Variation",
                             borderColor: "#3cba9f",
                             fill: false,
                         },
                         {
                             data: months[2],
-                            label: "Maximum Value",
+                            label: "Max Price Variation",
                             borderColor: "#e43202",
                             fill: false,
                         },
@@ -47,7 +47,7 @@ function ChartApp({ className, dataObj }) {
                     plugins: {
                         title: {
                             display: true,
-                            text: "Chart JS Multiple Lines Example",
+                            text: "Min max price value variation",
                         },
                     },
                 },
@@ -57,14 +57,11 @@ function ChartApp({ className, dataObj }) {
                 lineChart.destroy();
             };
         }
-    }, []);
+    }, [months]);
 
     return (
         <div className={`${className}`}>
-            <h1>Min max price value variation</h1>
-            <div>
-                <canvas className="w-full h-full" ref={chartRef}></canvas>
-            </div>
+            <canvas className="w-full h-full " ref={chartRef}></canvas>
         </div>
     );
 }
