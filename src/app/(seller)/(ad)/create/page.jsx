@@ -351,7 +351,7 @@ export default function CreateAd() {
                                                         ad.price !== 0 && (
                                                             <ChartApp
                                                                 className={
-                                                                    "w-[500px] h-[400px] p-1 bg-white absolute bottom-0 left-0 flex justify-center items-center  shadow-xl hover:shadow-2xl rounded-md flex-col"
+                                                                    "w-[500px] h-[400px] shadow-2xl p-4 bg-white absolute bottom-0 left-0 flex justify-center items-center flex-col"
                                                                 }
                                                                 dataObj={
                                                                     ad.predict
