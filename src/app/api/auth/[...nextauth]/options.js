@@ -89,7 +89,6 @@ export const options = {
                   id: userDetails._id,
                   username: userDetails.username,
                   email: userDetails.email,
-                  userDetails: JSON.stringify(userDetails),
                 };
               }
             } catch (error) {
