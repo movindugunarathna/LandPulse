@@ -7,11 +7,29 @@ import { signOut, useSession } from "next-auth/react";
 import { getUserByID } from "@/actions/userActions";
 import { useState } from "react";
 import path from "path";
+import { toast } from "sonner";
+import { deleteAdvertisements } from "@/actions/adActions";
 
 export default function Dashboard({ userData }) {
   const { data: session, status } = useSession();
   const [user, setUser] = useState(null);
   const router = useRouter();
+
+  // const ondeletePost = async (id) => {
+  //   const comfirm = confirm("Are you sure you want to delete this post?");
+  //   if (comfirm) {
+  //     try {
+  //       const deletePost = await deleteAdvertisements(id);
+  //       if (deletePost) {
+  //         toast.success("Advertisement deleted successfully");
+  //         router.reload();
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to delete advertisement:", error.message);
+  //       toast.error("Failed to delete advertisement");
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
     if (status === "unauthenticated" && !session?.user) {
@@ -33,7 +51,7 @@ export default function Dashboard({ userData }) {
   return (
     <>
       {user ? (
-        <div className="wrapper flex mx-1 my-4">
+        <div className="wrapper flex mx-auto my-4 justify-center">
           {/* profile pane */}
           <div className="profile-pane w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-10 ml-4">
             <div className="head flex flex-col items-center pb-10">
@@ -46,7 +64,7 @@ export default function Dashboard({ userData }) {
                     className=" w-full h-full "
                     width={100}
                     height={100}
-                    src={user?.profile.url || "/avatar.png"}
+                    src={user?.profile?.url || "/avatar.png"}
                     alt="profile image"
                   />
                 </div>
@@ -55,11 +73,7 @@ export default function Dashboard({ userData }) {
                 {user?.username || "Fetching..."}
               </h5>
               <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
-                <Link
-                  href={ "/profile"}
-                >
-                  Edit Profile
-                </Link>
+                <Link href={"/profile"}>Edit Profile</Link>
               </span>
             </div>
 
@@ -99,7 +113,7 @@ export default function Dashboard({ userData }) {
           </div>
           {/* profile panne ends here */}
 
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg my-4 p-2">
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg ml-4 my-4 p-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <caption className="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                 <div className="flex justify-between">
@@ -180,10 +194,16 @@ export default function Dashboard({ userData }) {
                       </span>
                     </td>
                     <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
-                      <button className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800">
+                      <Link
+                        className="font-medium text-white dark:text-white bg-lime-700 px-3 py-1 rounded-sm hover:bg-lime-800"
+                        href={`/viewAd/${post._id}`}
+                      >
                         View
-                      </button>
-                      <button className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700">
+                      </Link>
+                      <button
+                        // onClick={ondeletePost(post._id)}
+                        className="font-medium text-white dark:text-white bg-red-600 px-3 py-1 rounded-sm ml-1 hover:bg-red-700"
+                      >
                         Delete
                       </button>
                     </td>

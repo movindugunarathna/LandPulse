@@ -50,26 +50,32 @@ export default function Page() {
       address: user.address,
       profile: user.profile,
     };
-    try {
-      const validation = await updateSchema.safeParse(userOb);
-      if (validation.success) {
-        const updateUser = await updateUserByEmail(session?.user.email, userOb);
-        toast.success("Profile updated successfully");
-        console.log(updateUser);
-        // router.push("/dashboard");
-      } else if (validation.error) {
-        const issue_1 = validation.error?.issues[0];
+    const comfirm = confirm("Are you sure you want to Make this changes?");
+    if (comfirm) {
+      try {
+        const validation = await updateSchema.safeParse(userOb);
+        if (validation.success) {
+          const updateUser = await updateUserByEmail(
+            session?.user.email,
+            userOb
+          );
+          toast.success("Profile updated successfully");
+          console.log(updateUser);
+          router.push("/dashboard");
+        } else if (validation.error) {
+          const issue_1 = validation.error?.issues[0];
 
-        toast.error(
-          issue_1.path +
-            " Received: " +
-            issue_1.received +
-            " , Error: " +
-            issue_1?.message
-        );
+          toast.error(
+            issue_1.path +
+              " Received: " +
+              issue_1.received +
+              " , Error: " +
+              issue_1?.message
+          );
+        }
+      } catch (error) {
+        toast.error(error.message);
       }
-    } catch (error) {
-      toast.error(error.message);
     }
   };
 
@@ -141,7 +147,7 @@ export default function Page() {
                         className="rounded-full w-60 h-60 object-cover overflow-hidden"
                         width={240}
                         height={240}
-                        src={user?.profile.url || "/avatar.png"}
+                        src={user?.profile?.url || "/avatar.png"}
                         alt="profile image"
                       />
                     </div>
