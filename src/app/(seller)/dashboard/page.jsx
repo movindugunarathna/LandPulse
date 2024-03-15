@@ -64,7 +64,7 @@ export default function Dashboard({ userData }) {
         <>
             {user ? (
                 <div className="w-screen min-h-screen flex justify-center items-center overflow-x-hidden">
-                    <div className="flex justify-start xl:w-fit h-fit px-10 max-xl:items-center max-xl:flex-wrap w-full gap-10">
+                    <div className="flex justify-start xl:w-full h-fit max-xl:px-10 px-32 max-xl:items-center max-xl:flex-wrap w-full gap-10">
                         {/* profile pane */}
                         <div
                             className="profile-pane w-full h-fit xl:max-w-sm bg-white border border-gray-200 rounded-lg shadow-2xl 
