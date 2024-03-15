@@ -99,6 +99,20 @@ export const deleteAdvertisements = async (id) => {
   }
 };
 
+export const deleteAdvertisements = async (id) => {
+    try {
+        const post = await Advertisement.remove({ id });
+        console.log("Post Deleted successfully");
+        return {
+            code: 202,
+            message: "Post Deleted successfully",
+        };
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
+};
+
 export const getAdvertisementByUserId = async (userId) => {
   try {
     const post = await Advertisement.find({ userId });
@@ -107,4 +121,14 @@ export const getAdvertisementByUserId = async (userId) => {
     console.log(error);
     throw new Error(error);
   }
+};
+
+export const getAdvertisementByEmail = async (email) => {
+    try {
+        const post = await Advertisement.find({ email });
+        return post;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+    }
 };
