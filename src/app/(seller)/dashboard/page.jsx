@@ -5,10 +5,11 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { CgComment } from "react-icons/cg";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/actions/userActions";
 import { useState } from "react";
-import path from "path";
+import { toast } from "sonner";
+import { deleteAdvertisements } from "@/actions/adActions";
 
 export default function Dashboard({ userData }) {
     const { data: session, status } = useSession();
@@ -17,33 +18,23 @@ export default function Dashboard({ userData }) {
     const imageRef = useRef(null);
     const router = useRouter();
 
-    // const ondeletePost = async (id) => {
-    //   const comfirm = confirm("Are you sure you want to delete this post?");
-    //   if (comfirm) {
-    //     try {
-    //       const deletePost = await deleteAdvertisements(id);
-    //       if (deletePost) {
-    //         toast.success("Advertisement deleted successfully");
-    //         router.reload();
-    //       }
-    //     } catch (error) {
-    //       console.error("Failed to delete advertisement:", error.message);
-    //       toast.error("Failed to delete advertisement");
-    //     }
-    //   }
-    // };
-
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
             redirect("/api/auth/signin?callbackUrl=/login");
         }
         if (session?.user) {
             const user = async () => {
-                const userDetails = await getUserByEmail(session?.user.email);
-                const userObj = JSON.parse(userDetails);
-                console.log(userObj);
-                setUser(userObj);
-                return userObj;
+                try {
+                    const userDetails = await getUserByEmail(
+                        session?.user.email
+                    );
+                    const userObj = JSON.parse(userDetails);
+                    console.log(userObj);
+                    setUser(userObj);
+                    return userObj;
+                } catch (error) {
+                    toast.error(error.message);
+                }
             };
             user();
         }
@@ -56,6 +47,18 @@ export default function Dashboard({ userData }) {
             });
         }
     }, [imageRef]);
+
+    const deletePost = async (title, userId) => {
+        try {
+            const res = await deleteAdvertisements(title, userId);
+            if (res?.code === 200) {
+                toast.success(res.message);
+                router.refresh();
+            } else console.log(res);
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     return (
         <>
@@ -202,101 +205,126 @@ export default function Dashboard({ userData }) {
                                         </div>
                                     </div>
                                 </caption>
-                                <thead className=" w-fit h-fit text-xs text-white  bg-slate-400">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 rounded-s-lg "
-                                        >
-                                            Title
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Price
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Location
-                                        </th>
-                                        <th scope="col" className="px-6 py-3">
-                                            Predicted Price
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 rounded-e-lg"
-                                        >
-                                            Action
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="text-nowrap">
-                                    {user?.posts.map((post) => (
-                                        <tr
-                                            key={post._id}
-                                            className=" shadow-2xl bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                                        >
-                                            <th
-                                                scope="row"
-                                                className="px-6 py-4 font-medium text-gray-900 dark:text-white text-wrap"
-                                            >
-                                                <div className="min-w-60">
-                                                    {post.title}
-                                                </div>
-                                                <span className=" text-xs text-gray-400 py-2">
-                                                    {
-                                                        post.creationDate.split(
-                                                            "T"
-                                                        )[0]
-                                                    }
-                                                </span>
-                                            </th>
-                                            <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                                <div>Rs.{post.price}</div>
-                                                <span className=" text-xs text-gray-400 py-2">
-                                                    Perch:{post.perch}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                                <div>
-                                                    Lat :{post.geometry.lat}
-                                                </div>
-                                                <span className=" text-xs text-gray-400 py-2">
-                                                    Lon : {post.geometry.lng}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                                <div>
-                                                    Max:{" "}
-                                                    {Number(
-                                                        post.predict[
-                                                            currentYear
-                                                        ]?.max_next
-                                                    ).toFixed(2)}
-                                                    {" /="}
-                                                </div>
-                                                <span className=" text-xs text-gray-400 py-2">
-                                                    Min:{" "}
-                                                    {Number(
-                                                        post.predict[
-                                                            currentYear
-                                                        ]?.min_next
-                                                    ).toFixed(2)}
-                                                    {" /="}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
-                                                <CgComment
-                                                    className="h-6 w-6 font-medium text-blue-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
-                                                    onClick={() =>
-                                                        router.push(
-                                                            `/viewAd/${post._id}`
-                                                        )
-                                                    }
-                                                />
+                                {user?.posts && (
+                                    <>
+                                        <thead className=" w-fit h-fit text-xs text-white  bg-slate-400">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    className="px-6 py-3 rounded-s-lg "
+                                                >
+                                                    Title
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-6 py-3"
+                                                >
+                                                    Price
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-6 py-3"
+                                                >
+                                                    Location
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-6 py-3"
+                                                >
+                                                    Predicted Price
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-6 py-3 rounded-e-lg"
+                                                >
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="text-nowrap">
+                                            {user?.posts?.map((post) => (
+                                                <tr
+                                                    key={post._id}
+                                                    className=" shadow-2xl bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                >
+                                                    <th
+                                                        scope="row"
+                                                        className="px-6 py-4 font-medium text-gray-900 dark:text-white text-wrap"
+                                                    >
+                                                        <div className="min-w-60">
+                                                            {post.title}
+                                                        </div>
+                                                        <span className=" text-xs text-gray-400 py-2">
+                                                            {
+                                                                post.creationDate.split(
+                                                                    "T"
+                                                                )[0]
+                                                            }
+                                                        </span>
+                                                    </th>
+                                                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <div>
+                                                            Rs.{post.price}
+                                                        </div>
+                                                        <span className=" text-xs text-gray-400 py-2">
+                                                            Perch:{post.perch}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <div>
+                                                            Lat :
+                                                            {post.geometry.lat}
+                                                        </div>
+                                                        <span className=" text-xs text-gray-400 py-2">
+                                                            Lon :{" "}
+                                                            {post.geometry.lng}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                                                        <div>
+                                                            Max:{" "}
+                                                            {Number(
+                                                                post.predict[
+                                                                    currentYear
+                                                                ]?.max_next
+                                                            ).toFixed(2)}
+                                                            {" /="}
+                                                        </div>
+                                                        <span className=" text-xs text-gray-400 py-2">
+                                                            Min:{" "}
+                                                            {Number(
+                                                                post.predict[
+                                                                    currentYear
+                                                                ]?.min_next
+                                                            ).toFixed(2)}
+                                                            {" /="}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
+                                                        <CgComment
+                                                            className="h-6 w-6 font-medium text-blue-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
+                                                            onClick={() =>
+                                                                router.push(
+                                                                    `/viewAd/${post._id}`
+                                                                )
+                                                            }
+                                                        />
 
-                                                <FaRegTrashAlt className="h-5 w-5 font-medium text-red-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer" />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
+                                                        <FaRegTrashAlt
+                                                            className="h-5 w-5 font-medium text-red-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
+                                                            onClick={() =>
+                                                                deletePost(
+                                                                    post.title,
+                                                                    post.userId
+                                                                )
+                                                            }
+                                                        />
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </>
+                                )}
                             </table>
                         </div>
                     </div>
