@@ -56,7 +56,7 @@ export default function Page() {
         const updateUser = await updateUserByEmail(session?.user.email, userOb);
         toast.success("Profile updated successfully");
         console.log(updateUser);
-        // router.push("/dashboard");
+        router.push("/dashboard");
       } else if (validation.error) {
         const issue_1 = validation.error?.issues[0];
 
@@ -141,7 +141,7 @@ export default function Page() {
                         className="rounded-full w-60 h-60 object-cover overflow-hidden"
                         width={240}
                         height={240}
-                        src={user?.profile.url || "/avatar.png"}
+                        src={user?.profile?.url || "/avatar.png"}
                         alt="profile image"
                       />
                     </div>
