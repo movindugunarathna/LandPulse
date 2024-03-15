@@ -1,7 +1,6 @@
 "use server";
 import Advertisement from "@/models/advertisementModel";
 import { getUserContactsById } from "./userActions";
-import { data } from "autoprefixer";
 
 export const getAdvertisements = async ({
     filterValue = 1,
