@@ -16,15 +16,18 @@ export default function Dashboard({ userData }) {
   const router = useRouter();
 
   // const ondeletePost = async (id) => {
-  //   try {
-  //     const deletePost = await deleteAdvertisements(id);
-  //     if (deletePost) {
-  //       toast.success("Advertisement deleted successfully");
-  //       router.reload();
+  //   const comfirm = confirm("Are you sure you want to delete this post?");
+  //   if (comfirm) {
+  //     try {
+  //       const deletePost = await deleteAdvertisements(id);
+  //       if (deletePost) {
+  //         toast.success("Advertisement deleted successfully");
+  //         router.reload();
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to delete advertisement:", error.message);
+  //       toast.error("Failed to delete advertisement");
   //     }
-  //   } catch (error) {
-  //     console.error("Failed to delete advertisement:", error.message);
-  //     toast.error("Failed to delete advertisement");
   //   }
   // };
 
