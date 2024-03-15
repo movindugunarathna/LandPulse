@@ -66,10 +66,10 @@ export async function getUserByEmailOrUsername(identifier) {
     }
 }
 
-export async function getUserByEmail(emailId) {
+export async function getUserByEmail(email) {
     try {
-        const user = await UserModel.findOne({ email: emailId });
-        user.posts = await getAdvertisementByEmail(emailId);
+        const user = await UserModel.findOne({ email });
+        user.posts = await getAdvertisementByUserId(user._id);
 
         return JSON.stringify(user);
     } catch (error) {
