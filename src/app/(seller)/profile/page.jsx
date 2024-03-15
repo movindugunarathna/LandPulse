@@ -271,7 +271,7 @@ export default function Page() {
                                     </div>
 
                                     <button
-                                        className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-lime-700 rounded-lg hover:bg-lime-600 focus:outline-none focus:ring focus:ring-lime-300 focus:ring-opacity-50"
+                                        className="w-full mt-6 px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-custom-green-100 rounded-lg hover:bg-custom-green-300 focus:outline-none focus:ring focus:ring-lime-300 focus:ring-opacity-50"
                                         type="submit"
                                     >
                                         Save Changes
