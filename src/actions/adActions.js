@@ -106,8 +106,12 @@ export const deleteAdvertisements = async (title, userId) => {
 
 export const getAdvertisementByUserId = async (userId) => {
     try {
-        const post = await Advertisement.find({ userId });
-        return post;
+        const post = await Advertisement.find({});
+        const filteredPost = post.filter((post) => {
+            console.log(userId.toString(), post.userId);
+            return userId.toString() === post.userId;
+        });
+        return filteredPost;
     } catch (error) {
         console.log(error);
         throw new Error(error);
