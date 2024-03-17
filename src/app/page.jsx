@@ -1,13 +1,23 @@
+"use client";
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-    const { advertisements } = await getAdvertisements({
-        pageNumber: 1,
-        pageSize: 3,
-    });
+export default function Page() {
+    const [advertisements, setAdvertisements] = useState(null);
+
+    useEffect(() => {
+        const advertisement = async () => {
+            const { advertisements: fetchAds } = await getAdvertisements({
+                pageNumber: 1,
+                pageSize: 3,
+            });
+            setAdvertisements(fetchAds);
+        };
+        advertisement();
+    }, []);
 
     return (
         <>
@@ -64,47 +74,54 @@ export default async function Page() {
             {/* End of the hero section */}
 
             {/* Starting featured posts */}
-            <section className="flex items-center justify-center">
-                <div className="w-full max-w-6xl">
-                    <div className="mt-10">
-                        <h1 className="text-2xl md:text-4xl font-bold text-center text-custom-green-100">
-                            Your Dream Awaits,
-                            <br />
-                            Explore Vast Landscapes for Your Vision.
-                        </h1>
-                        <p className="mt-5 text-justify text-sm md:text-lg mx-4">
-                            Embark on a journey to find the canvas for your
-                            dreams midst sprawling landscapes that await your
-                            vision. Our curated selection of expansive terrains
-                            offers a tapestry of possibilities, ready to be
-                            shaped according to your desires. Whether it&apos;s
-                            a serene retreat enveloped by nature&apos;s embrace
-                            or a bustling expanse primed for innovation, our
-                            diverse array of land listings caters to every
-                            aspiration. Unearth the ideal backdrop for your
-                            dreams, where endless horizons meet limitless
-                            potential. Begin your exploration today and discover
-                            the space that resonates with your unique vision.
-                        </p>
+            {advertisements ? (
+                <section className="w-screen h-screen flex items-center justify-center">
+                    <div className="w-full max-w-6xl">
+                        <div className="mt-10">
+                            <h1 className="text-2xl md:text-4xl font-bold text-center text-custom-green-100">
+                                Your Dream Awaits,
+                                <br />
+                                Explore Vast Landscapes for Your Vision.
+                            </h1>
+                            <p className="mt-5 text-justify text-sm md:text-lg mx-4">
+                                Embark on a journey to find the canvas for your
+                                dreams midst sprawling landscapes that await
+                                your vision. Our curated selection of expansive
+                                terrains offers a tapestry of possibilities,
+                                ready to be shaped according to your desires.
+                                Whether it&apos;s a serene retreat enveloped by
+                                nature&apos;s embrace or a bustling expanse
+                                primed for innovation, our diverse array of land
+                                listings caters to every aspiration. Unearth the
+                                ideal backdrop for your dreams, where endless
+                                horizons meet limitless potential. Begin your
+                                exploration today and discover the space that
+                                resonates with your unique vision.
+                            </p>
+                        </div>
+                        <div className="flex flex-wrap md:flex-nowrap gap-10 justify-center items-stretch mt-5">
+                            {advertisements?.map((advertisement) => (
+                                <Advertisement
+                                    key={advertisement._id}
+                                    advertisement={advertisement}
+                                />
+                            ))}
+                        </div>
+                        <div className="flex items-center justify-center h-20 space-x-2 mt-5">
+                            <Link
+                                className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
+                                href={`/viewAll`}
+                            >
+                                See more
+                            </Link>
+                        </div>
                     </div>
-                    <div className="flex flex-wrap md:flex-nowrap gap-10 justify-center items-stretch mt-5">
-                        {advertisements.map((advertisement) => (
-                            <Advertisement
-                                key={advertisement._id}
-                                advertisement={advertisement}
-                            />
-                        ))}
-                    </div>
-                    <div className="flex items-center justify-center h-20 space-x-2 mt-5">
-                        <Link
-                            className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
-                            href={`/viewAll`}
-                        >
-                            See more
-                        </Link>
-                    </div>
-                </div>
-            </section>
+                </section>
+            ) : (
+                <section className="w-screen h-screen flex justify-center items-center">
+                    Loading...
+                </section>
+            )}
             {/* Ending featured posts */}
         </>
     );
