@@ -22,7 +22,6 @@ export default function ViewAd({ params: { adId } }) {
             try {
                 const post = await getAdvertisementById(adId);
                 if (post.code === 200) {
-                    toast.success(post.message);
                     post.data.predict = JSON.parse(post.data.predict);
                     setAdvertisement(post.data);
                     console.log(post);
@@ -67,7 +66,7 @@ export default function ViewAd({ params: { adId } }) {
                             <p>BACK</p>
                         </div>
                         <button
-                            className="py-2 px-4  bg-black hover:bg-opacity-80 text-white font-bold rounded-md leading-10 hover:scale-105 focus:bg-custom-green-100"
+                            className="py-1 px-3  bg-black hover:bg-opacity-80 text-white font-bold rounded-lg leading-10 hover:scale-105 focus:bg-custom-green-100"
                             onClick={(event) => {
                                 setGrowthClicked(!growthClicked);
                             }}
