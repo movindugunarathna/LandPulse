@@ -68,7 +68,7 @@ export default function Dashboard({ userData }) {
                         Seller Dashboard
                     </h1>
                     <div className="w-screen min-h-screen flex justify-center mt-8 overflow-x-hidden">
-                        <div className="flex justify-start xl:w-full h-fit max-xl:px-10 px-32 max-xl:items-center max-xl:flex-wrap w-full gap-10">
+                        <div className="flex justify-center xl:w-full h-fit max-xl:px-10 px-32 max-xl:items-center max-xl:flex-wrap w-full gap-10">
                             {/* profile pane */}
                             <div
                                 className="profile-pane w-full h-fit xl:max-w-sm bg-white border border-gray-200 rounded-lg shadow-2xl 
@@ -191,7 +191,7 @@ export default function Dashboard({ userData }) {
 
                             {/* history pane */}
 
-                            <div className="relative sm:rounded-lg my-4 overflow-x-scroll w-full max-xl:shadow-2xl">
+                            <div className=" max-w-[1100px] relative sm:rounded-lg my-4 overflow-x-scroll w-full max-xl:shadow-2xl">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <caption className="max-xl:hidden p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                                         <div className="flex justify-between">
