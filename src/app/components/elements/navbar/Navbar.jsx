@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
-import { redirect, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FiAlignJustify, FiX } from "react-icons/fi";
 
 const navLinks = [
@@ -42,18 +42,19 @@ const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { status, data: session } = useSession();
     const pathname = usePathname();
+    const router = useRouter();
 
     const handleLogout = async () => {
         await signOut();
         if (pathname !== "/login") {
-            redirect("/login");
+            router.push("/login");
         }
         console.log(pathname);
     };
 
     const handleLogin = async () => {
         if (pathname !== "/login") {
-            redirect("/login");
+            router.push("/login");
         }
         console.log(pathname);
     };
@@ -181,12 +182,11 @@ const Navbar = () => {
                                 pathname={pathname}
                             />
                         )}
-  
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
+                    </div>
+                </div>
+            </nav>
+        </header>
+    );
 };
 
 export default Navbar;

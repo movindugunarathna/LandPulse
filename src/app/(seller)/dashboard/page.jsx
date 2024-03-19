@@ -4,7 +4,7 @@ import Image from "next/image";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { CgComment } from "react-icons/cg";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getUserByEmail } from "@/actions/userActions";
 import { useState } from "react";
@@ -20,7 +20,7 @@ export default function Dashboard({ userData }) {
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
-            redirect("/api/auth/signin?callbackUrl=/login");
+            router.push("/api/auth/signin?callbackUrl=/login");
         }
         if (session?.user) {
             const user = async () => {

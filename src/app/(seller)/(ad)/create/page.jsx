@@ -3,7 +3,7 @@ import Dropzone from "@/app/components/Dropzone/dropzone";
 import PriceSection from "@/app/components/PriceSection/page";
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setBasic } from "@/lib/redux/adSlice";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -14,7 +14,6 @@ import { FaArrowDown } from "react-icons/fa";
 import { AdvertisementSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { saveAdvertisements } from "@/actions/adActions";
-import { useRouter } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +44,7 @@ export default function CreateAd() {
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
-            redirect("/api/auth/signin?callbackUrl=/login");
+            router.push("/api/auth/signin?callbackUrl=/login");
         }
         if (session?.user) {
             const { user } = session;

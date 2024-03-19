@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -110,7 +110,7 @@ export default function Page() {
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
-            redirect("/api/auth/signin?callbackUrl=/login");
+            router.push("/api/auth/signin?callbackUrl=/login");
         }
         if (session?.user) {
             const user = async () => {
