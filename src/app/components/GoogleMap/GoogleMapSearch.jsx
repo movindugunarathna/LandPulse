@@ -69,7 +69,7 @@ const GoogleMapComp = ({ className }) => {
                             setPlaceDetails([]);
                         }
                     }}
-                    loading={isPlacePredictionsLoading}
+                    loading={isPlacePredictionsLoading.toString()}
                     value={selectedLocation?.name}
                 />
                 <div className="flex flex-col justify-center gap-2">

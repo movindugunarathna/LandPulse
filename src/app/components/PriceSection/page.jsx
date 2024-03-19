@@ -50,7 +50,7 @@ export default function PriceSection({
                 toast.info("Waiting for price prediction !!!");
 
                 const response = await axios.post(
-                    "http://127.0.0.1:5000/predict",
+                    "https://landpulse-ml-vubyb2fdca-el.a.run.app/predict",
                     {
                         latitude: geometry.lat,
                         longitude: geometry.lng,
