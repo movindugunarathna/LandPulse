@@ -1,96 +1,162 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+const footerSections = [
+  {
+    title: 'Jump to',
+    items: [
+      { name: 'Home', href: '/' },
+      { name: 'Post your ad', href: '/create' },
+      { name: 'Market Insights', href: '/' },
+      { name: 'Browse Ads', href: '/viewAll' },
+    ],
+  },
+  {
+    title: 'Menu',
+    items: [
+      { name: 'About', href: '/aboutUs' },
+      { name: 'Help', href: '/create' },
+      { name: 'About Us', href: '/' },
+      { name: 'Terms & Conditions', href: '/viewAll' },
+    ],
+  },
+  {
+    title: 'Services',
+    items: [
+      { name: 'Browse Lands', href: '/viewAll' },
+      { name: 'Help', href: '/aboutUs' },
+      { name: 'Price Prediction', href: '/predict' },
+      { name: 'Post Ads', href: '/create' },
+    ],
+  },
+];
+
+const socialMediaLinks = [
+  {
+    href: 'https://www.facebook.com',
+    icon: 'facebook',
+    logo: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 mr-2"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+      </svg>
+    ),
+    label: 'landpulse-facebook-page',
+  },
+  {
+    href: 'https://www.twitter.com',
+    icon: 'twitter',
+    logo: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 mr-2"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+      </svg>
+    ),
+    label: 'landpulse-twitter-page',
+  },
+  {
+    href: 'https://www.instagram.com',
+    icon: 'instagram',
+    logo: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 mr-2"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+      </svg>
+    ),
+    label: 'landpulse-instagram-page',
+  },
+  {
+    href: 'https://www.linkedin.com',
+    icon: 'linkedin',
+    logo: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 mr-2"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+      </svg>
+    ),
+    label: 'landpulse-linkedin-page',
+  },
+];
+
 const Footer = () => {
   return (
     <footer className="text-black py-8 mt-10">
-      <div className="bg-custom-green-100 py-8 px-4 text-center w-100">
+      <div className="bg-custom-green-100 py-8 px-4 text-center w-full">
         <div className="text-lg">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex max-sm:flex-wrap justify-around items-center">
             <div>
-              <h1 className="text-3xl mb-4 text-white">Need more information?</h1>
-              <p className="text-md text-white">Write your concerns to us</p>
+              <h1 className="lg:text-3xl text-2xl mb-4 text-white">
+                Need more information?
+              </h1>
+              <p className="lg:text-md text-sm text-white">
+                Write your concerns to us
+              </p>
             </div>
             <div className="flex justify-center items-center">
-              <button className="bg-white hover:bg-slate-300 text-black font-bold py-2 px-4 mt-3 rounded">Click here</button>
+              <Link
+                className="bg-white hover:bg-slate-300 text-black font-bold py-2 px-4 mt-3 rounded"
+                href={'/aboutUs'}
+              >
+                Click here
+              </Link>
             </div>
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 mt-5">
-        <div className="flex flex-wrap">
-          <div className="w-full md:w-1/5 text-center md:text-left">
-            <Image priority={true} src="/logo.png" alt="logo" width={200} height={50} />
-            <p className="mb-4 text-xs">Where Visions Find Ground: Pulse Your Property Dreams with Us!</p>
+      <div className="container min-w-full mt-5 p-4">
+        <div className="flex flex-wrap justify-evenly items-center w-full">
+          <div className="max-lg:hidden w-full md:w-1/5 flex flex-col justify-center items-center text-center md:text-left">
+            <Image
+              priority={true}
+              src="/logo.png"
+              alt="logo"
+              width={200}
+              height={50}
+            />
+            <p className="mb-4 text-xs">
+              Where Visions Find Ground: Pulse Your Property Dreams with Us!
+            </p>
           </div>
-          <div className="w-full md:w-1/5 text-center md:text-left">
-            <h2 className="text-xl font-bold mb-4">Jump to</h2>
-            <ul className="list-unstyled">
-              <Link href="/">
-                <li className="mb-2">Home</li>
-              </Link>
-              <Link href="/ad/create">
-                <li className="mb-2">Post your ad</li>
-              </Link>
-              <Link href="/">
-                <li className="mb-2">Market Insights</li>
-              </Link>
-              <Link href="/viewAll">
-                <li className="mb-2">Browse Ads</li>
-              </Link>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/5 text-center md:text-left">
-            <h2 className="text-xl font-bold mb-4">About</h2>
-            <ul className="list-unstyled">
-              <Link href="/">
-                <li className="mb-2">Help</li>
-              </Link>
-              <Link href="/">
-                <li className="mb-2">About Us</li>
-              </Link>
-              <Link href="/">
-                <li className="mb-2">Terms & Conditions</li>
-              </Link>
-            </ul>
-          </div>
-          <div className="w-full md:w-1/5 text-center md:text-left">
-            <h2 className="text-xl font-bold mb-4">Services</h2>
-            <ul className="list-unstyled">
-              <Link href="/">
-                <li className="mb-2">Browse Lands</li>
-              </Link>
-              <Link href="/">
-                <li className="mb-2">Price Predition</li>
-              </Link>
-              <Link href="/">
-                <li className="mb-2">Post Ads</li>
-              </Link>
-            </ul>
-          </div>
-          <div className="w-auto md:w-1/5 text-center md:text-left">
+          {footerSections.map((section, index) => (
+            <div
+              key={index}
+              className="w-full flex flex-col justify-center items-center md:w-1/5 text-center md:text-left"
+            >
+              <h2 className="text-xl font-bold mb-4">{section.title}</h2>
+              <ul className="list-unstyled flex flex-col justify-center items-center">
+                {section.items.map((item, idx) => (
+                  <li className="mb-2" key={idx}>
+                    <Link href={item.href}>{item.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="w-auto md:w-1/5 text-center md:text-left flex flex-col justify-center items-center ">
             <h2 className="text-xl font-bold mb-4">Connect With Us</h2>
-            <div className="flex">
-              <Link href="https://www.facebook.com">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-                </svg>
-              </Link>
-              <Link href="https://www.x.com">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                </svg>
-              </Link>
-              <Link href="https://www.instagram.com">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-              </Link>
-              <Link href="https://www.linkedin.com">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
-                </svg>
-              </Link>
+
+            <div className="flex gap-4">
+              {socialMediaLinks.map((item) => (
+                <Link href={item.href} key={item.href} aria-label={item.label}>
+                  {item.logo}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

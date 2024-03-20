@@ -2,6 +2,7 @@
 import UserModel from "@/models/userModel";
 import User from "@/models/userModel";
 import { hashPassword } from "@/utils/bcrypt";
+import { getAdvertisementByEmail, getAdvertisementByUserId } from "./adActions";
 
 export const signUp = async (userData) => {
     try {
@@ -41,6 +42,17 @@ export const signUp = async (userData) => {
     }
 };
 
+export async function updateUserByEmail(email, updatedFields) {
+    try {
+        const result = await UserModel.update(email, updatedFields);
+        console.log("Number of modified documents:", result);
+        return result;
+    } catch (error) {
+        console.error("Error:", error.message);
+        throw new Error("Failed to update user.");
+    }
+}
+
 export async function getUserByEmailOrUsername(identifier) {
     try {
         const user = await User.findOne({
@@ -54,9 +66,10 @@ export async function getUserByEmailOrUsername(identifier) {
     }
 }
 
-export async function getUserByID(id) {
+export async function getUserByEmail(email) {
     try {
-        const user = await UserModel.findOne({ email: id });
+        const user = await UserModel.findOne({ email });
+        user.posts = await getAdvertisementByUserId(user._id);
 
         return JSON.stringify(user);
     } catch (error) {

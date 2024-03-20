@@ -3,7 +3,7 @@ import Dropzone from "@/app/components/Dropzone/dropzone";
 import PriceSection from "@/app/components/PriceSection/page";
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setBasic } from "@/lib/redux/adSlice";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -14,7 +14,6 @@ import { FaArrowDown } from "react-icons/fa";
 import { AdvertisementSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { saveAdvertisements } from "@/actions/adActions";
-import { useRouter } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +44,7 @@ export default function CreateAd() {
 
     useEffect(() => {
         if (status === "unauthenticated" && !session?.user) {
-            redirect("/api/auth/signin?callbackUrl=/login");
+            router.push("/api/auth/signin?callbackUrl=/login");
         }
         if (session?.user) {
             const { user } = session;
@@ -114,7 +113,7 @@ export default function CreateAd() {
             setLoading(true);
             const dataParse = AdvertisementSchema.safeParse(ad);
 
-            if (dataParse.success) {
+            if (dataParse.success && ad?.images.length > 0) {
                 toast.info("submition pending...");
                 const res = await saveAdvertisements({
                     ...dataParse.data,
@@ -136,6 +135,8 @@ export default function CreateAd() {
                         issue_1?.message
                 );
                 setErrMsg(issue_1.path + " " + issue_1?.message);
+            } else if (!(ad?.images.length > 0)) {
+                setErrMsg("At least one image must be selected");
             } else {
                 setErrMsg("Something went wrong!");
             }
@@ -176,7 +177,7 @@ export default function CreateAd() {
                                             )
                                         }
                                     />
-                                    <div className=" bg-gray-100 p-8 rounded-md">
+                                    <div className=" bg-gray-100 p-8 rounded-md  shadow-xl hover:shadow-2xl">
                                         <h2 className="text-lg font-bold mb-2">
                                             Advertisement Posting Instructions:
                                         </h2>
@@ -308,8 +309,8 @@ export default function CreateAd() {
                                             </label>
                                             <div className="w-full h-fit flex gap-2 justify-start items-center">
                                                 <span
-                                                    className="shadow appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
-                                                        focus:outline-none focus:shadow-outline bg-gray-100 cursor-pointer"
+                                                    className="appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
+                                                        focus:outline-none focus:shadow-outline bg-gray-100 shadow-md cursor-pointer"
                                                     onClick={() => {
                                                         console.log(
                                                             "Selected price"
@@ -339,6 +340,7 @@ export default function CreateAd() {
                                                     }}
                                                 >
                                                     {ad.price !== 0.0 &&
+                                                        ad.isInputPrice &&
                                                         (priceStatus ? (
                                                             <FaRegCircleCheck className="w-full h-full text-green-400" />
                                                         ) : (
@@ -348,7 +350,7 @@ export default function CreateAd() {
                                                         ad.price !== 0 && (
                                                             <ChartApp
                                                                 className={
-                                                                    "w-[500px] h-[400px] p-2 bg-white absolute bottom-0 left-0 flex justify-center items-center flex-col"
+                                                                    "w-[500px] h-[400px] shadow-2xl p-4 bg-white absolute bottom-0 left-0 flex justify-center items-center flex-col"
                                                                 }
                                                                 dataObj={
                                                                     ad.predict
@@ -381,8 +383,8 @@ export default function CreateAd() {
                                 </div>
                             </div>
                         </div>
-                        {surround && (
-                            <div className="w-full overflow-x-scroll ">
+                        {surround && ad.predict?.Obj && (
+                            <div className="w-full overflow-x-scroll no-scrollbar">
                                 <DistanceCard
                                     className={
                                         "distanceCard h-full p-8 flex gap-x-10"

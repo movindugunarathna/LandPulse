@@ -3,10 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { pricePredictSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
-import axios from "axios";
+import { pricePredict } from "@/actions/mlActions";
 
 export default function PriceSection({
     setPriceDetails,
@@ -36,87 +35,50 @@ export default function PriceSection({
 
     const handleSubmit = async () => {
         setLoading(true);
+
         try {
-            const inputData = {
+            const data = await pricePredict({
                 geometry: ad.geometry,
                 landTypes: ad.landTypes,
-            };
+            });
+            dispatch(setPredict({ value: data }));
+            setPriceDetails({
+                ...priceDetails,
+                selected: false,
+            });
 
-            const priceInputPass = pricePredictSchema.safeParse(inputData);
-
-            if (priceInputPass.success) {
-                const { geometry, landTypes } = priceInputPass.data;
-                toast.info("Waiting for price prediction !!!");
-
-                const response = await axios.post(
-                    "http://127.0.0.1:5000/predict",
-                    {
-                        latitude: geometry.lat,
-                        longitude: geometry.lng,
-                        landType: landTypes.join(" ,"),
-                        radius: 1000,
-                    }
+            if (isPricePredict) {
+                dispatch(
+                    setBasic({
+                        field: "price",
+                        value: parseFloat(data?.price),
+                    })
                 );
 
-                const data = response.data;
-
-                if (response.status === 200) {
-                    // const data = predictReturn;
-                    // if (true) {
-                    dispatch(setPredict({ value: data }));
-                    setPriceDetails({
-                        ...priceDetails,
-                        selected: false,
-                    });
-
-                    if (isPricePredict) {
-                        dispatch(
-                            setBasic({
-                                field: "price",
-                                value: parseFloat(data?.price),
-                            })
-                        );
-
-                        dispatch(
-                            setInputPriceBool({
-                                bool: false,
-                            })
-                        );
-                    } else {
-                        dispatch(
-                            setInputPriceBool({
-                                bool: true,
-                            })
-                        );
-                    }
-
-                    toast.success("Price Input Success");
-                } else {
-                    const errorMessage =
-                        response.data.error || response.statusText;
-                    toast.error(errorMessage || "Something went wrong !!!");
-                }
+                dispatch(
+                    setInputPriceBool({
+                        bool: false,
+                    })
+                );
             } else {
-                const issue_1 = priceInputPass.error?.issues[0];
-                console.log(
-                    issue_1.path +
-                        " Received: " +
-                        issue_1.received +
-                        " , Error: " +
-                        issue_1?.message
+                dispatch(
+                    setInputPriceBool({
+                        bool: true,
+                    })
                 );
-                toast.error(issue_1?.message);
             }
+
+            toast.success("Price Input Success");
         } catch (error) {
-            console.log(error.message);
             toast.error(error.message);
         }
+
         setLoading(false);
     };
 
     return (
         <div ref={priceTabRef} className={className} onClick={handleClick}>
-            <div className="lg:w-3/5 h-fit bg-white rounded-md border border-black z-10 ">
+            <div className="lg:w-3/5 h-fit bg-white rounded-md shadow-xl hover:shadow-2xl z-10 ">
                 <div className="relative w-full h-full flex flex-col justify-between gap-8 p-4 px-8">
                     <div className=" absolute top-0 left-0 p-4 max-sm:px-10  w-full h-fit justify-center">
                         <div className="flex items-center justify-center">
@@ -152,14 +114,15 @@ export default function PriceSection({
                     <div className=" absolute bottom-0 left-0 w-full h-fit text-center p-4 px-8 flex justify-between items-center bg-white">
                         <input
                             type="button"
-                            className="inline-flex items-center justify-center px-8 py-2 font-sans font-semibold tracking-wide 
-                            border border-black rounded-lg "
+                            className="inline-flex items-center justify-center px-8 py-2 font-sans font-semibold tracking-wide hover:bg-slate-200 cursor-pointer
+                            shadow-md rounded-lg "
                             value={"Cancel"}
                             onClick={handleClick}
                         />
                         <input
                             type="button"
-                            className="inline-flex items-center justify-center px-8 py-2 font-sans font-semibold tracking-wide text-white bg-custom-green-100 hover:bg-lime-900 rounded-lg "
+                            className="inline-flex items-center justify-center px-8 py-2 font-sans font-semibold tracking-wide shadow-lg text-white 
+                            bg-custom-green-100 hover:bg-lime-900 rounded-lg cursor-pointer "
                             value={"Submit"}
                             onClick={handleSubmit}
                         />

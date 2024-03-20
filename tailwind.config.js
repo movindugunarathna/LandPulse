@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,7 +8,7 @@ module.exports = {
   ],
   theme: {
     fill: {
-      current: 'currentColor',
+      current: "currentColor",
     },
     extend: {
       backgroundImage: {
@@ -17,12 +17,14 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        'custom-green': {
-          100: '#746C2E',
+        "custom-green": {
+          100: "#746C2E",
           200: "#D2D8C8",
+          300: "#514c20",
+          400: "#aca782",
         },
       },
     },
     plugins: [],
-  }
+  },
 };
