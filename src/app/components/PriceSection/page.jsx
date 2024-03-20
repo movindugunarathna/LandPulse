@@ -3,11 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import InputPrice from "./components/InputPrice";
 import PredictPrice from "./components/PredictPrice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { pricePredictSchema } from "@/lib/zodSchema/schema";
 import { toast } from "sonner";
 import { setBasic, setPredict, setInputPriceBool } from "@/lib/redux/adSlice";
-import axios from "axios";
-import { convertBackToNumbers } from "@/utils/readFiles";
+import { pricePredict } from "@/actions/mlActions";
 
 export default function PriceSection({
     setPriceDetails,
@@ -37,83 +35,44 @@ export default function PriceSection({
 
     const handleSubmit = async () => {
         setLoading(true);
+
         try {
-            const inputData = {
+            const data = await pricePredict({
                 geometry: ad.geometry,
                 landTypes: ad.landTypes,
-            };
+            });
+            dispatch(setPredict({ value: data }));
+            setPriceDetails({
+                ...priceDetails,
+                selected: false,
+            });
 
-            const priceInputPass = pricePredictSchema.safeParse(inputData);
-
-            if (priceInputPass.success) {
-                const { geometry, landTypes } = priceInputPass.data;
-                toast.info("Waiting for price prediction !!!");
-
-                const response = await axios.post(
-                    "https://landpulse-ml-vubyb2fdca-el.a.run.app/predict",
-                    {
-                        latitude: geometry.lat,
-                        longitude: geometry.lng,
-                        landType: landTypes.join(" ,"),
-                        radius: 1000,
-                    }
+            if (isPricePredict) {
+                dispatch(
+                    setBasic({
+                        field: "price",
+                        value: parseFloat(data?.price),
+                    })
                 );
-                console.log(response);
 
-                const data = convertBackToNumbers(response.data);
-                console.log(data);
-
-                if (response.status === 200) {
-                    // const data = predictReturn;
-                    // if (true) {
-                    dispatch(setPredict({ value: data }));
-                    setPriceDetails({
-                        ...priceDetails,
-                        selected: false,
-                    });
-
-                    if (isPricePredict) {
-                        dispatch(
-                            setBasic({
-                                field: "price",
-                                value: parseFloat(data?.price),
-                            })
-                        );
-
-                        dispatch(
-                            setInputPriceBool({
-                                bool: false,
-                            })
-                        );
-                    } else {
-                        dispatch(
-                            setInputPriceBool({
-                                bool: true,
-                            })
-                        );
-                    }
-
-                    toast.success("Price Input Success");
-                } else {
-                    const errorMessage =
-                        response.data.error || response.statusText;
-                    toast.error(errorMessage || "Something went wrong !!!");
-                }
+                dispatch(
+                    setInputPriceBool({
+                        bool: false,
+                    })
+                );
             } else {
-                const issue_1 = priceInputPass.error?.issues[0];
-                console.log(
-                    issue_1.path +
-                        " Received: " +
-                        issue_1.received +
-                        " , Error: " +
-                        issue_1?.message
+                dispatch(
+                    setInputPriceBool({
+                        bool: true,
+                    })
                 );
-                toast.error(issue_1?.message);
             }
+
+            toast.success("Price Input Success");
         } catch (error) {
-            console.log(error.message);
             toast.error(error.message);
         }
+
         setLoading(false);
     };
 
