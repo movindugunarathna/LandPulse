@@ -89,11 +89,15 @@ export default function ViewAd({ params: { adId } }) {
                                         {advertisement.isInputPrice && (
                                             <>
                                                 <div className="flex justify-between text-green-400">
-                                                    <p>Price too high: </p>
+                                                    <p>
+                                                        Price in perfect range:{" "}
+                                                    </p>
                                                     <FaRegCircleCheck className="w-6 h-6 " />
                                                 </div>
                                                 <div className="flex justify-between text-red-400">
-                                                    <p>Price too Low: </p>
+                                                    <p>
+                                                        Price too Low or high:{" "}
+                                                    </p>
                                                     <IoMdCloseCircleOutline className="w-6 h-6 " />
                                                 </div>
                                             </>
