@@ -37,6 +37,7 @@ export default function Page() {
                         alt=""
                         width={2560}
                         height={1440}
+                        loading="eager"
                     />
                     <div className="absolute top-0 w-full h-full bg-black opacity-50"></div>
                     <div
@@ -80,7 +81,7 @@ export default function Page() {
 
             {/* Starting featured posts */}
             {advertisements ? (
-                <section className="w-screen h-screen flex items-center justify-center">
+                <section className="w-full h-full flex items-center justify-center">
                     <div className="w-full max-w-6xl">
                         <div className="mt-10">
                             <h1 className="text-2xl md:text-4xl font-bold text-center text-custom-green-100">
@@ -123,7 +124,7 @@ export default function Page() {
                     </div>
                 </section>
             ) : (
-                <section className="w-screen h-screen flex justify-center items-center">
+                <section className="w-full h-full py-10 flex justify-center items-center">
                     Loading...
                 </section>
             )}

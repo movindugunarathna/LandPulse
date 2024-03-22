@@ -48,8 +48,12 @@ export default function InputPrice() {
                     <input
                         key={item.value}
                         type="button"
-                        className={`inline-flex items-center justify-center px-4 py-1 font-sans font-semibold tracking-wide hover:shadow-xl
-                                    border ${ad.landTypes.includes(item.type) ? "bg-gray-200 shadow-sm" : "shadow-lg"} rounded-lg cursor-pointer`}
+                        className={`px-4 py-1 inline-flex items-center justify-center font-sans font-semibold tracking-wide hover:shadow-xl
+                                    border ${
+                                        ad.landTypes.includes(item.type)
+                                            ? "bg-purple-500 text-white"
+                                            : "text-purple-500 border border-purple-500"
+                                    } rounded-md cursor-pointer`}
                         value={item.type}
                         onClick={() => {
                             if (ad.landTypes.includes(item.type)) {

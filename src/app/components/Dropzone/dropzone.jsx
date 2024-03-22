@@ -153,7 +153,8 @@ const Dropzone = ({ className }) => {
                     <button
                         type="button"
                         onClick={removeAll}
-                        className="mt-1 text-[12px] p-2 uppercase tracking-wider font-bold border border-secondary-400 rounded-md px-3 hover:bg-secondary-400 hover:bg-red-600 transition-colors bg-red-500 text-white"
+                        className=" text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 shadow-lg sticky right-20 
+                        top-0 rounded text-sm"
                     >
                         Remove all
                     </button>

@@ -29,6 +29,7 @@ const Advertisement = ({ advertisement }) => {
                         width={500}
                         height={500}
                         className="rounded-md h-52"
+                        loading="lazy"
                     />
 
                     <p className="absolute right-0 font-semibold text-white bg-black/40 px-4 py-2 mt-4 mr-4 rounded-md">
