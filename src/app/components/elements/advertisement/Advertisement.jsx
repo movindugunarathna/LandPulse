@@ -36,8 +36,11 @@ const Advertisement = ({ advertisement }) => {
                             "en-US"
                         )}
                     </p>
-                    <h2 className=" w-full text-justify font-bold mb-2">
+                    <h2 className="relative w-full text-justify font-bold mb-2 max-h-[48px] overflow-hidden">
                         {advertisement?.title}
+                        <span className=" text-sm font-light absolute bottom-0 right-0 bg-white text-gray-400 text-center pl-2">
+                            ... See more
+                        </span>
                     </h2>
                     <div className=" w-full text-gray-500 flex flex-col text-sm">
                         <p className="w-full flex justify-between items-center text-gray-800 text-sm">

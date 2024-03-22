@@ -264,8 +264,11 @@ export default function Dashboard({ userData }) {
                                                             scope="row"
                                                             className="px-6 py-4 font-medium text-gray-900 dark:text-white text-wrap"
                                                         >
-                                                            <div className="min-w-60">
+                                                            <div className="relative min-w-60">
                                                                 {post.title}
+                                                                <span className="absolute top-0 right-0 bg-white pl-2 text-gray-300">
+                                                                    ...
+                                                                </span>
                                                             </div>
                                                             <span className=" text-xs text-gray-400 py-2">
                                                                 {
@@ -285,7 +288,7 @@ export default function Dashboard({ userData }) {
                                                             </span>
                                                         </td>
                                                         <td className="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                                                            <div>
+                                                            <div className=" text-xs text-gray-400 ">
                                                                 Lat :
                                                                 {
                                                                     post

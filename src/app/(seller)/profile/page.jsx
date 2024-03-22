@@ -114,11 +114,17 @@ export default function Page() {
         }
         if (session?.user) {
             const user = async () => {
-                const userDetails = await getUserByEmail(session?.user.email);
-                const userObj = JSON.parse(userDetails);
-                console.log(userObj);
-                setUser(userObj);
-                return userObj;
+                try {
+                    const userDetails = await getUserByEmail(
+                        session?.user.email
+                    );
+                    const userObj = JSON.parse(userDetails);
+                    console.log(userObj);
+                    setUser(userObj);
+                    return userObj;
+                } catch (error) {
+                    toast.error(error.message);
+                }
             };
 
             user();

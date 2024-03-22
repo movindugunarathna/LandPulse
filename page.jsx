@@ -2,12 +2,25 @@ import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
 import Link from "next/link";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
-export default async function Home() {
-    const { advertisements } = await getAdvertisements({
-        pageNumber: 1,
-        pageSize: 3,
-    });
+export default function Home() {
+    const [advertisements, setAdvertisements] = useState(null);
+    useEffect(() => {
+        const loading = async () => {
+            try {
+                const { advertisements } = await getAdvertisements({
+                    pageNumber: 1,
+                    pageSize: 3,
+                });
+                setAdvertisements(advertisements);
+            } catch (error) {
+                toast.error(error.message);
+            }
+        };
+        loading();
+    }, []);
 
     return (
         <>
@@ -85,7 +98,7 @@ export default async function Home() {
                         </p>
                     </div>
                     <div className="w-full flex flex-wrap justify-center items-center gap-10">
-                        {advertisements.map((advertisement) => (
+                        {advertisements?.map((advertisement) => (
                             <Advertisement
                                 key={advertisement._id}
                                 advertisement={advertisement}
