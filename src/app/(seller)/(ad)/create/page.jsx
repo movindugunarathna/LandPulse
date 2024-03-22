@@ -34,7 +34,6 @@ export default function CreateAd() {
     const [firstRender, setFirstRender] = useState(false);
     const [errMsg, setErrMsg] = useState("");
     const [loading, setLoading] = useState(true);
-    const errRef = useRef(null);
     const scrollRef = useRef(null);
     const errorMsgTimeOut = 6000;
 
@@ -69,18 +68,6 @@ export default function CreateAd() {
     }, [priceSection.selected]);
 
     useEffect(() => {
-        setTimeout(() => {
-            setErrMsg("");
-        }, errorMsgTimeOut);
-
-        if (errMsg !== "") {
-            errRef.current.scrollIntoView({
-                behavior: "smooth",
-            });
-        }
-    }, [errMsg]);
-
-    useEffect(() => {
         if (priceSection.selected === false && firstRender) {
             scrollRef.current.scrollIntoView({
                 behavior: "smooth",
@@ -108,6 +95,12 @@ export default function CreateAd() {
             );
     };
 
+    useEffect(() => {
+        setTimeout(() => {
+            setErrMsg("");
+        }, errorMsgTimeOut);
+    }, [errMsg]);
+
     const submitAdPost = async () => {
         try {
             setLoading(true);
@@ -134,7 +127,7 @@ export default function CreateAd() {
                         " , Error: " +
                         issue_1?.message
                 );
-                setErrMsg(issue_1.path + " " + issue_1?.message);
+                setErrMsg(issue_1?.message);
             } else if (!(ad?.images.length > 0)) {
                 setErrMsg("At least one image must be selected");
             } else {
@@ -153,7 +146,7 @@ export default function CreateAd() {
             {priceSection.selected && (
                 <PriceSection
                     className={
-                        "absolute top-0 left-0 w-full h-full bg-white flex justify-center items-center"
+                        " z-20 absolute top-0 left-0 w-full h-full backdrop-blur-sm flex justify-center items-center"
                     }
                     setPriceDetails={setPriceSection}
                     priceDetails={priceSection}
@@ -167,7 +160,7 @@ export default function CreateAd() {
                 ) : (
                     <div className="w-fit overflow-hidden h-full flex flex-col justify-center items-center">
                         {instructionAppear && (
-                            <div className="w-screen h-screen flex flex-col justify-center items-center">
+                            <div className="w-full w-max-[1350px] h-screen flex flex-col justify-center items-center">
                                 <div className="relative w-fit h-fit p-4">
                                     <IoMdCloseCircleOutline
                                         className="absolute top-0 right-0 w-6 h-6 text-red-400 hover:cursor-pointer"
@@ -222,7 +215,7 @@ export default function CreateAd() {
                                 <button
                                     id="scroll"
                                     name="scroll"
-                                    className="w-40 mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded
+                                    className="w-40 mt-5 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white py-2 px-4 rounded
                                     flex gap-x-2 justify-center items-center focus:outline-none focus:shadow-outline"
                                     onClick={() => {
                                         scrollRef.current.scrollIntoView({
@@ -230,7 +223,7 @@ export default function CreateAd() {
                                         });
                                     }}
                                 >
-                                    Scroll <FaArrowDown />
+                                    Scroll <FaArrowDown className="w-3 h-3" />
                                 </button>
                             </div>
                         )}
@@ -243,17 +236,15 @@ export default function CreateAd() {
                                 <button
                                     id="publish"
                                     name="publish"
-                                    className="mt-5 bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                    className=" text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 shadow-lg sticky right-20 
+                                                 top-0 rounded text-sm"
                                     onClick={submitAdPost}
                                 >
                                     Publish
                                 </button>
                             </div>
 
-                            <div
-                                className="sticky top-20 text-red-400 h-7"
-                                ref={errRef}
-                            >
+                            <div className="sticky top-20 text-red-400 h-7">
                                 {errMsg}
                             </div>
 
