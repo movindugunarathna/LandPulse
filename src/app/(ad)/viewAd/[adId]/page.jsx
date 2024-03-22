@@ -60,11 +60,11 @@ export default function ViewAd({ params: { adId } }) {
                 <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4 ">
                     <div className="flex w-full justify-between items-center cursor-pointer">
                         <div
-                            className="flex justify-start gap-4 w-fit h-fit"
+                            className="text-red-500 flex justify-start gap-4 w-fit h-fit"
                             onClick={() => router.back()}
                         >
-                            <IoCaretBackSharp className="w-5 h-5  " />
-                            <p>BACK</p>
+                            <IoCaretBackSharp className="  w-5 h-5  " />
+                            <p>Back</p>
                         </div>
                         <button
                             className=" h-10 text-sm px-5 hover:bg-opacity-80 text-red-500 border border-red-500 

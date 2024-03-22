@@ -94,7 +94,7 @@ export const deleteAdvertisements = async (title, userId) => {
         console.log("Post Deleted successfully");
         console.log(post);
         return {
-            code: 202,
+            code: 200,
             message: "Post Deleted successfully",
             data: post,
         };

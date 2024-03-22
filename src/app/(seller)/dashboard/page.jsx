@@ -10,11 +10,18 @@ import { getUserByEmail } from "@/actions/userActions";
 import { useState } from "react";
 import { toast } from "sonner";
 import { deleteAdvertisements } from "@/actions/adActions";
+import { IoWarning } from "react-icons/io5";
+import { IoCaretBackSharp } from "react-icons/io5";
 
 export default function Dashboard({ userData }) {
     const { data: session, status } = useSession();
     const currentYear = new Date().getFullYear();
     const [user, setUser] = useState(null);
+    const [openYesWindow, setOpenYesWindow] = useState({
+        open: false,
+        obj: null,
+    });
+    const yesWindowRef = useRef(null);
     const imageRef = useRef(null);
     const router = useRouter();
 
@@ -48,38 +55,99 @@ export default function Dashboard({ userData }) {
         }
     }, [imageRef]);
 
-    const deletePost = async (title, userId) => {
-        try {
-            const res = await deleteAdvertisements(title, userId);
-            if (res?.code === 200) {
-                toast.success(res.message);
-                router.refresh();
-            } else console.log(res);
-        } catch (error) {
-            toast.error(error.message);
+    useEffect(() => {
+        if (yesWindowRef.current) {
+            yesWindowRef.current.scrollIntoView({
+                behavior: "smooth",
+            });
         }
+    }, [yesWindowRef, openYesWindow.open]);
+
+    const deletePostButtonClicked = async (title, userId) => {
+        setOpenYesWindow({
+            open: true,
+            obj: { title, userId },
+        });
+    };
+
+    const deletePost = async () => {
+        if (openYesWindow.obj) {
+            try {
+                const { title, userId } = openYesWindow.obj;
+                const res = await deleteAdvertisements(title, userId);
+                if (res?.code === 200) {
+                    location.reload();
+                    toast.success(res.message);
+                } else console.log(res);
+            } catch (error) {
+                toast.error(error.message);
+            }
+        }
+        setOpenYesWindow({
+            open: false,
+            obj: null,
+        });
     };
 
     return (
         <>
             {user ? (
-                <div className="wrapper flex items-center flex-col overflow-hidden">
-                    <h1 className="text-4xl font-bold text-center mt-6">
-                        Seller Dashboard
-                    </h1>
+                <div className="relative wrapper flex items-center flex-col overflow-hidden">
+                    {openYesWindow?.open && (
+                        <div
+                            ref={yesWindowRef}
+                            className=" absolute top-0 left-0 z-10 w-screen h-full flex justify-center items-center backdrop-blur-sm"
+                        >
+                            <div
+                                className="w-fit h-fit p-8 bg-white rounded-md flex flex-col 
+                        justify-between items-center shadow-2xl"
+                            >
+                                <p className="flex gap-2 items-center">
+                                    {" "}
+                                    <IoWarning className="text-red-500 w-5 h-5" />{" "}
+                                    Are you sure you want to delete this item ?
+                                </p>
+                                <div className="w-full flex gap-4 pt-4">
+                                    <button
+                                        className="bg-red-500 text-white rounded-lg w-full py-1 hover:opacity-50"
+                                        onClick={deletePost}
+                                    >
+                                        Yes
+                                    </button>
+                                    <button
+                                        className="border border-black rounded-lg w-full py-1 hover:opacity-50"
+                                        onClick={() => {
+                                            setOpenYesWindow({
+                                                open: false,
+                                                obj: null,
+                                            });
+                                        }}
+                                    >
+                                        No
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div className="w-full flex justify-start items-center lg:px-56 px-24 my-10">
+                        <div
+                            className="text-red-500 flex justify-start items-center gap-4 w-fit h-fit"
+                            onClick={() => router.back()}
+                        >
+                            <IoCaretBackSharp className=" w-5 h-5  " />
+                            <p>Back</p>
+                        </div>
+                    </div>
                     <div className="w-screen min-h-screen flex justify-center mt-8 overflow-x-hidden">
                         <div className="flex justify-center xl:w-full h-fit max-xl:px-10 px-32 max-xl:items-center max-xl:flex-wrap w-full gap-10">
                             {/* profile pane */}
                             <div
                                 className="profile-pane w-full h-fit xl:max-w-sm bg-white border border-gray-200 rounded-lg shadow-2xl 
                          dark:bg-gray-800 dark:border-gray-700 p-10 flex xl:justify-center xl:flex-col max-xl:justify-evenly max-w-screen-sm
-                         max-xl:gap-8 sm:flex-row flex-col justify-center
+                         max-xl:gap-8 sm:flex-row flex-col justify-center max-md:text-sm
                          "
                             >
                                 <div className="head flex flex-col items-center pb-10 ">
-                                    <h2 className="text-xl text-gray-900 dark:text-white items-center mb-5 font-semibold">
-                                        Seller Profile
-                                    </h2>
                                     <div className="profile-image flex flex-col items-center pb-10">
                                         <div className="img rounded-full w-36 h-36 object-cover overflow-hidden">
                                             <Image
@@ -95,7 +163,7 @@ export default function Dashboard({ userData }) {
                                             />
                                         </div>
                                     </div>
-                                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                                    <h5 className="mb-1 text-gray-900 dark:text-white">
                                         {user?.username || "Fetching..."}
                                     </h5>
                                     <span className="text-sm text-gray-500 dark:text-gray-400 hover:font-semibold">
@@ -107,12 +175,10 @@ export default function Dashboard({ userData }) {
 
                                 <div className="">
                                     <div className="account head flex flex-col items-left pb-10">
-                                        <h6 className="text-lg font-bold mb-2">
-                                            Asserts
-                                        </h6>
-                                        <div className=" mb-2 text-sm">
+                                        <h6 className="mb-2">Asserts</h6>
+                                        <div className="pl-4 mb-2">
                                             <div className="flex flex-raw justify-between mb-1">
-                                                <span className="font-semibold text-gray-700">
+                                                <span className="text-gray-700">
                                                     Assert Count
                                                 </span>
                                                 <span>
@@ -123,12 +189,10 @@ export default function Dashboard({ userData }) {
                                     </div>
 
                                     <div className="account head flex flex-col items-left pb-10">
-                                        <h6 className="text-lg font-bold mb-2">
-                                            Contact
-                                        </h6>
-                                        <div className=" mb-2 text-sm">
+                                        <h6 className="mb-2">Contact</h6>
+                                        <div className="pl-4  mb-2">
                                             <div className="flex flex-raw justify-between mb-1">
-                                                <span className="font-semibold text-gray-700">
+                                                <span className="text-gray-700">
                                                     Email
                                                 </span>
                                                 <span>
@@ -137,7 +201,7 @@ export default function Dashboard({ userData }) {
                                                 </span>
                                             </div>
                                             <div className="flex flex-raw justify-between mb-1">
-                                                <span className="font-semibold text-gray-700">
+                                                <span className="text-gray-700">
                                                     Phone
                                                 </span>
                                                 <span>
@@ -146,7 +210,7 @@ export default function Dashboard({ userData }) {
                                                 </span>
                                             </div>
                                             <div className="flex flex-raw justify-between mb-1">
-                                                <span className="font-semibold text-gray-700 mr-4 ">
+                                                <span className="text-gray-700 mr-4 ">
                                                     Address
                                                 </span>
                                                 <span className="text-right">
@@ -173,8 +237,8 @@ export default function Dashboard({ userData }) {
                                     </div>
                                     <div className="flex justify-center py-2">
                                         <button
-                                            className=" bg-custom-green-100 text-white text-sm px-4 py-2 shadow-lg sticky right-20 
-                                                 top-0 rounded-lg"
+                                            className=" text-red-500 border border-red-500 hover:opacity-50 px-4 py-2 shadow-lg sticky right-20 
+                                                 top-0 rounded-lg text-sm"
                                             type="button"
                                             onClick={() => {
                                                 console.log(
@@ -203,8 +267,8 @@ export default function Dashboard({ userData }) {
                                             </div>
                                             <div className="flex justify-center py-2">
                                                 <button
-                                                    className=" bg-custom-green-100 text-white text-sm px-4 py-2 shadow-lg sticky right-20 
-                                                 top-0 rounded-lg hover:bg-custom-green-300"
+                                                    className=" text-red-500 border border-red-500 hover:opacity-50 text-sm px-4 py-2 shadow-lg sticky right-20 
+                                                 top-0 rounded-lg"
                                                     type="button"
                                                     onClick={() => {
                                                         console.log(
@@ -220,7 +284,7 @@ export default function Dashboard({ userData }) {
                                     </caption>
                                     {user?.posts && (
                                         <>
-                                            <thead className=" w-fit h-fit text-xs text-white  bg-custom-green-400">
+                                            <thead className=" w-fit h-fit text-xs text-blue-500 border border-blue-500">
                                                 <tr>
                                                     <th
                                                         scope="col"
@@ -329,7 +393,7 @@ export default function Dashboard({ userData }) {
                                                         </td>
                                                         <td className="px-6 py-4  text-gray-900 whitespace-nowrap flex dark:text-white ">
                                                             <CgComment
-                                                                className="h-6 w-6 font-medium text-blue-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
+                                                                className="h-6 w-6 text-blue-500 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
                                                                 onClick={() =>
                                                                     router.push(
                                                                         `/viewAd/${post._id}`
@@ -338,9 +402,9 @@ export default function Dashboard({ userData }) {
                                                             />
 
                                                             <FaRegTrashAlt
-                                                                className="h-5 w-5 font-medium text-red-700 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
+                                                                className="h-5 w-5 text-red-500 rounded-sm ml-1 hover:opacity-60 cursor-pointer"
                                                                 onClick={() =>
-                                                                    deletePost(
+                                                                    deletePostButtonClicked(
                                                                         post.title,
                                                                         post.userId
                                                                     )
