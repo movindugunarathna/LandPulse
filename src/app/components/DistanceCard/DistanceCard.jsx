@@ -20,12 +20,10 @@ function DistanceCard({ dataObj, className }) {
 
     return (
         <div className={className}>
-            <div className="shadow-xl rounded-md px-8 py-4 flex flex-col justify-evenly text-gray-800">
-                <h3 className="font-bold text text-gray-400 text-nowrap">
-                    Air polution
-                </h3>
-                <div className="">
-                    <p className="flex justify-between items-center gap-4">
+            <div className="shadow-xl rounded-md px-8 py-4 flex flex-col justify-evenly">
+                <h3 className=" text-nowrap">Air polution</h3>
+                <div className="pb-[0.5%] pt-[10%]">
+                    <p className="flex justify-between items-center gap-4 text-gray-600 pl-4">
                         Value: <span>{dataObj.Obj.air}</span>
                     </p>
                 </div>
@@ -53,16 +51,16 @@ const Card = ({ type, value: details }) => {
     return (
         <>
             {count !== 0 && (
-                <div className="rounded-xl px-8 py-4 flex flex-col justify-evenly text-gray-800  shadow-lg hover:scale-105">
-                    <h3 className="font-bold text text-gray-400">
+                <div className="rounded-xl px-8 py-4 flex flex-col justify-evenly shadow-lg hover:scale-105">
+                    <h3 className="">
                         {type.replace("_", " ").charAt(0).toUpperCase() +
                             type.replace("_", " ").slice(1)}
                     </h3>
-                    <div>
-                        <p className="flex justify-between items-center gap-4">
+                    <div className="pb-[0.5%] pt-[10%]">
+                        <p className="flex justify-between items-center gap-4 text-gray-600 pl-4">
                             Count: <span>{count}</span>
                         </p>
-                        <p className="flex justify-between items-center gap-4">
+                        <p className="flex justify-between items-center gap-4 text-gray-600 pl-4">
                             Distance: <span>{mdist}Km</span>
                         </p>
                     </div>

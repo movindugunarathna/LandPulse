@@ -191,7 +191,7 @@ export default function Dashboard({ userData }) {
 
                             {/* history pane */}
 
-                            <div className=" max-w-[1100px] relative sm:rounded-lg my-4 overflow-x-scroll w-full max-xl:shadow-2xl">
+                            <div className=" max-w-[1100px] relative sm:rounded-lg my-4 overflow-x-scroll no-scrollbar w-full max-xl:shadow-2xl">
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <caption className="max-xl:hidden p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                                         <div className="flex justify-between">

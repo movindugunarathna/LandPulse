@@ -6,9 +6,10 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import ChartApp from "@/app/components/Chart/Chart";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { FaRegCircleCheck } from "react-icons/fa6";
+import { FaArrowDown, FaRegCircleCheck } from "react-icons/fa6";
 import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 import { IoCaretBackSharp } from "react-icons/io5";
+import LocationView from "@/app/components/LocationView/LocationView";
 
 export default function ViewAd({ params: { adId } }) {
     const router = useRouter();
@@ -56,7 +57,7 @@ export default function ViewAd({ params: { adId } }) {
             className={`w-full h-full overflow-x-hidden flex justify-center items-center ${growthClicked ? "text-custom-green-100" : "text-black"}`}
         >
             {advertisement ? (
-                <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4">
+                <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4 ">
                     <div className="flex w-full justify-between items-center cursor-pointer">
                         <div
                             className="flex justify-start gap-4 w-fit h-fit"
@@ -66,7 +67,8 @@ export default function ViewAd({ params: { adId } }) {
                             <p>BACK</p>
                         </div>
                         <button
-                            className="py-1 px-3  bg-black hover:bg-opacity-80 text-white font-bold rounded-lg leading-10 hover:scale-105 focus:bg-custom-green-100"
+                            className=" h-10 text-sm px-5 hover:bg-opacity-80 text-red-500 border border-red-500 
+                            rounded-lg leading-10 hover:opacity-50 text-center"
                             onClick={(event) => {
                                 setGrowthClicked(!growthClicked);
                             }}
@@ -75,8 +77,8 @@ export default function ViewAd({ params: { adId } }) {
                         </button>
                     </div>
 
-                    <div className="w-full flex xl:flex-row max-xl:flex-col text-base justify-between items-start gap-8">
-                        <div className="xl:w-1/2 w-full h-full flex flex-col justify-between shadow-xl p-4 sm:p-6 md:p-8 ">
+                    <div className="w-full flex xl:flex-row max-xl:flex-col justify-between items-start gap-8">
+                        <div className="xl:w-1/2 w-full h-full flex flex-col justify-between p-2 sm:p-6 md:p-8 ">
                             {growthClicked ? (
                                 <div className="flex flex-col gap-6 ">
                                     <ChartApp
@@ -114,46 +116,46 @@ export default function ViewAd({ params: { adId } }) {
                             <div className="py-2 sm:py-10">
                                 <div className="py-2">
                                     <p>
-                                        <strong>TITLE</strong>
-                                        <br />
-                                        <span className="text-gray-600">
+                                        <p className="pb-[0.5%] pt-[10px]">
+                                            Title
+                                        </p>
+                                        <p className="text-gray-600 pl-4">
                                             {advertisement?.title}
-                                        </span>
+                                        </p>
                                     </p>
                                 </div>
                                 <div className="py-2">
                                     <p>
-                                        <strong>DESCRIPTION</strong>
-                                        <br />
-                                        <pre className="text-gray-600 text-wrap">
+                                        <p className="pb-[0.5%] pt-[4%]">
+                                            Description
+                                        </p>
+                                        <pre className="text-gray-600 text-wrap pl-4">
                                             {advertisement?.description}
                                         </pre>
                                     </p>
                                 </div>
                                 <div className="flex flex-row">
                                     <div className="w-full ">
-                                        <p className="font-bold font-sans text-lg pb-[0.5%] pt-[10%]">
-                                            MOBILE
+                                        <p className="pb-[0.5%] pt-[10%]">
+                                            Mobile
                                         </p>
-                                        <span className="text-gray-600">
+                                        <span className="text-gray-600 pl-4">
                                             {advertisement?.contact}
                                         </span>
                                     </div>
                                     <div className="w-full ">
-                                        <p className="font-bold font-sans text-lg pb-[0.5%] pt-[10%]">
-                                            EMAIL
+                                        <p className="pb-[0.5%] pt-[10%]">
+                                            Email
                                         </p>
-                                        <span className="text-gray-600">
+                                        <span className="text-gray-600 pl-4">
                                             {advertisement?.email}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="flex flex-row">
                                     <div className="w-full flex items-start flex-col">
-                                        <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[8%]">
-                                            <p className="font-bold font-sans text-lg">
-                                                PRICE
-                                            </p>
+                                        <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[10%]">
+                                            <p className="">PRICE</p>
 
                                             {growthClicked &&
                                                 advertisement.isInputPrice &&
@@ -164,7 +166,7 @@ export default function ViewAd({ params: { adId } }) {
                                                 ))}
                                         </div>
                                         <div className="flex flex-row gap-8">
-                                            <span className="text-gray-600">
+                                            <span className="text-gray-600 pl-4">
                                                 Rs.{" "}
                                                 {(
                                                     advertisement?.price *
@@ -175,10 +177,10 @@ export default function ViewAd({ params: { adId } }) {
                                         </div>
                                     </div>
                                     <div className="w-full ">
-                                        <p className="font-bold font-sans text-lg pb-[0.5%] pt-[8%]">
-                                            LAND TYPE
+                                        <p className="pb-[0.5%] pt-[10%]">
+                                            Land Type
                                         </p>
-                                        <span className="text-gray-600">
+                                        <span className="text-gray-600 pl-4">
                                             {advertisement?.landTypes.join(
                                                 ", "
                                             )}
@@ -188,13 +190,23 @@ export default function ViewAd({ params: { adId } }) {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full h-full">
+                    <div className="relative w-full xl:h-[400px] h-full flex justify-between xl:overflow-y-scroll no-scrollbar  gap-4 max-xl:flex-col mt-10">
+                        <LocationView
+                            geometry={advertisement.geometry}
+                            className={
+                                "xl:w-1/2 w-full max-h-[400px] max-xl:h-[400px]  z-0"
+                            }
+                        />
                         <DistanceCard
                             dataObj={advertisement?.predict}
                             className={
-                                "flex gap-4 overflow-x-scroll no-scrollbar p-8"
+                                "xl:w-1/2 w-full flex xl:flex-wrap gap-4 overflow-x-scroll no-scrollbar p-8"
                             }
                         />
+                        <span className="z-10 absolute xl:bottom-10 xl:right-0 xl:rotate-90 -bottom-0 right-0 text-red-500 flex items-center gap-4">
+                            scroll{" "}
+                            <FaArrowDown className="h-4 w-4 -rotate-90" />
+                        </span>
                     </div>
                 </div>
             ) : (
