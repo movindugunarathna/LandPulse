@@ -2,7 +2,7 @@
 import UserModel from "@/models/userModel";
 import User from "@/models/userModel";
 import { hashPassword } from "@/utils/bcrypt";
-import { getAdvertisementByEmail, getAdvertisementByUserId } from "./adActions";
+import { getAdvertisementByUserId } from "./adActions";
 
 export const signUp = async (userData) => {
     try {
@@ -49,7 +49,7 @@ export async function updateUserByEmail(email, updatedFields) {
         return result;
     } catch (error) {
         console.error("Error:", error.message);
-        throw new Error("Failed to update user.");
+        throw new Error(error);
     }
 }
 
@@ -62,7 +62,7 @@ export async function getUserByEmailOrUsername(identifier) {
         return user;
     } catch (error) {
         console.error("Error while fetching user:", error);
-        throw new Error("Failed to fetch user.");
+        throw new Error(error);
     }
 }
 
@@ -74,7 +74,7 @@ export async function getUserByEmail(email) {
         return JSON.stringify(user);
     } catch (error) {
         console.error("Error while fetching user:", error);
-        throw new Error("Failed to fetch user.");
+        throw new Error(error.message);
     }
 }
 
@@ -87,6 +87,6 @@ export async function getUserContactsById(id) {
         };
     } catch (error) {
         console.error("Error while fetching user:", error);
-        throw new Error("Failed to fetch user.");
+        throw new Error(error);
     }
 }

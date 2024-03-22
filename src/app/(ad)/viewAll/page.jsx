@@ -12,7 +12,7 @@ const ViewAll = () => {
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(1);
-    const [advertisements, setAdvertisements] = useState([]);
+    const [advertisements, setAdvertisements] = useState(null);
     const [filterValue, setFilterValue] = useState(1);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -61,8 +61,8 @@ const ViewAll = () => {
             Loading...
         </div>
     ) : (
-        <div className="min-h-screen min-w-full flex flex-col justify-center items-center gap-10 overflow-x-hidden">
-            <div className="w-4/5 h-10 text-sm z-10">
+        <div className="min-h-screen min-w-full flex flex-col justify-between items-center gap-10 overflow-x-hidden">
+            <div className="w-full h-10 text-sm z-10 flex justify-center md:justify-between items-center mt-10 sticky top-0 md:px-52">
                 <div
                     className="relative w-fit rounded-md shadow-sm flex flex-col"
                     ref={dropdownRef}
@@ -101,42 +101,53 @@ const ViewAll = () => {
                         ))}
                     </div>
                 </div>
+                <div className="max-md:hidden w-fit h-fit flex justify-center items-center gap-8">
+                    Page {pageNumber}
+                </div>
             </div>
 
-            <div className=" w-full flex flex-wrap gap-10 justify-center items-stretch mt-5 mx-52">
-                {advertisements.map((advertisement) => (
-                    <Advertisement
-                        key={advertisement._id}
-                        advertisement={advertisement}
-                    />
-                ))}
+            <div className=" w-full flex flex-wrap gap-10 justify-center items-stretch pt-5 lg:px-24">
+                {advertisements ? (
+                    advertisements?.map((advertisement) => (
+                        <Advertisement
+                            key={advertisement._id}
+                            advertisement={advertisement}
+                        />
+                    ))
+                ) : (
+                    <>No Advertisements Yet...</>
+                )}
             </div>
-            <div className="w-full h-full flex justify-center items-center gap-4">
-                <button
-                    className={`${pageNumber === totalPages ? "bg-gray-400 text-black" : "bg-custom-green-100 hover:bg-lime-900 text-white"}  font-bold py-2 px-4 rounded`}
-                    type="button"
-                    onClick={() => {
-                        if (pageNumber !== 1) {
-                            setPageNumber(pageNumber - 1);
-                        }
-                    }}
-                >
-                    Back
-                </button>
-                <div className="font-bold text-custom-green-100">
-                    {pageNumber}
-                </div>
-                <button
-                    className={`${pageNumber === totalPages ? "bg-gray-400 text-black" : "bg-custom-green-100 hover:bg-lime-900 text-white"}  font-bold py-2 px-4 rounded`}
-                    type="button"
-                    onClick={() => {
-                        if (pageNumber !== totalPages) {
-                            setPageNumber(pageNumber + 1);
-                        }
-                    }}
-                >
-                    Next
-                </button>
+            <div className="w-full h-full flex justify-between items-center md:px-52 sm:px-24 px-8">
+                {pageNumber == 1 && (
+                    <button
+                        className={`border border-black/50 hover:bg-lime-900 text-black hover:text-white 
+                         py-1 px-5 rounded-lg`}
+                        type="button"
+                        onClick={() => {
+                            if (pageNumber !== 1) {
+                                setPageNumber(pageNumber - 1);
+                            }
+                        }}
+                    >
+                        Back
+                    </button>
+                )}
+                <div className="text-black">Page {pageNumber}</div>
+                {pageNumber == totalPages && (
+                    <button
+                        className={`border border-black/50 hover:bg-lime-900 text-black hover:text-white 
+                     py-1 px-5 rounded-lg`}
+                        type="button"
+                        onClick={() => {
+                            if (pageNumber !== totalPages) {
+                                setPageNumber(pageNumber + 1);
+                            }
+                        }}
+                    >
+                        Next
+                    </button>
+                )}
             </div>
         </div>
     );
