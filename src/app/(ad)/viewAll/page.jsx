@@ -62,7 +62,7 @@ const ViewAll = () => {
         </div>
     ) : (
         <div className="min-h-screen min-w-full flex flex-col justify-between items-center gap-10 overflow-x-hidden">
-            <div className="w-full h-10 text-sm z-10 flex justify-center md:justify-between items-center mt-10 sticky top-0 md:px-52">
+            <div className="w-full h-10 text-sm z-10 flex justify-center md:justify-between items-start mt-10 sticky top-0 md:px-52">
                 <div
                     className="relative w-fit rounded-md shadow-sm flex flex-col"
                     ref={dropdownRef}
