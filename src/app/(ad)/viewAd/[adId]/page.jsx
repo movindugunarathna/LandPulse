@@ -154,7 +154,7 @@ export default function ViewAd({ params: { adId } }) {
                                     <div className="w-full flex items-start flex-col">
                                         <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[10%]">
                                             <p className="">
-                                                PRICE (per perch)
+                                                Price (per perch)
                                             </p>
 
                                             {growthClicked &&
@@ -194,7 +194,7 @@ export default function ViewAd({ params: { adId } }) {
                                 <div className="flex flex-row">
                                     <div className="w-full flex items-start flex-col">
                                         <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[5%]">
-                                            PERCH
+                                            Perch
                                         </div>
                                         <div className="flex flex-row gap-8">
                                             <span className="text-gray-600 pl-4">
