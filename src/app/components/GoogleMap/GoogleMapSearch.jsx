@@ -89,6 +89,7 @@ const GoogleMapComp = ({ className }) => {
                                         setSelectedLocation({
                                             lat: lat(),
                                             lng: lng(),
+                                            ...placeDetails,
                                         });
 
                                         dispatch(
