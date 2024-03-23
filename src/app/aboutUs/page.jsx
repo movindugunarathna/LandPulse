@@ -1,68 +1,79 @@
 import React from "react";
 
+const details = [
+    {
+        topic: "About LandPulse",
+        description: (
+            <p>
+                LandPulse is a platform on which you can buy and sell different
+                types of lands and properties! Select your desired location and
+                start browsing
+            </p>
+        ),
+    },
+    {
+        topic: "Have lands or properties to sell?",
+        description: (
+            <ul>
+                <li>Sign up for a free account to start selling your items!</li>
+                <li>
+                    It only takes less than 2 minutes to post an ad. We have an
+                    in-built price forecasting system for you to deduce and
+                    decide the true value of your property
+                </li>
+                <li>
+                    What are you waiting for? Create an account, post your ad,
+                    and start selling!
+                </li>
+            </ul>
+        ),
+    },
+    {
+        topic: "Looking to buy a land or property?",
+        description: (
+            <ul>
+                <li>
+                    LandPulse has the widest selection of items all over Sri
+                    Lanka
+                </li>
+                <li>
+                    Whether you&apos;re looking for residential, agricultural,
+                    commercial, or industrial, you will find the best deal on
+                    Landpulse.
+                </li>
+                <li>
+                    Our search and filters make it super easy to find exactly
+                    what you&apos;re looking for!
+                </li>
+            </ul>
+        ),
+    },
+];
+
 const Page = () => {
     return (
         <div>
-            <header className="bg-gray-900 text-white p-4 flex justify-between items-center">
+            <div className=" bg-custom-green-100 text-white p-4 flex justify-between items-center my-10">
                 <h1>LandPulse - Buy and Sell</h1>
-            </header>
-            <div className="main flex flex-col md:flex-row md:flex-wrap justify-between items-center p-4">
-                <div id="about" className="w-full md:w-1/3 p-4 mx-auto">
-                    <h2 className="text-xl font-bold">About LandPulse</h2>
-                    <p>
-                        LandPulse is a platform on which you can buy and sell
-                        different types of lands and properties! Select your
-                        desired location and start browsing
-                    </p>
+            </div>
+            <div className=" w-full sm:min-h-screen flex flex-col justify-evenly items-center flex-wrap gap-4">
+                <div className="main flex w-full flex-wrap gap-x-4 p-2 gap-y-8">
+                    {details.map((item) => (
+                        <div
+                            key={item.topic}
+                            className="w-full md:w-1/4 p-4 mx-auto shadow-xl min-w-[420px] flex flex-col gap-4"
+                        >
+                            <h2 className="font-bold">{item.topic}</h2>
+                            <div className="pl-4">{item.description}</div>
+                        </div>
+                    ))}
                 </div>
                 <div
-                    id="buynsell"
-                    className="w-full md:w-2/3 flex justify-between"
+                    id="terms"
+                    className=" md:w-2/3 xl:p-10 p-10 mx-auto shadow-xl"
                 >
-                    <div id="sell" className="w-full p-4">
-                        <h2 className="text-xl font-bold">
-                            Have lands or properties to sell?
-                        </h2>
-                        <p>
-                            Sign up for a free account to start selling your
-                            items!
-                        </p>
-                        <p>
-                            It only takes less than 2 minutes to post an ad. We
-                            have an in-built price forecasting system for you to
-                            deduce and decide the true value of your property
-                        </p>
-                        <p>
-                            What are you waiting for? Create an account, post
-                            your ad, and start selling!
-                        </p>
-                    </div>
-                    <div id="buy" className="w-full p-4">
-                        <h2 className="text-xl font-bold">
-                            Looking to buy a land or property?
-                        </h2>
-                        <p>
-                            LandPulse has the widest selection of items all over
-                            Sri Lanka
-                        </p>
-                        <p>
-                            Whether you&apos;re looking for residential,
-                            agricultural, commercial, or industrial, you will
-                            find the best deal on Landpulse.
-                        </p>
-                        <p>
-                            Our search and filters make it super easy to find
-                            exactly what you&apos;re looking for!
-                        </p>
-                    </div>
-                </div>
-                <div id="terms" className="w-full p-4 mx-auto">
-                    {" "}
-                    {/* Added mx-auto class */}
-                    <h2 className="text-xl font-bold">
-                        Our Terms and conditions
-                    </h2>
-                    <p>
+                    <h2 className="font-bold">Our Terms and conditions</h2>
+                    <p className="pl-4 ">
                         By accessing or using LandPulse, you agree to abide by
                         the following terms and conditions. You may use
                         LandPulse for personal, non-commercial purposes only and
@@ -83,29 +94,30 @@ const Page = () => {
                 </div>
                 <div
                     id="contact-info"
-                    className="w-full p-4 bg-gray-200 shadow-md mx-auto"
+                    className="w-full p-4 bg-gray-200 shadow-md mx-auto flex justify-evenly text-center max-md:flex-wrap"
                 >
-                    {" "}
-                    {/* Added mx-auto class */}
-                    <h2 className="text-xl font-bold">
-                        Questions? Get in touch!
-                    </h2>
-                    <p>9am - 6pm on weekdays</p>
-                    <p>8am - 5pm on weekends and mercantile holidays</p>
-                    <h3 className="font-bold mt-4">Call us</h3>
-                    <p>011 2 891 678</p>
-                    <h3 className="font-bold mt-4">Email us</h3>
-                    <p>
-                        <a
-                            href="mailto:support@Landpulse.lk"
-                            className="text-blue-500"
-                        >
-                            support@LandPulse.lk
-                        </a>
-                    </p>
+                    <div className="w-1/4 min-w-[190px]">
+                        <h3 className="font-bold mt-4">Call us</h3>
+                        <p>011 2 891 678</p>
+                    </div>
+                    <div className="w-1/4 min-w-[190px]">
+                        <h2 className="font-bold">Questions? Get in touch!</h2>
+                        <p>9am - 6pm on weekdays</p>
+                        <p>8am - 5pm on weekends and mercantile holidays</p>
+                    </div>
+                    <div className="w-1/4 min-w-[190px]">
+                        <h3 className="font-bold mt-4">Email us</h3>
+                        <p>
+                            <a
+                                href="mailto:support@Landpulse.lk"
+                                className="text-blue-500"
+                            >
+                                support@LandPulse.lk
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
-            <footer className="p-4"></footer>
         </div>
     );
 };
