@@ -24,7 +24,7 @@ export default function CreateAd() {
     const ad = useAppSelector((state) => state.ad);
     const [priceSection, setPriceSection] = useState({
         selected: false,
-        value: parseFloat(ad.price) * parseFloat(ad.perch),
+        value: parseFloat(ad.price),
     });
     const [priceStatus, setPriceStatus] = useState(null);
     const { data: session, status } = useSession();
@@ -57,7 +57,7 @@ export default function CreateAd() {
             const currentMonth = new Date().getMonth();
             setPriceSection({
                 ...priceSection,
-                value: parseFloat(ad.price) * parseFloat(ad.perch),
+                value: parseFloat(ad.price),
             });
             setPriceStatus(
                 ad.predict[`${currentMonth}`]?.max_next > ad.price &&
