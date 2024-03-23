@@ -413,7 +413,7 @@ export default function Dashboard({ userData }) {
                                                         </td>
                                                     </tr>
                                                 ))}
-                                                {user?.post?.length === 0 && (
+                                                {user?.posts?.length === 0 && (
                                                     <tr>
                                                         No ads posted yet...
                                                     </tr>
