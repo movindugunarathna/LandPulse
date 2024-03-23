@@ -236,7 +236,7 @@ export default function CreateAd() {
                                 <button
                                     id="publish"
                                     name="publish"
-                                    className=" hover:text-red-500 border hover:border-red-500 hover:bg-white bg-red-500 text-white px-4 py-2 shadow-lg sticky right-20 
+                                    className=" hover:text-green-500 border hover:border-green-500 hover:bg-white bg-green-500 text-white px-4 py-2 shadow-lg sticky right-20 
                                              top-0 rounded text-sm"
                                     onClick={submitAdPost}
                                 >
@@ -300,8 +300,8 @@ export default function CreateAd() {
                                             </label>
                                             <div className="w-full h-fit flex gap-2 justify-start items-center">
                                                 <span
-                                                    className="appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
-                                                        focus:outline-none focus:shadow-outline bg-gray-100 shadow-md cursor-pointer"
+                                                    className={`appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
+                                                        focus:outline-none focus:shadow-outline ${priceSection.value === 0 ? " bg-red-100 " : "bg-green-100"} shadow-md cursor-pointer`}
                                                     onClick={() => {
                                                         console.log(
                                                             "Selected price"
@@ -391,7 +391,7 @@ export default function CreateAd() {
                                     <button
                                         id="publish"
                                         name="publish"
-                                        className=" hover:text-red-500 border hover:border-red-500 hover:bg-white bg-red-500 text-white px-4 py-2 shadow-lg sticky right-20 
+                                        className=" hover:text-green-500 border hover:border-green-500 hover:bg-white bg-green-500 text-white px-4 py-2 shadow-lg sticky right-20 
                                                  top-0 rounded text-sm"
                                         onClick={submitAdPost}
                                     >
