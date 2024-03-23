@@ -22,16 +22,14 @@ export default function ViewAd({ params: { adId } }) {
         const init = async () => {
             try {
                 const post = await getAdvertisementById(adId);
-                if (post.code === 200) {
-                    post.data.predict = JSON.parse(post.data.predict);
-                    setAdvertisement(post.data);
-                    console.log(post);
-                    if (advertisement) {
-                        pageRef.current.scrollIntoView({
-                            behavior: "smooth",
-                        });
-                    }
-                } else toast.error(post.message);
+                post.predict = JSON.parse(post.predict);
+                setAdvertisement(post);
+                console.log(post);
+                if (advertisement) {
+                    pageRef.current.scrollIntoView({
+                        behavior: "smooth",
+                    });
+                }
             } catch (error) {
                 toast.error(error.message);
                 router.push("/");
