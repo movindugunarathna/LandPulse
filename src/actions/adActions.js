@@ -40,24 +40,20 @@ export const getAdvertisementById = async (id) => {
 
         console.log("Advertisement fetched successfully");
         return {
-            code: 200,
-            message: "Successfully downloaded",
-            data: {
-                _id: post._id.toString(),
-                title: post.title,
-                description: post.description,
-                perch: post.perch,
-                price: post.price,
-                landTypes: post.landTypes,
-                geometry: post.geometry,
-                isInputPrice: post.isInputPrice,
-                predict: JSON.stringify(post.predict),
-                images: post.images,
-                userId: post.userId,
-                creationDate: post.creationDate,
-                contact: userContacts.contact,
-                email: userContacts.email,
-            },
+            _id: post._id.toString(),
+            title: post.title,
+            description: post.description,
+            perch: post.perch,
+            price: post.price,
+            landTypes: post.landTypes,
+            geometry: post.geometry,
+            isInputPrice: post.isInputPrice,
+            predict: JSON.stringify(post.predict),
+            images: post.images,
+            userId: post.userId,
+            creationDate: post.creationDate,
+            contact: userContacts.contact,
+            email: userContacts.email,
         };
     } catch (err) {
         console.log(err);

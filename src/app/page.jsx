@@ -1,28 +1,13 @@
-"use client";
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 
-export default function Page() {
-    const [advertisements, setAdvertisements] = useState(null);
-
-    useEffect(() => {
-        const advertisement = async () => {
-            try {
-                const { advertisements: fetchAds } = await getAdvertisements({
-                    pageNumber: 1,
-                    pageSize: 3,
-                });
-                setAdvertisements(fetchAds);
-            } catch (error) {
-                toast.error(error.message);
-            }
-        };
-        advertisement();
-    }, []);
+export default async function Page() {
+    const { advertisements } = await getAdvertisements({
+        pageNumber: 1,
+        pageSize: 3,
+    });
 
     return (
         <>
@@ -81,9 +66,9 @@ export default function Page() {
 
             {/* Starting featured posts */}
             {advertisements ? (
-                <section className="w-full h-full flex items-center justify-center">
+                <section className="w-full h-full flex items-center justify-center mt-24">
                     <div className="w-full max-w-6xl">
-                        <div className="mt-10">
+                        <div className="">
                             <h1 className="text-2xl md:text-4xl font-bold text-center text-custom-green-100">
                                 Your Dream Awaits,
                                 <br />
@@ -105,7 +90,7 @@ export default function Page() {
                                 resonates with your unique vision.
                             </p>
                         </div>
-                        <div className="flex flex-wrap md:flex-nowrap gap-10 justify-center items-stretch mt-5">
+                        <div className="flex flex-wrap xl:flex-nowrap gap-10 justify-center items-stretch mt-5">
                             {advertisements?.map((advertisement) => (
                                 <Advertisement
                                     key={advertisement._id}
@@ -115,10 +100,10 @@ export default function Page() {
                         </div>
                         <div className="flex items-center justify-center h-20 space-x-2 mt-5">
                             <Link
-                                className="bg-custom-green-100 hover:bg-lime-900 text-white font-bold py-2 px-4 rounded"
+                                className="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white py-2 px-4 rounded"
                                 href={`/viewAll`}
                             >
-                                See more
+                                View All
                             </Link>
                         </div>
                     </div>

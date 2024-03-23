@@ -32,7 +32,7 @@ const Advertisement = ({ advertisement }) => {
                         loading="lazy"
                     />
 
-                    <p className="absolute right-0 font-semibold text-white bg-black/40 px-4 py-2 mt-4 mr-4 rounded-md">
+                    <p className="absolute right-0 top-0 font-semibold text-white bg-black/10 backdrop-blur-sm px-4 py-2 mt-4 mr-4 rounded-md">
                         {advertisement?.creationDate.toLocaleDateString(
                             "en-US"
                         )}
@@ -49,7 +49,16 @@ const Advertisement = ({ advertisement }) => {
                                 Price (per perch)
                             </span>{" "}
                             <span>
-                                LKR {Number(advertisement?.price).toFixed(2)} /=
+                                LKR{" "}
+                                {Number(advertisement?.price).toLocaleString(
+                                    "en-US",
+                                    {
+                                        minimumFractionDigits: 2,
+                                        toFixed: 2,
+                                        maximumFractionDigits: 2,
+                                    }
+                                )}{" "}
+                                /=
                             </span>
                         </p>
                         <p className="w-full flex justify-between items-center text-gray-800 text-sm">

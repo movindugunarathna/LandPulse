@@ -22,16 +22,14 @@ export default function ViewAd({ params: { adId } }) {
         const init = async () => {
             try {
                 const post = await getAdvertisementById(adId);
-                if (post.code === 200) {
-                    post.data.predict = JSON.parse(post.data.predict);
-                    setAdvertisement(post.data);
-                    console.log(post);
-                    if (advertisement) {
-                        pageRef.current.scrollIntoView({
-                            behavior: "smooth",
-                        });
-                    }
-                } else toast.error(post.message);
+                post.predict = JSON.parse(post.predict);
+                setAdvertisement(post);
+                console.log(post);
+                if (advertisement) {
+                    pageRef.current.scrollIntoView({
+                        behavior: "smooth",
+                    });
+                }
             } catch (error) {
                 toast.error(error.message);
                 router.push("/");
@@ -67,7 +65,7 @@ export default function ViewAd({ params: { adId } }) {
                             <p>Back</p>
                         </div>
                         <button
-                            className=" h-10 text-sm px-5 hover:bg-opacity-80 text-red-500 border border-red-500 
+                            className=" h-10 text-sm px-5 hover:bg-opacity-80 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white
                             rounded-lg leading-10 hover:opacity-50 text-center"
                             onClick={(event) => {
                                 setGrowthClicked(!growthClicked);
@@ -155,7 +153,9 @@ export default function ViewAd({ params: { adId } }) {
                                 <div className="flex flex-row">
                                     <div className="w-full flex items-start flex-col">
                                         <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[10%]">
-                                            <p className="">PRICE</p>
+                                            <p className="">
+                                                PRICE (per perch)
+                                            </p>
 
                                             {growthClicked &&
                                                 advertisement.isInputPrice &&
@@ -168,10 +168,14 @@ export default function ViewAd({ params: { adId } }) {
                                         <div className="flex flex-row gap-8">
                                             <span className="text-gray-600 pl-4">
                                                 Rs.{" "}
-                                                {(
-                                                    advertisement?.price *
-                                                    advertisement?.perch
-                                                ).toFixed(2)}{" "}
+                                                {(advertisement?.price).toLocaleString(
+                                                    "en-US",
+                                                    {
+                                                        minimumFractionDigits: 2,
+                                                        toFixed: 2,
+                                                        maximumFractionDigits: 2,
+                                                    }
+                                                )}{" "}
                                                 /=
                                             </span>
                                         </div>
@@ -185,6 +189,18 @@ export default function ViewAd({ params: { adId } }) {
                                                 ", "
                                             )}
                                         </span>
+                                    </div>
+                                </div>
+                                <div className="flex flex-row">
+                                    <div className="w-full flex items-start flex-col">
+                                        <div className="w-full flex justify-start gap-x-6 pb-[0.5%] pt-[5%]">
+                                            PERCH
+                                        </div>
+                                        <div className="flex flex-row gap-8">
+                                            <span className="text-gray-600 pl-4">
+                                                {advertisement?.perch}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

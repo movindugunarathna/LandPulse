@@ -114,15 +114,15 @@ export default function PriceSection({
                     <div className=" absolute bottom-0 left-0 w-full h-fit text-center p-4 px-8 flex justify-between items-center bg-white">
                         <input
                             type="button"
-                            className=" text-green-500 border border-green-500 hover:bg-green-500 hover:text-white px-20 py-2
-                            shadow-lg sticky right-20 top-0 rounded text-sm cursor-pointer"
+                            className=" text-green-500 border border-green-500 hover:bg-green-500 hover:text-white 
+                            px-20 py-2 max-sm:px-[10%] shadow-lg sticky sm:right-20 top-0 rounded text-sm cursor-pointer"
                             value={"Cancel"}
                             onClick={handleClick}
                         />
                         <input
                             type="button"
-                            className=" text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-20 py-2 
-                            shadow-lg sticky right-20 top-0 rounded text-sm cursor-pointer"
+                            className=" text-red-500 border border-red-500 hover:bg-red-500 hover:text-white 
+                            px-20 py-2 max-sm:px-[10%] shadow-lg sticky sm:right-20 top-0 rounded text-sm cursor-pointer"
                             value={"Submit"}
                             onClick={handleSubmit}
                         />

@@ -142,11 +142,11 @@ export default function CreateAd() {
     };
 
     return (
-        <div className="overflow-hidden">
+        <div className="relative overflow-hidden">
             {priceSection.selected && (
                 <PriceSection
                     className={
-                        " z-20 absolute top-0 left-0 w-full h-full backdrop-blur-sm flex justify-center items-center"
+                        " z-20 absolute bottom-0 left-0 w-full h-screen backdrop-blur-sm flex justify-center items-center"
                     }
                     setPriceDetails={setPriceSection}
                     priceDetails={priceSection}
@@ -215,7 +215,7 @@ export default function CreateAd() {
                                 <button
                                     id="scroll"
                                     name="scroll"
-                                    className="w-40 mt-5 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white py-2 px-4 rounded
+                                    className="w-40 mt-5 text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white py-2 px-4 rounded
                                     flex gap-x-2 justify-center items-center focus:outline-none focus:shadow-outline"
                                     onClick={() => {
                                         scrollRef.current.scrollIntoView({
@@ -223,21 +223,21 @@ export default function CreateAd() {
                                         });
                                     }}
                                 >
-                                    Scroll <FaArrowDown className="w-3 h-3" />
+                                    <FaArrowDown className="w-3 h-3" />
                                 </button>
                             </div>
                         )}
 
                         <div
-                            className=" relative w-screen min-h-screen flex justify-center items-center flex-col"
+                            className=" relative w-screen min-h-screen flex justify-center items-center flex-col mt-20"
                             ref={scrollRef}
                         >
-                            <div className="md:w-4/5 w-full flex justify-end">
+                            <div className=" max-lg:hidden md:w-4/5 w-full flex justify-end">
                                 <button
                                     id="publish"
                                     name="publish"
-                                    className=" text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 shadow-lg sticky right-20 
-                                                 top-0 rounded text-sm"
+                                    className=" hover:text-red-500 border hover:border-red-500 hover:bg-white bg-red-500 text-white px-4 py-2 shadow-lg sticky right-20 
+                                             top-0 rounded text-sm"
                                     onClick={submitAdPost}
                                 >
                                     Publish
@@ -315,7 +315,11 @@ export default function CreateAd() {
                                                     Rs.{" "}
                                                     {Number(
                                                         priceSection.value
-                                                    ).toFixed(2)}{" "}
+                                                    ).toLocaleString("en-US", {
+                                                        minimumFractionDigits: 2,
+                                                        toFixed: 2,
+                                                        maximumFractionDigits: 2,
+                                                    })}{" "}
                                                     /=
                                                 </span>
                                                 <div
@@ -372,18 +376,30 @@ export default function CreateAd() {
                                         </div>
                                     </div>
                                 </div>
+
+                                {surround && ad.predict?.Obj && (
+                                    <div className="w-full overflow-x-scroll no-scrollbar">
+                                        <DistanceCard
+                                            className={
+                                                "distanceCard h-full p-8 flex gap-x-10"
+                                            }
+                                            dataObj={ad.predict}
+                                        />
+                                    </div>
+                                )}
+                                <div className=" lg:hidden md:w-4/5 w-full flex justify-end">
+                                    <button
+                                        id="publish"
+                                        name="publish"
+                                        className=" hover:text-red-500 border hover:border-red-500 hover:bg-white bg-red-500 text-white px-4 py-2 shadow-lg sticky right-20 
+                                                 top-0 rounded text-sm"
+                                        onClick={submitAdPost}
+                                    >
+                                        Publish
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        {surround && ad.predict?.Obj && (
-                            <div className="w-full overflow-x-scroll no-scrollbar">
-                                <DistanceCard
-                                    className={
-                                        "distanceCard h-full p-8 flex gap-x-10"
-                                    }
-                                    dataObj={ad.predict}
-                                />
-                            </div>
-                        )}
                     </div>
                 )}
             </div>
