@@ -58,14 +58,14 @@ export default function ViewAd({ params: { adId } }) {
                 <div className="w-full h-full flex justify-center items-center flex-col px-6 py-2 md:px-20 md:py-4 ">
                     <div className="flex w-full justify-between items-center cursor-pointer">
                         <div
-                            className="text-red-500 flex justify-start gap-4 w-fit h-fit"
+                            className="text-blue-500 flex justify-start gap-4 w-fit h-fit"
                             onClick={() => router.back()}
                         >
                             <IoCaretBackSharp className="  w-5 h-5  " />
                             <p>Back</p>
                         </div>
                         <button
-                            className=" h-10 text-sm px-5 hover:bg-opacity-80 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white
+                            className=" h-10 text-sm px-5 hover:bg-opacity-80 text-purple-500 border border-purple-500 hover:bg-purple-500 hover:text-white
                             rounded-lg leading-10 hover:opacity-50 text-center"
                             onClick={(event) => {
                                 setGrowthClicked(!growthClicked);
@@ -216,7 +216,7 @@ export default function ViewAd({ params: { adId } }) {
                         <DistanceCard
                             dataObj={advertisement?.predict}
                             className={
-                                "xl:w-1/2 w-full flex xl:flex-wrap gap-4 overflow-x-scroll no-scrollbar p-8"
+                                "xl:w-1/2 w-full flex xl:flex-wrap gap-4 overflow-y-scroll  max-md:no-scrollbar p-8"
                             }
                         />
                         <span className="z-10 absolute xl:bottom-10 xl:right-0 xl:rotate-90 -bottom-0 right-0 text-red-500 flex items-center gap-4">

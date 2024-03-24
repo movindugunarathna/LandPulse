@@ -5,7 +5,7 @@ import {
     hasLowerCase,
     hasNumber,
 } from "../../utils/validation";
-import { colomboGeometry } from "@/data/advertisement";
+import { colomboGeometry } from "@/data/landTypes";
 import { landTypes } from "@/data/landTypes";
 
 export const SignUpSchema = z
@@ -117,8 +117,6 @@ export const AdvertisementSchema = z
                 lng: z.number(),
             })
             .refine((entry) => {
-                console.log(colomboGeometry.lat !== entry.lat, entry.lat);
-                console.log(colomboGeometry.lng !== entry.lng, entry.lng);
                 return (
                     colomboGeometry.lat !== entry.lat ||
                     colomboGeometry.lng !== entry.lng
@@ -169,8 +167,6 @@ export const pricePredictSchema = z.object({
             lng: z.number(),
         })
         .refine((entry) => {
-            console.log(colomboGeometry.lat !== entry.lat, entry.lat);
-            console.log(colomboGeometry.lng !== entry.lng, entry.lng);
             return (
                 colomboGeometry.lat !== entry.lat ||
                 colomboGeometry.lng !== entry.lng

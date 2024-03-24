@@ -1,4 +1,5 @@
-import { colomboGeometry, predictReturn } from "@/data/advertisement";
+import { predictReturn } from "@/data/advertisement";
+import { colomboCityBound, colomboGeometry } from "@/data/landTypes";
 import { createSlice } from "@reduxjs/toolkit";
 
 const adInitial = {
@@ -40,8 +41,27 @@ const AdSlice = createSlice({
         setLocationGeo: (state, action) => {
             const { lat, lng } = action.payload;
             console.log(lat, lng);
-
-            return { ...state, geometry: { lat, lng } };
+            console.log(
+                colomboCityBound.max.lat,
+                lat,
+                colomboCityBound.min.lat
+            );
+            console.log(
+                colomboCityBound.max.lng,
+                lng,
+                colomboCityBound.min.lng
+            );
+            if (
+                colomboCityBound.max.lat > lat &&
+                lat > colomboCityBound.min.lat &&
+                colomboCityBound.min.lat &&
+                colomboCityBound.max.lng > lng &&
+                lng > colomboCityBound.min.lng &&
+                colomboCityBound.min.lng
+            ) {
+                return { ...state, geometry: { lat, lng } };
+            } else
+                throw new Error("City in not available for price prediction");
         },
         setPredict: (state, action) => {
             const { value } = action.payload;

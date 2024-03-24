@@ -8,11 +8,6 @@ export const advertisement = {
         "This 50-acre farmland is perfect for farming or ranching. Located in a prime location with easy access to major roads and amenities.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut mauris nec turpis tempor ullamcorper. Nullam ac ante ac massa lobortis fringilla. Integer euismod leo nec ante cursus, vel scelerisque magna bibendum. Vivamus consequat felis ac erat fermentum, vel volutpat nunc sagittis. Suspendisse potenti. Sed non aliquet tortor.",
 };
 
-export const colomboGeometry = {
-    lat: 6.925187004369271,
-    lng: 79.86128293151192,
-};
-
 export const predictReturn = {
     2020: {
         max_next: 0,
