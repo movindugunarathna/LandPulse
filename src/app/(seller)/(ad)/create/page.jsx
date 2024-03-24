@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setBasic } from "@/lib/redux/adSlice";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import { FaRegCircleCheck } from "react-icons/fa6";
+import { FaArrowUp, FaRegCircleCheck } from "react-icons/fa6";
 import DistanceCard from "@/app/components/DistanceCard/DistanceCard";
 import ChartApp from "@/app/components/Chart/Chart";
 import { FaArrowDown } from "react-icons/fa";
@@ -300,8 +300,9 @@ export default function CreateAd() {
                                             </label>
                                             <div className="w-full h-fit flex gap-2 justify-start items-center">
                                                 <span
-                                                    className={`appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
-                                                        focus:outline-none focus:shadow-outline ${priceSection.value === 0 ? " bg-red-100 " : "bg-green-100"} shadow-md cursor-pointer`}
+                                                    className={` relative appearance-none border rounded w-5/6 py-2 px-3 text-gray-700 leading-tight 
+                                                        focus:outline-none focus:shadow-outline ${priceSection.value === 0 ? " bg-red-100 hover:bg-red-200" : "bg-green-100 hover:bg-green-200"} 
+                                                        shadow-md hover:shadow-lg cursor-pointer`}
                                                     onClick={() => {
                                                         console.log(
                                                             "Selected price"
@@ -321,9 +322,15 @@ export default function CreateAd() {
                                                         maximumFractionDigits: 2,
                                                     })}{" "}
                                                     /=
+                                                    <span
+                                                        className="absolute top-0 right-0 h-full w-fit flex items-center justify-center p-3 text-sm 
+                                                    text-black/30 backdrop-blur-md"
+                                                    >
+                                                        click
+                                                    </span>
                                                 </span>
                                                 <div
-                                                    className="w-6 h-6 cursor-pointer"
+                                                    className="w-6 h-6 cursor-pointer flex items-center"
                                                     onMouseEnter={() =>
                                                         setShowChart(true)
                                                     }
@@ -335,11 +342,14 @@ export default function CreateAd() {
                                                     }}
                                                 >
                                                     {ad.price !== 0.0 &&
-                                                        ad.isInputPrice &&
-                                                        (priceStatus ? (
-                                                            <FaRegCircleCheck className="w-full h-full text-green-400" />
+                                                        (ad.isInputPrice ? (
+                                                            priceStatus ? (
+                                                                <FaRegCircleCheck className="w-full h-full text-green-400" />
+                                                            ) : (
+                                                                <IoMdCloseCircleOutline className="w-full h-full text-red-400" />
+                                                            )
                                                         ) : (
-                                                            <IoMdCloseCircleOutline className="w-full h-full text-red-400" />
+                                                            <FaArrowUp className="w-full h-2/3 text-purple-400" />
                                                         ))}
                                                     {showChart &&
                                                         ad.price !== 0 && (
@@ -380,7 +390,7 @@ export default function CreateAd() {
 
                             {/* mobile view  */}
                             {surround && ad.predict?.Obj && (
-                                <div className="p-8 w-full overflow-x-scroll no-scrollbar">
+                                <div className="p-8 w-full overflow-x-scroll max-md:no-scrollbar">
                                     <DistanceCard
                                         className={
                                             "distanceCard h-full p-8 flex gap-x-10"

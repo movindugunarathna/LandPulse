@@ -37,17 +37,17 @@ export default function PriceSection({
         setLoading(true);
 
         try {
-            const data = await pricePredict({
-                geometry: ad.geometry,
-                landTypes: ad.landTypes,
-            });
-            dispatch(setPredict({ value: data }));
-            setPriceDetails({
-                ...priceDetails,
-                selected: false,
-            });
-
             if (isPricePredict) {
+                const data = await pricePredict({
+                    geometry: ad.geometry,
+                    landTypes: ad.landTypes,
+                });
+                dispatch(setPredict({ value: data }));
+                setPriceDetails({
+                    ...priceDetails,
+                    selected: false,
+                });
+
                 dispatch(
                     setBasic({
                         field: "price",
@@ -60,15 +60,23 @@ export default function PriceSection({
                         bool: false,
                     })
                 );
-            } else {
+            } else if (ad.price !== 0 && ad.price) {
+                const data = await pricePredict({
+                    geometry: ad.geometry,
+                    landTypes: ad.landTypes,
+                });
+                dispatch(setPredict({ value: data }));
+                setPriceDetails({
+                    ...priceDetails,
+                    selected: false,
+                });
+
                 dispatch(
                     setInputPriceBool({
                         bool: true,
                     })
                 );
-            }
-
-            toast.success("Price Input Success");
+            } else toast.error("Please Input price");
         } catch (error) {
             toast.error(error.message);
         }

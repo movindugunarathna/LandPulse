@@ -32,7 +32,7 @@ export default function InputPrice() {
                 type="number"
                 id="price"
                 name="price"
-                value={ad.price}
+                value={Number(ad.price).toFixed(2)}
                 onChange={handleInputChange}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-5"
             />

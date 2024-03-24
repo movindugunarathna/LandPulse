@@ -1,13 +1,29 @@
+"use client";
 import Image from "next/image";
 import Advertisement from "./components/elements/advertisement/Advertisement";
 import { getAdvertisements } from "@/actions/adActions";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
-export default async function Page() {
-    const { advertisements } = await getAdvertisements({
-        pageNumber: 1,
-        pageSize: 3,
-    });
+export default function Page() {
+    const [advertisements, setAdvertisements] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const { advertisements } = await getAdvertisements({
+                    pageNumber: 1,
+                    pageSize: 3,
+                });
+                setAdvertisements(advertisements);
+            } catch (error) {
+                toast.error(error.message);
+            }
+        };
+
+        load();
+    }, []);
 
     return (
         <>

@@ -8,6 +8,7 @@ import {
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks";
 import { setLocationGeo } from "@/lib/redux/adSlice";
+import { toast } from "sonner";
 
 const libraries = ["places"];
 
@@ -29,12 +30,16 @@ const GoogleMapComp = ({ className }) => {
     };
 
     const handleClick = (event) => {
-        dispatch(
-            setLocationGeo({
-                lat: event.latLng.lat(),
-                lng: event.latLng.lng(),
-            })
-        );
+        try {
+            dispatch(
+                setLocationGeo({
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng(),
+                })
+            );
+        } catch (err) {
+            toast.error(err.message);
+        }
     };
 
     const {
@@ -92,12 +97,16 @@ const GoogleMapComp = ({ className }) => {
                                             ...placeDetails,
                                         });
 
-                                        dispatch(
-                                            setLocationGeo({
-                                                lat: lat(),
-                                                lng: lng(),
-                                            })
-                                        );
+                                        try {
+                                            dispatch(
+                                                setLocationGeo({
+                                                    lat: lat(),
+                                                    lng: lng(),
+                                                })
+                                            );
+                                        } catch (err) {
+                                            toast.error(err.message);
+                                        }
                                     }
                                 );
                             }}
